@@ -13,6 +13,7 @@
       --line: #e5ded2;
       --tens: #16a34a;
       --ones: #eab308;
+      --ones-ink: #a16207;
       --ok: #16a34a;
       --bad: #dc2626;
       --focus: #7c3aed;
@@ -46,656 +47,99 @@
       margin-bottom: 12px;
     }
 
-    h1 {
-      margin: 0;
-      font-size: clamp(1.45rem, 3vw, 2.25rem);
-      line-height: 1.1;
-    }
+    h1 { margin: 0; font-size: clamp(1.45rem, 3vw, 2.25rem); line-height: 1.1; }
 
-    .legend {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      align-items: center;
-      color: var(--muted);
-      font-weight: 800;
-    }
+    .legend { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; color: var(--muted); font-weight: 800; }
 
-    .chip {
-      display: inline-flex;
-      align-items: center;
-      gap: 7px;
-      border: 2px solid var(--line);
-      border-radius: 999px;
-      background: #fff;
-      padding: 8px 12px;
-      font-size: .95rem;
-    }
+    .chip { display: inline-flex; align-items: center; gap: 7px; border: 2px solid var(--line); border-radius: 999px; background: #fff; padding: 8px 12px; font-size: .95rem; }
 
-    .dot {
-      width: 16px;
-      height: 16px;
-      border-radius: 50%;
-      display: inline-block;
-    }
-
+    .dot { width: 16px; height: 16px; border-radius: 50%; display: inline-block; }
     .dot.tens { background: var(--tens); }
     .dot.ones { background: var(--ones); }
 
-    nav {
-      display: grid;
-      grid-template-columns: repeat(6, minmax(0, 1fr));
-      gap: 8px;
-      margin: 8px 0 14px;
-    }
+    nav { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; margin: 8px 0 14px; }
 
-    button {
-      appearance: none;
-      border: 0;
-      border-radius: 8px;
-      background: #eef2ff;
-      color: var(--ink);
-      min-height: 48px;
-      padding: 10px 12px;
-      font: inherit;
-      font-weight: 900;
-      cursor: pointer;
-      touch-action: manipulation;
-    }
+    button { appearance: none; border: 0; border-radius: 8px; background: #eef2ff; color: var(--ink); min-height: 48px; padding: 10px 12px; font: inherit; font-weight: 900; cursor: pointer; touch-action: manipulation; }
 
     button:active { transform: translateY(1px); }
     button:focus-visible, input:focus-visible { outline: 4px solid rgba(124, 58, 237, .3); outline-offset: 2px; }
     nav button.active { background: var(--focus); color: #fff; }
 
-    main {
-      background: var(--panel);
-      border: 2px solid var(--line);
-      border-radius: 8px;
-      box-shadow: var(--shadow);
-      overflow: hidden;
-    }
+    main { background: var(--panel); border: 2px solid var(--line); border-radius: 8px; box-shadow: var(--shadow); overflow: hidden; }
 
-    .toolbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      padding: 12px;
-      border-bottom: 2px solid var(--line);
-      background: #fffbf5;
-    }
-
+    .toolbar { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 12px; border-bottom: 2px solid var(--line); background: #fffbf5; }
     .toolbar strong { font-size: 1.05rem; }
-
-    .toolbar-actions {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-      justify-content: end;
-    }
+    .toolbar-actions { display: flex; gap: 8px; flex-wrap: wrap; justify-content: end; }
 
     .primary { background: #243043; color: #fff; }
     .soft { background: #f1f5f9; }
     .success { background: #dcfce7; color: #166534; }
 
-    .screen {
-      display: none;
-      padding: 16px;
-    }
-
+    .screen { display: none; padding: 16px; }
     .screen.active { display: block; }
 
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 12px;
-    }
+    .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
 
-    #problemsGrid {
-      grid-template-columns: 1fr;
-    }
+    .exercise { border: 2px solid var(--line); border-radius: 8px; padding: 14px; min-height: 150px; display: grid; gap: 12px; align-content: start; background: #fff; }
 
-    .exercise {
-      border: 2px solid var(--line);
-      border-radius: 8px;
-      padding: 14px;
-      min-height: 150px;
-      display: grid;
-      gap: 12px;
-      align-content: start;
-      background: #fff;
-    }
+    .prompt { font-size: clamp(1.3rem, 4vw, 2.1rem); font-weight: 950; line-height: 1.15; }
+    .small-prompt { font-size: clamp(1.05rem, 3vw, 1.45rem); font-weight: 900; line-height: 1.28; }
 
-    .prompt {
-      font-size: clamp(1.3rem, 4vw, 2.1rem);
-      font-weight: 950;
-      line-height: 1.15;
-    }
-
-    .small-prompt {
-      font-size: clamp(1.05rem, 3vw, 1.45rem);
-      font-weight: 900;
-      line-height: 1.28;
-    }
-
-    .num {
-      display: inline-flex;
-      align-items: baseline;
-      gap: .02em;
-      letter-spacing: 0;
-      font-variant-numeric: tabular-nums;
-    }
-
+    .num { display: inline-flex; align-items: baseline; gap: .02em; letter-spacing: 0; font-variant-numeric: tabular-nums; }
     .tens { color: var(--tens); }
-    .ones { color: var(--ones); }
+    .ones { color: var(--ones-ink); }
 
-    .answer-row {
-      display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 8px;
-      align-items: center;
-    }
+    .answer-row { display: grid; grid-template-columns: 1fr auto; gap: 8px; align-items: center; }
 
-    input {
-      width: 100%;
-      min-height: 56px;
-      border: 3px solid #d1d5db;
-      border-radius: 8px;
-      padding: 8px 12px;
-      font: inherit;
-      font-size: 1.55rem;
-      font-weight: 950;
-      text-align: center;
-      background: #fff;
-    }
+    input { width: 100%; min-height: 56px; border: 3px solid #d1d5db; border-radius: 8px; padding: 8px 12px; font: inherit; font-size: 1.55rem; font-weight: 950; text-align: center; background: #fff; }
 
-    .feedback {
-      min-height: 28px;
-      font-weight: 950;
-      font-size: 1.05rem;
-    }
-
-    .feedback.ok { color: var(--ok); }
+    .feedback { min-height: 28px; font-weight: 950; font-size: 1.05rem; }
+    .feedback.ok { color: var(--ok); animation: pop .35s ease; }
     .feedback.bad { color: var(--bad); }
 
-    .keypad {
-      position: sticky;
-      bottom: 0;
-      display: grid;
-      grid-template-columns: repeat(6, 1fr);
-      gap: 8px;
-      padding: 12px;
-      background: rgba(255, 248, 237, .96);
-      border-top: 2px solid var(--line);
-      backdrop-filter: blur(8px);
-    }
+    @keyframes pop { 0% { transform: scale(0.8); } 60% { transform: scale(1.08); } 100% { transform: scale(1); } }
+    @media (prefers-reduced-motion: reduce) { .feedback.ok { animation: none; } }
 
-    .keypad button {
-      min-height: 54px;
-      background: #fff;
-      border: 2px solid var(--line);
-      font-size: 1.25rem;
-    }
-
+    .keypad { position: sticky; bottom: 0; display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; padding: 12px; background: rgba(255, 248, 237, .96); border-top: 2px solid var(--line); backdrop-filter: blur(8px); }
+    .keypad button { min-height: 54px; background: #fff; border: 2px solid var(--line); font-size: 1.25rem; }
     .keypad .wide { grid-column: span 2; }
 
-    .word-bank, .order-zone {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
+    .word-bank, .order-zone { display: flex; gap: 8px; flex-wrap: wrap; }
+    .pill { border: 2px solid #d1d5db; background: #fff; min-height: 48px; border-radius: 8px; padding: 8px 12px; font-weight: 950; }
+    .pill.selected { border-color: var(--focus); background: #f3e8ff; }
 
-    .pill {
-      border: 2px solid #d1d5db;
-      background: #fff;
-      min-height: 48px;
-      border-radius: 8px;
-      padding: 8px 12px;
-      font-weight: 950;
-    }
+    .symbol-row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+    .symbol-button { background: #fff; border: 2px solid var(--line); font-size: 1.2rem; text-align: center; min-width: 84px; font-size: 2rem; }
+    .symbol-button.selected { border-color: var(--focus); background: #f3e8ff; }
+    .symbol-button.correct { border-color: var(--ok); background: #dcfce7; color: #166534; }
+    .symbol-button.wrong { border-color: var(--bad); background: #fee2e2; color: #991b1b; }
 
-    .pill.selected {
-      border-color: var(--focus);
-      background: #f3e8ff;
-    }
-
-    .symbol-row, .choice-row {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      align-items: center;
-    }
-
-    .symbol-button, .choice-button {
-      background: #fff;
-      border: 2px solid var(--line);
-      font-size: 1.2rem;
-      text-align: left;
-    }
-
-    .symbol-button {
-      min-width: 84px;
-      text-align: center;
-      font-size: 2rem;
-    }
-
-    .symbol-button.selected, .choice-button.selected {
-      border-color: var(--focus);
-      background: #f3e8ff;
-    }
-
-    .symbol-button.correct, .choice-button.correct {
-      border-color: var(--ok);
-      background: #dcfce7;
-      color: #166534;
-    }
-
-    .symbol-button.wrong, .choice-button.wrong {
-      border-color: var(--bad);
-      background: #fee2e2;
-      color: #991b1b;
-    }
-
-    .place-table {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(86px, 1fr));
-      width: min(360px, 100%);
-      border: 3px solid #334155;
-      border-radius: 8px;
-      overflow: hidden;
-      font-weight: 950;
-      text-align: center;
-    }
-
-    .place-table div {
-      min-height: 54px;
-      display: grid;
-      place-items: center;
-      border-right: 2px solid #334155;
-      border-bottom: 2px solid #334155;
-      font-size: 1.35rem;
-    }
-
-    .place-table div:nth-child(2n) { border-right: 0; }
-    .place-table div:nth-last-child(-n+2) { border-bottom: 0; }
-    .place-table .head { background: #f8fafc; font-size: 1rem; }
-
-    .problem-layout {
-      display: grid;
-      grid-template-columns: 1fr 180px;
-      gap: 12px;
-      align-items: center;
-    }
-
-    .problem-meta {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-bottom: 10px;
-    }
-
-    .tag {
-      display: inline-flex;
-      align-items: center;
-      min-height: 30px;
-      border-radius: 999px;
-      padding: 5px 10px;
-      background: #ecfdf5;
-      color: #166534;
-      font-size: .9rem;
-      font-weight: 950;
-    }
-
-    .problem-history {
-      margin-top: 12px;
-      border-top: 2px solid var(--line);
-      padding-top: 12px;
-      display: grid;
-      gap: 8px;
-    }
-
-    .history-list {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-
-    .history-item {
-      text-align: left;
-      background: #fff;
-      border: 2px solid var(--line);
-      max-width: 220px;
-      min-height: 54px;
-      line-height: 1.2;
-    }
-
-    .history-item.active {
-      border-color: var(--focus);
-      background: #f3e8ff;
-    }
-
-    .muted-text {
-      color: var(--muted);
-      font-size: .86rem;
-      font-weight: 800;
-    }
-
-    .visual {
-      min-height: 150px;
-      border: 2px dashed #cbd5e1;
-      border-radius: 8px;
-      padding: 10px;
-      display: grid;
-      gap: 8px;
-      align-content: center;
-      background: #f8fafc;
-    }
-
-    .object-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      justify-content: center;
-    }
-
-    .object, .counter {
-      appearance: none;
-      width: 24px;
-      height: 24px;
-      min-height: 24px;
-      border-radius: 50%;
-      background: var(--ones);
-      border: 2px solid #a16207;
-      padding: 0;
-      position: relative;
-    }
-
-    .object.green {
-      background: #86efac;
-      border-color: #16a34a;
-    }
-
-    .object.muted {
-      background: #e5e7eb;
-      border-color: #94a3b8;
-    }
-
-    .object.marked, .counter.marked {
-      outline: 4px solid rgba(124, 58, 237, .28);
-      transform: scale(1.08);
-    }
-
-    .object.crossed, .counter.crossed {
-      opacity: .62;
-      background: #e5e7eb;
-      border-color: #64748b;
-    }
-
-    .object.crossed::after, .counter.crossed::after {
-      content: "";
-      position: absolute;
-      width: 30px;
-      height: 4px;
-      left: -5px;
-      top: 8px;
-      border-radius: 999px;
-      background: #dc2626;
-      transform: rotate(-35deg);
-    }
-
-    .groups {
-      min-height: 140px;
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 8px;
-    }
-
-    .group {
-      border: 2px solid #94a3b8;
-      border-radius: 8px;
-      padding: 8px;
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 4px;
-      align-content: center;
-    }
-
-    .counter {
-      margin: auto;
-      background: #22c55e;
-    }
-
-    .number-line {
-      display: grid;
-      grid-template-columns: repeat(6, 1fr);
-      gap: 4px;
-      align-items: end;
-      font-weight: 950;
-      text-align: center;
-    }
-
-    .step {
-      border-top: 5px solid var(--tens);
-      padding-top: 6px;
-      color: var(--ink);
-    }
-
-    .line-point {
-      background: #fff;
-      border: 2px solid var(--line);
-      min-height: 42px;
-      padding: 6px;
-    }
-
-    .line-point.marked {
-      border-color: var(--focus);
-      background: #f3e8ff;
-    }
-
-    .clock-area {
-      display: grid;
-      grid-template-columns: minmax(220px, 310px) 1fr;
-      gap: 18px;
-      align-items: center;
-    }
-
-    .time-context {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      border: 2px solid var(--line);
-      border-radius: 999px;
-      background: #fff;
-      padding: 8px 12px;
-      margin-bottom: 10px;
-      font-weight: 950;
-    }
-
-    .sky-icon {
-      width: 24px;
-      height: 24px;
-      display: inline-block;
-      position: relative;
-      border-radius: 50%;
-      flex: 0 0 auto;
-    }
-
-    .sky-icon.day {
-      background: #facc15;
-      box-shadow: 0 0 0 5px rgba(250, 204, 21, .2);
-    }
-
-    .sky-icon.night {
-      background: #334155;
-    }
-
-    .sky-icon.night::after {
-      content: "";
-      position: absolute;
-      width: 18px;
-      height: 18px;
-      right: -2px;
-      top: 2px;
-      border-radius: 50%;
-      background: #fff;
-    }
-
-    .clock-face {
-      width: min(310px, 100%);
-      aspect-ratio: 1;
-      display: block;
-      margin: 0 auto;
-    }
-
-    .clock-number {
-      font: 900 13px ui-rounded, "SF Pro Rounded", system-ui, sans-serif;
-      fill: var(--ink);
-      text-anchor: middle;
-      dominant-baseline: middle;
-    }
-
-    .hand-hour {
-      stroke: var(--tens);
-      stroke-width: 8;
-      stroke-linecap: round;
-    }
-
-    .hand-minute {
-      stroke: var(--ones);
-      stroke-width: 5;
-      stroke-linecap: round;
-    }
-
-    .time-answer {
-      display: grid;
-      grid-template-columns: minmax(82px, 1fr) auto minmax(82px, 1fr);
-      gap: 8px;
-      align-items: center;
-      margin-top: 12px;
-      max-width: 360px;
-    }
-
-    .time-answer input {
-      min-height: 64px;
-      font-size: 1.8rem;
-    }
-
-    .time-separator {
-      font-size: 2rem;
-      font-weight: 950;
-      color: var(--ink);
-    }
-
-    .sorting-visual {
-      display: grid;
-      gap: 10px;
-      align-content: start;
-    }
-
-    .token-bank, .cartons {
-      border: 2px dashed #cbd5e1;
-      border-radius: 8px;
-      padding: 10px;
-      background: #fff;
-    }
-
-    .token-bank {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      justify-content: center;
-      min-height: 76px;
-    }
-
-    .cartons {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 8px;
-    }
-
-    .carton {
-      min-height: 82px;
-      border: 3px solid #94a3b8;
-      border-radius: 8px;
-      background: #f8fafc;
-      padding: 8px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 5px;
-      align-content: flex-start;
-      justify-content: center;
-    }
-
-    .carton.selected {
-      border-color: var(--focus);
-      background: #f3e8ff;
-    }
-
-    .carton.full {
-      border-color: var(--ok);
-      background: #dcfce7;
-    }
-
-    .carton-token {
-      cursor: pointer;
-    }
-
-    [data-sort-token].selected {
-      outline: 4px solid rgba(124, 58, 237, .35);
-      transform: scale(1.1);
-    }
-
-    .written-board {
-      display: grid;
-      grid-template-columns: 44px 74px 74px;
-      width: 192px;
-      border: 3px solid #334155;
-      border-radius: 8px;
-      overflow: hidden;
-      background: #fff;
-    }
-
-    .written-board span,
-    .written-board input {
-      min-height: 48px;
-      display: grid;
-      place-items: center;
-      border-right: 2px solid #334155;
-      border-bottom: 2px solid #334155;
-      font-size: 1.7rem;
-      font-weight: 950;
-      border-radius: 0;
-      padding: 0;
-      text-align: center;
-    }
-
+    .written-board { display: grid; grid-template-columns: 44px 74px 74px; width: 192px; border: 3px solid #334155; border-radius: 8px; overflow: hidden; background: #fff; }
+    .written-board span, .written-board input { min-height: 48px; display: grid; place-items: center; border-right: 2px solid #334155; border-bottom: 2px solid #334155; font-size: 1.7rem; font-weight: 950; border-radius: 0; padding: 0; text-align: center; }
     .written-board .col-end { border-right: 0; }
-
     .written-board .last-row { border-bottom: 0; }
-    .written-board input {
-      width: 100%;
-      background: #fffef0;
-      color: var(--ink);
-      border-top: 0;
-      border-left: 0;
-    }
+    .written-board input { width: 100%; background: #fffef0; color: var(--ink); border-top: 0; border-left: 0; }
+    .written-board input:focus-visible { outline: 4px solid rgba(124, 58, 237, .3); outline-offset: -4px; }
+    .written-board .retenue-cell { border: 0; min-height: 22px; background: transparent; padding: 0; }
+    .written-board input.retenue-input { width: 28px; height: 28px; min-height: 28px; border-radius: 50%; border: 2px solid var(--focus); background: #f3e8ff; color: var(--focus); font-size: 1rem; margin: 2px auto 0; padding: 0; }
+    .rule { grid-column: 1 / -1; min-height: 8px; background: #334155; border: 0; }
+    .operator { color: #475569; background: #f8fafc; }
 
-    .written-board input:focus-visible {
-      outline: 4px solid rgba(124, 58, 237, .3);
-      outline-offset: -4px;
-    }
-
-    .rule {
-      grid-column: 1 / -1;
-      min-height: 8px;
-      background: #334155;
-      border: 0;
-    }
-
-    .operator {
-      color: #475569;
-      background: #f8fafc;
-    }
+    .clock-area { display: grid; grid-template-columns: minmax(220px, 310px) 1fr; gap: 18px; align-items: center; }
+    .time-context { display: inline-flex; align-items: center; gap: 8px; border: 2px solid var(--line); border-radius: 999px; background: #fff; padding: 8px 12px; margin-bottom: 10px; font-weight: 950; }
+    .sky-icon { width: 24px; height: 24px; display: inline-block; position: relative; border-radius: 50%; flex: 0 0 auto; }
+    .sky-icon.matin { background: #fdba74; box-shadow: 0 0 0 5px rgba(253,186,116,.25); }
+    .sky-icon.apresmidi { background: #facc15; box-shadow: 0 0 0 5px rgba(250,204,21,.2); }
+    .sky-icon.soir { background: #f97316; box-shadow: 0 0 0 5px rgba(249,115,22,.22); }
+    .sky-icon.nuit { background: #334155; }
+    .sky-icon.nuit::after { content: ""; position: absolute; width: 18px; height: 18px; right: -2px; top: 2px; border-radius: 50%; background: #fff; }
+    .clock-face { width: min(310px, 100%); aspect-ratio: 1; display: block; margin: 0 auto; }
+    .clock-number { font: 900 13px ui-rounded, "SF Pro Rounded", system-ui, sans-serif; fill: var(--ink); text-anchor: middle; dominant-baseline: middle; }
+    .hand-hour { stroke: var(--tens); stroke-width: 8; stroke-linecap: round; }
+    .hand-minute { stroke: var(--ones-ink); stroke-width: 5; stroke-linecap: round; }
+    .time-answer { display: grid; grid-template-columns: minmax(82px,1fr) auto minmax(82px,1fr); gap: 8px; align-items: center; margin-top: 12px; max-width: 360px; }
+    .time-answer input { min-height: 64px; font-size: 1.8rem; }
+    .time-separator { font-size: 2rem; font-weight: 950; color: var(--ink); }
 
     @media (max-width: 760px) {
       .app { padding: 10px; }
@@ -707,9 +151,6 @@
       .answer-row { grid-template-columns: 1fr; }
       .keypad { grid-template-columns: repeat(5, 1fr); }
       .keypad .wide { grid-column: span 2; }
-      .problem-layout { grid-template-columns: 1fr; }
-      .groups { grid-template-columns: repeat(2, 1fr); }
-      .history-item { max-width: 100%; }
       .clock-area { grid-template-columns: 1fr; }
       .clock-face { width: min(240px, 100%); }
     }
@@ -731,13 +172,9 @@
     <nav aria-label="Choisir un exercice">
       <button class="active" data-screen="mental" type="button">Calcul</button>
       <button data-screen="order" type="button">Ranger</button>
-      <button data-screen="problems" type="button">Problèmes</button>
       <button data-screen="written" type="button">Poser</button>
       <button data-screen="hours" type="button">Heures</button>
-      <button data-screen="reading" type="button">Lecture</button>
-    </nav>
-
-    <main>
+    </nav>    <main>
       <section class="screen active" id="mental">
         <div class="toolbar">
           <strong>Calcule dans ta tête</strong>
@@ -767,22 +204,6 @@
         </div>
       </section>
 
-      <section class="screen" id="problems">
-        <div class="toolbar">
-          <strong>Résous le problème</strong>
-          <div class="toolbar-actions">
-            <button class="soft" data-check-screen="problems" type="button">Corriger</button>
-            <button class="success" data-new="problems" type="button">Nouveau problème</button>
-            <button class="soft" id="clearProblemHistory" type="button">Vider l'historique</button>
-          </div>
-        </div>
-        <div class="grid" id="problemsGrid"></div>
-        <div class="problem-history">
-          <div class="small-prompt">Historique des problèmes vus</div>
-          <div class="history-list" id="problemHistory"></div>
-        </div>
-      </section>
-
       <section class="screen" id="written">
         <div class="toolbar">
           <strong>Pose et calcule avec d et u</strong>
@@ -803,17 +224,6 @@
           </div>
         </div>
         <div id="hoursGrid"></div>
-      </section>
-
-      <section class="screen" id="reading">
-        <div class="toolbar">
-          <strong>Lecture</strong>
-          <div class="toolbar-actions">
-            <button class="soft" data-check-screen="reading" type="button">Corriger</button>
-            <button class="success" data-new="reading" type="button">Nouvel exercice</button>
-          </div>
-        </div>
-        <div id="readingGrid"></div>
       </section>
     </main>
 
@@ -837,807 +247,391 @@
   <script>
     const sets = {
       mental: [
-        [[54, "+", 10], [66, "+", 20], [57, "-", 20], [35, "+", 20], [68, "-", 10], [81, "-", 10]],
-        [[46, "+", 30], [75, "-", 10], [49, "-", 30], [72, "-", 20], [35, "+", 30], [23, "+", 40]],
-        [[63, "+", 10], [75, "+", 10], [49, "+", 30], [35, "-", 10], [79, "-", 10], [54, "-", 20]],
-        [
-          { left: 35, op: "+", right: null, result: 75, answer: 40 },
-          { left: 42, op: "+", right: null, result: 72, answer: 30 },
-          { left: 18, op: "+", right: null, result: 98, answer: 80 },
-          { left: null, op: "+", right: 20, result: 70, answer: 50 },
-          { left: 90, op: "-", right: null, result: 20, answer: 70 },
-          { left: 86, op: "-", right: null, result: 56, answer: 30 }
-        ],
-        [
-          { left: 14, op: "+", right: null, result: 94, answer: 80 },
-          { left: 27, op: "+", right: null, result: 57, answer: 30 },
-          { left: 60, op: "-", right: null, result: 10, answer: 50 },
-          { left: 100, op: "-", right: null, result: 20, answer: 80 },
-          { left: null, op: "-", right: 30, result: 40, answer: 70 },
-          { left: null, op: "-", right: 20, result: 60, answer: 80 }
-        ],
-        [
-          { left: 23, op: "+", right: null, result: 93, answer: 70 },
-          { left: 8, op: "+", right: null, result: 98, answer: 90 },
-          { left: 74, op: "-", right: null, result: 34, answer: 40 },
-          { left: 95, op: "-", right: null, result: 5, answer: 90 },
-          { left: null, op: "+", right: 40, result: 90, answer: 50 },
-          { left: null, op: "-", right: 60, result: 20, answer: 80 }
-        ],
-        [[12, "+", 40], [31, "+", 50], [96, "-", 60], [84, "-", 40], [7, "+", 70], [99, "-", 90]],
-        [
-          { left: 55, op: "+", right: null, result: 95, answer: 40 },
-          { left: null, op: "+", right: 30, result: 80, answer: 50 },
-          { left: 70, op: "-", right: null, result: 10, answer: 60 },
-          { left: null, op: "-", right: 40, result: 30, answer: 70 },
-          { left: 9, op: "+", right: null, result: 99, answer: 90 },
-          { left: 100, op: "-", right: null, result: 50, answer: 50 }
-        ]
+        [[54,"+",10],[66,"+",20],[57,"-",20],[35,"+",20],[68,"-",10],[81,"-",10]],
+        [[46,"+",30],[75,"-",10],[49,"-",30],[72,"-",20],[35,"+",30],[23,"+",40]],
+        [[63,"+",10],[75,"+",10],[49,"+",30],[35,"-",10],[79,"-",10],[54,"-",20]],
+        [{left:35,op:"+",right:null,result:75,answer:40},{left:42,op:"+",right:null,result:72,answer:30},{left:18,op:"+",right:null,result:98,answer:80},{left:null,op:"+",right:20,result:70,answer:50},{left:90,op:"-",right:null,result:20,answer:70},{left:86,op:"-",right:null,result:56,answer:30}],
+        [{left:14,op:"+",right:null,result:94,answer:80},{left:27,op:"+",right:null,result:57,answer:30},{left:60,op:"-",right:null,result:10,answer:50},{left:100,op:"-",right:null,result:20,answer:80},{left:null,op:"-",right:30,result:40,answer:70},{left:null,op:"-",right:20,result:60,answer:80}],
+        [{left:23,op:"+",right:null,result:93,answer:70},{left:8,op:"+",right:null,result:98,answer:90},{left:74,op:"-",right:null,result:34,answer:40},{left:95,op:"-",right:null,result:5,answer:90},{left:null,op:"+",right:40,result:90,answer:50},{left:null,op:"-",right:60,result:20,answer:80}],
+        [[12,"+",40],[31,"+",50],[96,"-",60],[84,"-",40],[7,"+",70],[99,"-",90]],
+        [{left:55,op:"+",right:null,result:95,answer:40},{left:null,op:"+",right:30,result:80,answer:50},{left:70,op:"-",right:null,result:10,answer:60},{left:null,op:"-",right:40,result:30,answer:70},{left:9,op:"+",right:null,result:99,answer:90},{left:100,op:"-",right:null,result:50,answer:50}]
       ],
       order: [
-        { mode: "asc", values: [51, 83, 75, 70, 62, 49] },
-        { mode: "desc", values: [59, 86, 42, 60, 15, 73] },
-        { mode: "compare", left: 68, right: 62 },
-        { mode: "asc", values: [22, 68, 35, 81, 54, 75] },
-        { mode: "desc", values: [19, 47, 73, 28, 64, 55] },
-        { mode: "compare", left: 35, right: 53 },
-        { mode: "asc", values: [14, 40, 27, 72, 58, 33] },
-        { mode: "desc", values: [91, 76, 48, 83, 29, 67] },
-        { mode: "compare", left: 90, right: 89 },
-        { mode: "asc", values: [6, 16, 60, 26, 62, 36] },
-        { mode: "desc", values: [12, 21, 42, 24, 84, 48] },
-        { mode: "compare", left: 74, right: 47 }
-      ],
-      problems: [
-        { id: "billes-plus", type: "ajouter", title: "Les billes", text: "Lina a 12 billes. Son frère lui donne 7 billes. Combien de billes a-t-elle maintenant ?", answer: 19, visual: { type: "twoRows", first: 12, second: 7 } },
-        { id: "gommettes-moins", type: "enlever", title: "Les gommettes", text: "Noé a 18 gommettes. Il en colle 6 dans son cahier. Combien de gommettes lui reste-t-il ?", answer: 12, visual: { type: "takeAway", total: 18, away: 6 } },
-        { id: "cartes-complement", type: "compléter", title: "La collection", text: "Mia veut avoir 20 cartes. Elle en a déjà 14. Combien de cartes lui manque-t-il ?", answer: 6, visual: { type: "complete", have: 14, target: 20 } },
-        { id: "images-partage", type: "partager", title: "Les images", text: "Il y a 16 images. On les partage entre 4 enfants. Combien d'images reçoit chaque enfant ?", answer: 4, visual: { type: "groups", groups: 4, each: 4 } },
-        { id: "crayons-paquets", type: "faire des paquets", title: "Les crayons", text: "On a 24 crayons. On met 6 crayons dans chaque pot. Combien de pots peut-on remplir ?", answer: 4, visual: { type: "groups", groups: 4, each: 6 } },
-        { id: "ecart-livres", type: "comparer", title: "Les livres", text: "Sara a lu 15 pages. Adam a lu 9 pages. Combien de pages Sara a-t-elle lues en plus ?", answer: 6, visual: { type: "compare", first: 15, second: 9 } },
-        { id: "bus-ajout", type: "ajouter", title: "Le bus", text: "Dans le bus, il y a 13 enfants. À l'arrêt, 5 enfants montent. Combien d'enfants sont dans le bus ?", answer: 18, visual: { type: "twoRows", first: 13, second: 5 } },
-        { id: "pommes-moins", type: "enlever", title: "Les pommes", text: "Il y a 21 pommes dans une corbeille. On en mange 8. Combien de pommes reste-t-il ?", answer: 13, visual: { type: "takeAway", total: 21, away: 8 } },
-        { id: "classe-complement", type: "compléter", title: "La classe", text: "La maîtresse veut 25 cahiers. Elle en a 17. Combien de cahiers doit-elle encore prendre ?", answer: 8, visual: { type: "complete", have: 17, target: 25 } },
-        { id: "bonbons-partage", type: "partager", title: "Les bonbons", text: "Il y a 18 bonbons. On les partage entre 3 enfants. Combien de bonbons reçoit chaque enfant ?", answer: 6, visual: { type: "groups", groups: 3, each: 6 } },
-        { id: "fleurs-bouquets", type: "faire des paquets", title: "Les bouquets", text: "Mamie a 20 fleurs. Elle fait des bouquets de 5 fleurs. Combien de bouquets peut-elle faire ?", answer: 4, visual: { type: "groups", groups: 4, each: 5 } },
-        { id: "score-comparer", type: "comparer", title: "Le jeu", text: "Emma marque 23 points. Tom marque 18 points. Combien de points Emma a-t-elle de plus ?", answer: 5, visual: { type: "compare", first: 23, second: 18 } },
-        { id: "argent-ajout", type: "ajouter", title: "La tirelire", text: "Dans sa tirelire, Inès a 15 euros. Elle ajoute 10 euros. Combien d'euros a-t-elle maintenant ?", answer: 25, visual: { type: "twoRows", first: 15, second: 10 } },
-        { id: "escargot-avance", type: "avancer", title: "La piste", text: "Sur une piste, Sami est sur la case 8. Il avance de 9 cases. Sur quelle case arrive-t-il ?", answer: 17, visual: { type: "line", start: 8, jump: 9, end: 17 } },
-        { id: "reculer-piste", type: "reculer", title: "Retour en arrière", text: "Lou est sur la case 22. Elle recule de 7 cases. Sur quelle case arrive-t-elle ?", answer: 15, visual: { type: "line", start: 22, jump: -7, end: 15 } },
-        { id: "double", type: "double", title: "Les tours", text: "Nora construit 2 tours avec 8 cubes dans chaque tour. Combien de cubes utilise-t-elle ?", answer: 16, visual: { type: "groups", groups: 2, each: 8 } }
+        {mode:"asc",values:[51,83,75,70,62,49]},
+        {mode:"desc",values:[59,86,42,60,15,73]},
+        {mode:"compare",left:68,right:62},
+        {mode:"asc",values:[22,68,35,81,54,75]},
+        {mode:"desc",values:[19,47,73,28,64,55]},
+        {mode:"compare",left:35,right:53},
+        {mode:"asc",values:[14,40,27,72,58,33]},
+        {mode:"desc",values:[91,76,48,83,29,67]},
+        {mode:"compare",left:90,right:89},
+        {mode:"asc",values:[6,16,60,26,62,36]},
+        {mode:"desc",values:[12,21,42,24,84,48]},
+        {mode:"compare",left:74,right:47}
       ],
       written: [
-        [[14, "+", 65], [53, "+", 32], [21, "+", 51], [73, "+", 22]],
-        [[35, "+", 43], [24, "+", 52], [46, "+", 31], [62, "+", 17]],
-        [[68, "-", 10], [75, "-", 30], [54, "-", 20], [81, "-", 10]],
-        [[12, "+", 37], [45, "+", 23], [61, "+", 18], [30, "+", 46]],
-        [[89, "-", 20], [76, "-", 30], [58, "-", 40], [97, "-", 50]],
-        [[26, "+", 52], [71, "+", 14], [33, "+", 45], [64, "+", 25]]
-      ],
-      reading: [
-        { type: "son", prompt: "Quel mot commence comme maman ?", choices: ["maison", "soleil", "lapin"], answer: "maison" },
-        { type: "son", prompt: "Quel mot commence par la syllabe pa ?", choices: ["panier", "moto", "rue"], answer: "panier" },
-        { type: "son", prompt: "Quel mot contient le son ou ?", choices: ["poule", "pile", "table"], answer: "poule" },
-        { type: "son", prompt: "Quel mot contient le son ch ?", choices: ["chat", "sac", "robe"], answer: "chat" },
-        { type: "mot", prompt: "Lis : le vélo rouge. Quel mot dit la couleur ?", choices: ["vélo", "rouge", "le"], answer: "rouge" },
-        { type: "mot", prompt: "Lis : une petite tortue. Quel mot dit l'animal ?", choices: ["petite", "une", "tortue"], answer: "tortue" },
-        { type: "mot", prompt: "Trouve le mot qui veut dire un animal.", choices: ["salade", "renard", "cartable"], answer: "renard" },
-        { type: "mot", prompt: "Trouve le mot qui veut dire un objet de l'école.", choices: ["crayon", "banane", "nuage"], answer: "crayon" },
-        { type: "phrase", prompt: "Lina mange une pomme. Que mange Lina ?", choices: ["une pomme", "un gâteau", "une soupe"], answer: "une pomme" },
-        { type: "phrase", prompt: "Noé joue dans le jardin. Où joue Noé ?", choices: ["dans le jardin", "dans la classe", "dans le bus"], answer: "dans le jardin" },
-        { type: "phrase", prompt: "Le chat dort sur le tapis. Qui dort ?", choices: ["le chat", "le chien", "le lapin"], answer: "le chat" },
-        { type: "phrase", prompt: "Mila ouvre son livre. Que fait Mila ?", choices: ["elle ouvre son livre", "elle ferme la porte", "elle court"], answer: "elle ouvre son livre" },
-        { type: "intrus", prompt: "Trouve l'intrus.", choices: ["chat", "chien", "vélo"], answer: "vélo" },
-        { type: "intrus", prompt: "Trouve l'intrus.", choices: ["pomme", "poire", "chaise"], answer: "chaise" },
-        { type: "intrus", prompt: "Trouve l'intrus.", choices: ["rouge", "bleu", "cartable"], answer: "cartable" },
-        { type: "rime", prompt: "Quel mot rime avec bateau ?", choices: ["château", "table", "souris"], answer: "château" },
-        { type: "rime", prompt: "Quel mot rime avec souris ?", choices: ["gris", "chat", "moto"], answer: "gris" },
-        { type: "compréhension", prompt: "Le matin, Sami met ses chaussures. Quand se passe l'histoire ?", choices: ["le matin", "le soir", "la nuit"], answer: "le matin" },
-        { type: "compréhension", prompt: "Zoé arrose les fleurs avec un arrosoir. Que fait Zoé ?", choices: ["elle arrose", "elle dessine", "elle dort"], answer: "elle arrose" },
-        { type: "compréhension", prompt: "Dans la cour, les enfants jouent au ballon. Où sont les enfants ?", choices: ["dans la cour", "dans la cuisine", "dans la voiture"], answer: "dans la cour" }
+        [[14,"+",65],[53,"+",32],[21,"+",51],[73,"+",22]],
+        [[35,"+",43],[24,"+",52],[46,"+",31],[62,"+",17]],
+        [[68,"-",10],[75,"-",30],[54,"-",20],[81,"-",10]],
+        [[12,"+",37],[45,"+",23],[61,"+",18],[30,"+",46]],
+        [[89,"-",20],[76,"-",30],[58,"-",40],[97,"-",50]],
+        [[26,"+",52],[71,"+",14],[33,"+",45],[64,"+",25]],
+        [[27,"+",15],[38,"+",24],[19,"+",13],[46,"+",17]],
+        [[25,"+",28],[34,"+",19],[57,"+",16],[29,"+",34]],
+        [[48,"+",13],[36,"+",29],[17,"+",26],[58,"+",19]],
+        [[24,"+",68],[39,"+",45],[16,"+",59],[47,"+",28]]
       ]
     };
 
-    sets.hours = Array.from({ length: 50 }, (_, index) => {
-      const minutes = [0, 15, 30, 45];
-      const minute = minutes[index % minutes.length];
-      const hour = index % 24;
-      return { hour, minute, label: `${hour} h ${pad2(minute)}` };
+    sets.hours = Array.from({length:50},(_,i)=>{
+      const minutes=[0,15,30,45];
+      const minute=minutes[i%minutes.length];
+      const hour=i%24;
+      return {hour,minute,label:`${hour} h ${pad2(minute)}`};
     });
 
     const state = {
       activeInput: null,
-      index: { mental: 0, order: 0, problems: 0, written: 0, hours: 0, reading: 0 },
+      index: {mental:0,order:0,written:0,hours:0},
       orderAnswer: [],
-      problemHistory: JSON.parse(localStorage.getItem("problemHistory") || "[]"),
-      selectedReading: null,
       selectedCompare: null,
       advanceTimer: null
     };
 
     function colorNumber(value) {
       const text = String(value);
-      if (text.length === 1) return `<span class="num"><span class="ones">${text}</span></span>`;
-      return `<span class="num"><span class="tens">${text.slice(0, -1)}</span><span class="ones">${text.slice(-1)}</span></span>`;
+      if (text.length===1) return `<span class="num"><span class="ones">${text}</span></span>`;
+      return `<span class="num"><span class="tens">${text.slice(0,-1)}</span><span class="ones">${text.slice(-1)}</span></span>`;
     }
 
     function answerFor(item) {
       if (!Array.isArray(item)) return item.answer;
-      if (Array.isArray(item)) {
-        const [a, op, b] = item;
-        return op === "+" ? a + b : a - b;
-      }
-      return item.answer !== undefined ? item.answer : item;
+      const [a,op,b]=item;
+      return op==="+"?a+b:a-b;
     }
 
     function pad2(value) {
-      const text = String(value);
-      return text.length < 2 ? "0" + text : text;
+      const text=String(value);
+      return text.length<2?"0"+text:text;
     }
 
-    function setClass(element, className, enabled) {
-      if (!element) return;
-      if (enabled) {
-        element.classList.add(className);
-      } else {
-        element.classList.remove(className);
-      }
+    function partOfDay(hour) {
+      if (hour>=6&&hour<12) return "matin";
+      if (hour>=12&&hour<18) return "apresmidi";
+      if (hour>=18&&hour<22) return "soir";
+      return "nuit";
     }
 
-    function clearAutoAdvance() {
-      if (state.advanceTimer) {
-        clearTimeout(state.advanceTimer);
-        state.advanceTimer = null;
-      }
-    }
+    function setClass(el,cls,on){ if(!el)return; on?el.classList.add(cls):el.classList.remove(cls); }
 
-    function scheduleNext(id) {
+    function clearAutoAdvance(){ if(state.advanceTimer){clearTimeout(state.advanceTimer);state.advanceTimer=null;} }
+
+    function scheduleNext(id){
       clearAutoAdvance();
-      state.advanceTimer = setTimeout(function() {
-        const active = document.querySelector(".screen.active");
-        if (active && active.id === id) {
-          nextSet(id);
+      state.advanceTimer=setTimeout(()=>{
+        const active=document.querySelector(".screen.active");
+        if(active&&active.id===id) nextSet(id);
+      },1100);
+    }
+
+    function allInputsCorrect(selector){
+      const inputs=[...document.querySelectorAll(selector)];
+      return inputs.length>0&&inputs.every(i=>i.value.trim()!==""&&Number(i.value)===Number(i.dataset.expected));
+    }
+
+    function allWrittenBoardsCorrect(){
+      const boards=[...document.querySelectorAll("#written .written-board")];
+      return boards.length>0&&boards.every(board=>{
+        const exercise=board.closest(".exercise");
+        const expected=pad2(board.dataset.expected);
+        const actual=[...exercise.querySelectorAll(".written-digit")].map(i=>i.value).join("");
+        const retenueInput=exercise.querySelector(".retenue-input");
+        return actual===expected&&(!retenueInput||retenueInput.value==="1");
+      });
+    }
+
+    function makeInput(expected,kind){
+      return `<div class="answer-row"><input inputmode="numeric" pattern="[0-9]*" data-expected="${expected}" data-kind="${kind}" aria-label="Réponse"><button type="button" class="soft check-one">OK</button></div><div class="feedback"></div>`;
+    }
+
+    function renderMental(){
+      document.querySelector("#mentalGrid").innerHTML=sets.mental[state.index.mental].map(item=>{
+        if(!Array.isArray(item)){
+          const left=item.left===null?`<span class="num"><span class="tens">?</span></span>`:colorNumber(item.left);
+          const right=item.right===null?`<span class="num"><span class="tens">?</span></span>`:colorNumber(item.right);
+          return `<article class="exercise"><div class="prompt">${left} ${item.op} ${right} = ${colorNumber(item.result)}</div>${makeInput(item.answer,"mental")}</article>`;
         }
-      }, 1100);
-    }
-
-    function allFeedbackOk(selector) {
-      const feedbacks = Array.prototype.slice.call(document.querySelectorAll(selector));
-      return feedbacks.length > 0 && feedbacks.every(function(feedback) {
-        return feedback.classList.contains("ok");
-      });
-    }
-
-    function allInputsCorrect(selector) {
-      const inputs = Array.prototype.slice.call(document.querySelectorAll(selector));
-      return inputs.length > 0 && inputs.every(function(input) {
-        return input.value.trim() !== "" && Number(input.value) === Number(input.dataset.expected);
-      });
-    }
-
-    function allWrittenBoardsCorrect() {
-      const boards = Array.prototype.slice.call(document.querySelectorAll("#written .written-board"));
-      return boards.length > 0 && boards.every(function(board) {
-        const exercise = board.closest(".exercise");
-        const expected = pad2(board.dataset.expected);
-        const actual = Array.prototype.slice.call(exercise.querySelectorAll(".written-digit")).map(function(input) {
-          return input.value;
-        }).join("");
-        return actual === expected;
-      });
-    }
-
-    function makeInput(expected, kind) {
-      return `
-        <div class="answer-row">
-          <input inputmode="numeric" pattern="[0-9]*" data-expected="${expected}" data-kind="${kind}" aria-label="Réponse">
-          <button type="button" class="soft check-one">OK</button>
-        </div>
-        <div class="feedback"></div>
-      `;
-    }
-
-    function renderMental() {
-      const grid = document.querySelector("#mentalGrid");
-      grid.innerHTML = sets.mental[state.index.mental].map(item => {
-        if (!Array.isArray(item)) {
-          const left = item.left === null ? `<span class="num"><span class="tens">?</span></span>` : colorNumber(item.left);
-          const right = item.right === null ? `<span class="num"><span class="tens">?</span></span>` : colorNumber(item.right);
-          return `<article class="exercise">
-            <div class="prompt">${left} ${item.op} ${right} = ${colorNumber(item.result)}</div>
-            ${makeInput(item.answer, "mental")}
-          </article>`;
-        }
-        const [a, op, b] = item;
-        return `<article class="exercise">
-          <div class="prompt">${colorNumber(a)} ${op} ${colorNumber(b)} =</div>
-          ${makeInput(answerFor(item), "mental")}
-        </article>`;
+        const [a,op,b]=item;
+        return `<article class="exercise"><div class="prompt">${colorNumber(a)} ${op} ${colorNumber(b)} =</div>${makeInput(answerFor(item),"mental")}</article>`;
       }).join("");
     }
 
-    function renderOrder() {
-      state.orderAnswer = [];
-      state.selectedCompare = null;
-      const task = sets.order[state.index.order];
-      const title = task.mode === "desc" ? "Du plus grand au plus petit" : task.mode === "compare" ? "Choisis le bon signe" : "Du plus petit au plus grand";
-      document.querySelector("#order .small-prompt").textContent = title;
-      if (task.mode === "compare") {
-        document.querySelector("#orderBank").innerHTML = `<div class="prompt">${colorNumber(task.left)} <span class="compare-display muted-text" id="compareDisplay">?</span> ${colorNumber(task.right)}</div>`;
-        document.querySelector("#orderAnswer").innerHTML = `
-          <div class="symbol-row">
-            <button class="symbol-button" data-compare="lt" type="button">&lt;</button>
-            <button class="symbol-button" data-compare="gt" type="button">&gt;</button>
-          </div>`;
+    function renderOrder(){
+      state.orderAnswer=[];
+      state.selectedCompare=null;
+      const task=sets.order[state.index.order];
+      const title=task.mode==="desc"?"Du plus grand au plus petit":task.mode==="compare"?"Choisis le bon signe":"Du plus petit au plus grand";
+      document.querySelector("#order .small-prompt").textContent=title;
+      if(task.mode==="compare"){
+        document.querySelector("#orderBank").innerHTML=`<div class="prompt">${colorNumber(task.left)} <span class="compare-display muted-text" id="compareDisplay">?</span> ${colorNumber(task.right)}</div>`;
+        document.querySelector("#orderAnswer").innerHTML=`<div class="symbol-row"><button class="symbol-button" data-compare="lt" type="button">&lt;</button><button class="symbol-button" data-compare="gt" type="button">&gt;</button></div>`;
       } else {
-        document.querySelector("#orderBank").innerHTML = task.values.map(value =>
-          `<button class="pill" data-order-value="${value}" type="button">${colorNumber(value)}</button>`
-        ).join("");
-        document.querySelector("#orderAnswer").innerHTML = "";
+        document.querySelector("#orderBank").innerHTML=task.values.map(v=>`<button class="pill" data-order-value="${v}" type="button">${colorNumber(v)}</button>`).join("");
+        document.querySelector("#orderAnswer").innerHTML="";
       }
-      document.querySelector("#orderFeedback").textContent = "";
-      document.querySelector("#orderFeedback").className = "feedback";
-    }
-
-    function renderProblems() {
-      const grid = document.querySelector("#problemsGrid");
-      const problem = sets.problems[state.index.problems];
-      rememberProblem(problem.id);
-      grid.innerHTML = `<article class="exercise">
-          <div class="problem-layout">
-            <div>
-              <div class="problem-meta">
-                <span class="tag">${problem.type}</span>
-                <span class="tag">${problem.title}</span>
-              </div>
-              <div class="small-prompt">${problem.text}</div>
-              ${makeInput(problem.answer, "problems")}
-            </div>
-            ${renderProblemVisual(problem)}
-          </div>
-        </article>`;
-      renderProblemHistory();
-    }
-
-    function dots(count, className = "") {
-      return Array.from({ length: count }, (_, index) =>
-        `<button class="object ${className}" data-markable type="button" aria-label="Jeton ${index + 1}"></button>`
-      ).join("");
-    }
-
-    function renderProblemVisual(problem) {
-      const visual = problem.visual;
-      if (visual.type === "twoRows") {
-        return `<div class="visual" aria-label="Dessin du problème">
-          <div class="object-row">${dots(visual.first, "green")}</div>
-          <div class="object-row">${dots(visual.second)}</div>
-        </div>`;
-      }
-      if (visual.type === "takeAway") {
-        return `<div class="visual" aria-label="Dessin du problème">
-          <div class="object-row">${dots(visual.total - visual.away, "green")}${dots(visual.away, "muted")}</div>
-        </div>`;
-      }
-      if (visual.type === "complete") {
-        return `<div class="visual" aria-label="Dessin du problème">
-          <div class="object-row">${dots(visual.have, "green")}${dots(visual.target - visual.have, "muted")}</div>
-        </div>`;
-      }
-      if (visual.type === "groups") {
-        const total = visual.groups * visual.each;
-        const reserve = Array.from({ length: total }, (_, index) =>
-          `<button class="counter" data-sort-token="${index + 1}" type="button" aria-label="Jeton ${index + 1}"></button>`
-        ).join("");
-        const cartons = Array.from({ length: visual.groups }, (_, index) =>
-          `<button class="carton" data-carton="${index + 1}" data-capacity="${visual.each}" type="button" aria-label="Carton ${index + 1}"></button>`
-        ).join("");
-        return `<div class="visual sorting-visual" aria-label="Dessin du problème">
-          <div class="token-bank" aria-label="Jetons à ranger">${reserve}</div>
-          <div class="cartons" aria-label="Cartons à remplir">${cartons}</div>
-        </div>`;
-      }
-      if (visual.type === "compare") {
-        return `<div class="visual" aria-label="Dessin du problème">
-          <div class="object-row">${dots(visual.first, "green")}</div>
-          <div class="object-row">${dots(visual.second)}</div>
-        </div>`;
-      }
-      if (visual.type === "line") {
-        const middle = visual.jump > 0 ? `+${visual.jump}` : String(visual.jump);
-        return `<div class="visual" aria-label="Dessin du problème">
-          <div class="number-line">
-            <button class="line-point" data-line-point type="button">${visual.start}</button>
-            <button class="line-point step" data-line-point type="button">${middle}</button>
-            <span></span>
-            <span></span>
-            <span class="step">=</span>
-            <button class="line-point" data-line-point type="button">${visual.end}</button>
-          </div>
-        </div>`;
-      }
-      return `<div class="visual" aria-label="Dessin du problème"></div>`;
-    }
-
-    function rememberProblem(id) {
-      state.problemHistory = [id, ...state.problemHistory.filter(item => item !== id)].slice(0, 12);
-      localStorage.setItem("problemHistory", JSON.stringify(state.problemHistory));
-    }
-
-    function renderProblemHistory() {
-      const history = document.querySelector("#problemHistory");
-      if (!state.problemHistory.length) {
-        history.innerHTML = `<span class="feedback">Aucun problème vu pour le moment.</span>`;
-        return;
-      }
-      history.innerHTML = state.problemHistory.map(id => {
-        const problem = sets.problems.find(item => item.id === id);
-        if (!problem) return "";
-        const active = sets.problems[state.index.problems].id === id ? " active" : "";
-        return `<button class="history-item${active}" data-problem-id="${id}" type="button">
-          ${problem.title}<br><span class="muted-text">${problem.type}</span>
-        </button>`;
+      document.querySelector("#orderFeedback").textContent="";
+      document.querySelector("#orderFeedback").className="feedback";
+    }    function renderWritten(){
+      document.querySelector("#writtenGrid").innerHTML=sets.written[state.index.written].map(item=>{
+        const [a,op,b]=item;
+        const at=Math.floor(a/10),au=a%10,bt=Math.floor(b/10),bu=b%10;
+        const answer=answerFor(item);
+        const answerText=pad2(answer);
+        const needsCarry=op==="+"&&(au+bu)>=10;
+        const retenueRow=needsCarry?`<span class="retenue-cell"></span><input class="retenue-cell retenue-input" inputmode="numeric" pattern="[0-9]*" maxlength="1" data-kind="retenue-digit" data-expected="1" aria-label="Retenue"><span class="retenue-cell col-end"></span>`:"";
+        return `<article class="exercise"><div class="written-board" data-expected="${answer}"><span></span><span class="tens">d</span><span class="ones col-end">u</span>${retenueRow}<span></span><span class="tens">${at}</span><span class="ones col-end">${au}</span><span class="operator">${op}</span><span class="tens">${bt}</span><span class="ones col-end">${bu}</span><span class="rule"></span><span class="last-row"></span><input class="last-row written-digit tens-answer" inputmode="numeric" pattern="[0-9]*" maxlength="1" data-kind="written-digit" data-expected="${answerText[0]}" aria-label="Dizaine"><input class="last-row written-digit ones-answer col-end" inputmode="numeric" pattern="[0-9]*" maxlength="1" data-kind="written-digit" data-expected="${answerText[1]}" aria-label="Unité"></div><div class="feedback"></div></article>`;
       }).join("");
     }
 
-    function renderWritten() {
-      const grid = document.querySelector("#writtenGrid");
-      grid.innerHTML = sets.written[state.index.written].map(item => {
-        const [a, op, b] = item;
-        const at = Math.floor(a / 10), au = a % 10, bt = Math.floor(b / 10), bu = b % 10;
-        const answer = answerFor(item);
-        const answerText = pad2(answer);
-        return `<article class="exercise">
-          <div class="written-board" data-expected="${answer}">
-            <span></span><span class="tens">d</span><span class="ones col-end">u</span>
-            <span></span><span class="tens">${at}</span><span class="ones col-end">${au}</span>
-            <span class="operator">${op}</span><span class="tens">${bt}</span><span class="ones col-end">${bu}</span>
-            <span class="rule"></span>
-            <span class="last-row"></span>
-            <input class="last-row written-digit tens-answer" inputmode="numeric" pattern="[0-9]*" maxlength="1" data-kind="written-digit" data-expected="${answerText[0]}" aria-label="Dizaine de la réponse">
-            <input class="last-row written-digit ones-answer col-end" inputmode="numeric" pattern="[0-9]*" maxlength="1" data-kind="written-digit" data-expected="${answerText[1]}" aria-label="Unité de la réponse">
-          </div>
-          <div class="feedback"></div>
-        </article>`;
+    function renderHours(){
+      const target=sets.hours[state.index.hours];
+      const period=partOfDay(target.hour);
+      const periodLabel={matin:"Matin",apresmidi:"Après-midi",soir:"Soir",nuit:"Nuit"}[period];
+      document.querySelector("#hoursGrid").innerHTML=`<article class="exercise"><div class="clock-area">${clockSvg(target.hour,target.minute)}<div><div class="time-context"><span class="sky-icon ${period}"></span>${periodLabel}</div><div class="small-prompt">Quelle heure indique l'horloge ?</div><div class="time-answer"><input inputmode="numeric" pattern="[0-9]*" data-kind="time-hour" aria-label="Heures"><span class="time-separator">h</span><input inputmode="numeric" pattern="[0-9]*" data-kind="time-minute" aria-label="Minutes"></div><div class="feedback" id="hoursFeedback"></div></div></div></article>`;
+    }
+
+    function clockSvg(hour,minute){
+      const hourAngle=((hour%12)*30)+(minute*0.5);
+      const minuteAngle=minute*6;
+      const numbers=Array.from({length:12},(_,i)=>{
+        const v=i+1,angle=(v*30-90)*Math.PI/180;
+        const x=100+Math.cos(angle)*76,y=100+Math.sin(angle)*76;
+        return `<text class="clock-number" x="${x.toFixed(1)}" y="${y.toFixed(1)}">${v}</text>`;
       }).join("");
-    }
-
-    function renderHours() {
-      const target = sets.hours[state.index.hours];
-      const isDay = target.hour >= 6 && target.hour < 18;
-      document.querySelector("#hoursGrid").innerHTML = `<article class="exercise">
-        <div class="clock-area">
-          ${clockSvg(target.hour, target.minute)}
-          <div>
-            <div class="time-context"><span class="sky-icon ${isDay ? "day" : "night"}"></span>${isDay ? "Jour" : "Nuit"}</div>
-            <div class="small-prompt">Quelle heure indique l'horloge ?</div>
-            <div class="time-answer">
-              <input inputmode="numeric" pattern="[0-9]*" data-kind="time-hour" aria-label="Heures">
-              <span class="time-separator">h</span>
-              <input inputmode="numeric" pattern="[0-9]*" data-kind="time-minute" aria-label="Minutes">
-            </div>
-            <div class="feedback" id="hoursFeedback"></div>
-          </div>
-        </div>
-      </article>`;
-    }
-
-    function renderReading() {
-      const task = sets.reading[state.index.reading];
-      state.selectedReading = null;
-      document.querySelector("#readingGrid").innerHTML = `<article class="exercise">
-        <div class="problem-meta">
-          <span class="tag">${task.type}</span>
-        </div>
-        <div class="small-prompt">${task.prompt}</div>
-        <div class="choice-row">
-          ${task.choices.map(choice => `<button class="choice-button" data-reading-choice="${choice}" type="button">${choice}</button>`).join("")}
-        </div>
-        <div class="feedback" id="readingFeedback"></div>
-      </article>`;
-    }
-
-    function clockSvg(hour, minute) {
-      const hourAngle = ((hour % 12) * 30) + (minute * 0.5);
-      const minuteAngle = minute * 6;
-      const numbers = Array.from({ length: 12 }, (_, index) => {
-        const value = index + 1;
-        const angle = (value * 30 - 90) * Math.PI / 180;
-        const x = 100 + Math.cos(angle) * 76;
-        const y = 100 + Math.sin(angle) * 76;
-        return `<text class="clock-number" x="${x.toFixed(1)}" y="${y.toFixed(1)}">${value}</text>`;
+      const ticks=Array.from({length:60},(_,i)=>{
+        const angle=(i*6-90)*Math.PI/180,outer=92,inner=i%5===0?84:88;
+        const x1=100+Math.cos(angle)*outer,y1=100+Math.sin(angle)*outer;
+        const x2=100+Math.cos(angle)*inner,y2=100+Math.sin(angle)*inner;
+        return `<line x1="${x1.toFixed(1)}" y1="${y1.toFixed(1)}" x2="${x2.toFixed(1)}" y2="${y2.toFixed(1)}" stroke="#94a3b8" stroke-width="${i%5===0?2:1}"/>`;
       }).join("");
-      const ticks = Array.from({ length: 60 }, (_, index) => {
-        const angle = (index * 6 - 90) * Math.PI / 180;
-        const outer = 92;
-        const inner = index % 5 === 0 ? 84 : 88;
-        const x1 = 100 + Math.cos(angle) * outer;
-        const y1 = 100 + Math.sin(angle) * outer;
-        const x2 = 100 + Math.cos(angle) * inner;
-        const y2 = 100 + Math.sin(angle) * inner;
-        return `<line x1="${x1.toFixed(1)}" y1="${y1.toFixed(1)}" x2="${x2.toFixed(1)}" y2="${y2.toFixed(1)}" stroke="#94a3b8" stroke-width="${index % 5 === 0 ? 2 : 1}"/>`;
-      }).join("");
-      return `<svg class="clock-face" viewBox="0 0 200 200" role="img" aria-label="Horloge à aiguilles">
-        <circle cx="100" cy="100" r="96" fill="#fff" stroke="#334155" stroke-width="4"/>
-        ${ticks}
-        ${numbers}
-        <line class="hand-hour" x1="100" y1="100" x2="100" y2="48" transform="rotate(${hourAngle} 100 100)"/>
-        <line class="hand-minute" x1="100" y1="100" x2="100" y2="28" transform="rotate(${minuteAngle} 100 100)"/>
-        <circle cx="100" cy="100" r="6" fill="#243043"/>
-      </svg>`;
+      return `<svg class="clock-face" viewBox="0 0 200 200" role="img" aria-label="Horloge à aiguilles"><circle cx="100" cy="100" r="96" fill="#fff" stroke="#334155" stroke-width="4"/>${ticks}${numbers}<line class="hand-hour" x1="100" y1="100" x2="100" y2="48" transform="rotate(${hourAngle} 100 100)"/><line class="hand-minute" x1="100" y1="100" x2="100" y2="28" transform="rotate(${minuteAngle} 100 100)"/><circle cx="100" cy="100" r="6" fill="#243043"/></svg>`;
     }
 
-    function setFeedback(input, ok) {
-      const feedback = input.closest(".exercise").querySelector(".feedback");
-      feedback.textContent = ok ? "Bravo !" : "Essaie encore";
-      feedback.className = `feedback ${ok ? "ok" : "bad"}`;
-      input.style.borderColor = ok ? "var(--ok)" : "var(--bad)";
+    function setFeedback(input,ok){
+      const feedback=input.closest(".exercise").querySelector(".feedback");
+      feedback.textContent=ok?"Bravo !":"Essaie encore";
+      feedback.className=`feedback ${ok?"ok":"bad"}`;
+      input.style.borderColor=ok?"var(--ok)":"var(--bad)";
     }
 
-    function checkInput(input) {
-      if (input.dataset.kind === "written-digit") {
-        return checkWrittenBoard(input.closest(".exercise"));
-      }
-      const expected = Number(input.dataset.expected);
-      const actual = Number(input.value);
-      const ok = input.value.trim() !== "" && actual === expected;
-      setFeedback(input, ok);
-      if (ok && input.dataset.kind === "mental" && allInputsCorrect("#mental input")) {
-        scheduleNext("mental");
-      }
-      if (ok && input.dataset.kind === "problems") {
-        scheduleNext("problems");
-      }
+    function checkInput(input){
+      if(input.dataset.kind==="written-digit"||input.dataset.kind==="retenue-digit") return checkWrittenBoard(input.closest(".exercise"));
+      const ok=input.value.trim()!==""&&Number(input.value)===Number(input.dataset.expected);
+      setFeedback(input,ok);
+      if(ok&&input.dataset.kind==="mental"&&allInputsCorrect("#mental input")) scheduleNext("mental");
       return ok;
     }
 
-    function maybeAutoCheckInput(input) {
-      if (!input) return;
-      if (input.dataset.kind === "written-digit") {
-        const exercise = input.closest(".exercise");
-        const digits = [...exercise.querySelectorAll(".written-digit")];
-        const complete = digits.every(function(digit) { return digit.value.length === 1; });
-        if (complete) checkWrittenBoard(exercise);
+    function maybeAutoCheckInput(input){
+      if(!input) return;
+      if(input.dataset.kind==="written-digit"||input.dataset.kind==="retenue-digit"){
+        const exercise=input.closest(".exercise");
+        const digits=[...exercise.querySelectorAll(".written-digit")];
+        const retenueInput=exercise.querySelector(".retenue-input");
+        const digitsComplete=digits.every(d=>d.value.length===1);
+        const retenueComplete=!retenueInput||retenueInput.value.length===1;
+        if(digitsComplete&&retenueComplete) checkWrittenBoard(exercise);
         return;
       }
-      if (input.dataset.kind === "time-hour" || input.dataset.kind === "time-minute") {
-        const hourInput = document.querySelector('[data-kind="time-hour"]');
-        const minuteInput = document.querySelector('[data-kind="time-minute"]');
-        if (hourInput && minuteInput && hourInput.value.length > 0 && minuteInput.value.length === 2) {
-          checkHours();
+      if(input.dataset.kind==="time-hour"||input.dataset.kind==="time-minute"){
+        const hourInput=document.querySelector('[data-kind="time-hour"]');
+        const minuteInput=document.querySelector('[data-kind="time-minute"]');
+        if(input.dataset.kind==="time-hour"&&input.value.length>=2){
+          if(minuteInput){state.activeInput=minuteInput;minuteInput.focus();minuteInput.select();}
         }
+        if(hourInput&&minuteInput&&hourInput.value.length>0&&minuteInput.value.length===2) checkHours();
         return;
       }
-      if (input.dataset.kind !== "mental" && input.dataset.kind !== "problems") return;
-      const expected = String(input.dataset.expected);
-      if (input.value.length === expected.length) {
-        checkInput(input);
-      }
+      if(input.dataset.kind!=="mental") return;
+      if(input.value.length===String(input.dataset.expected).length) checkInput(input);
     }
 
-    function checkWrittenBoard(exercise) {
-      const inputs = [...exercise.querySelectorAll(".written-digit")];
-      const expected = pad2(exercise.querySelector(".written-board").dataset.expected);
-      const actual = inputs.map(input => input.value).join("");
-      const ok = actual.length === 2 && actual === expected;
-      const feedback = exercise.querySelector(".feedback");
-      feedback.textContent = ok ? "Bravo !" : "Essaie encore";
-      feedback.className = `feedback ${ok ? "ok" : "bad"}`;
-      inputs.forEach((input, index) => {
-        input.style.borderColor = input.value === expected[index] ? "var(--ok)" : "var(--bad)";
-      });
-      if (ok && allWrittenBoardsCorrect()) {
-        scheduleNext("written");
-      }
+    function checkWrittenBoard(exercise){
+      const inputs=[...exercise.querySelectorAll(".written-digit")];
+      const expected=pad2(exercise.querySelector(".written-board").dataset.expected);
+      const actual=inputs.map(i=>i.value).join("");
+      const retenueInput=exercise.querySelector(".retenue-input");
+      const retenueFilled=!retenueInput||retenueInput.value!=="";
+      const retenueOk=!retenueInput||retenueInput.value==="1";
+      const digitsOk=actual.length===2&&actual===expected;
+      const ok=digitsOk&&retenueOk;
+      const feedback=exercise.querySelector(".feedback");
+      feedback.textContent=ok?"Bravo !":digitsOk&&retenueInput&&!retenueOk?"N'oublie pas la retenue !":"Essaie encore";
+      feedback.className=`feedback ${ok?"ok":"bad"}`;
+      inputs.forEach((inp,i)=>{inp.style.borderColor=inp.value===expected[i]?"var(--ok)":"var(--bad)";});
+      if(retenueInput) retenueInput.style.borderColor=retenueInput.value==="1"?"var(--ok)":retenueFilled?"var(--bad)":"#d1d5db";
+      if(ok&&allWrittenBoardsCorrect()) scheduleNext("written");
       return ok;
     }
 
-    function checkScreen(id) {
-      if (id === "order") return checkOrder();
-      if (id === "hours") return checkHours();
-      if (id === "reading") return checkReading();
-      if (id === "written") {
-        document.querySelectorAll("#written .exercise").forEach(checkWrittenBoard);
-        return;
-      }
+    function checkScreen(id){
+      if(id==="order") return checkOrder();
+      if(id==="hours") return checkHours();
+      if(id==="written"){document.querySelectorAll("#written .exercise").forEach(checkWrittenBoard);return;}
       document.querySelectorAll(`#${id} input`).forEach(checkInput);
     }
 
-    function checkOrder() {
-      const task = sets.order[state.index.order];
-      const feedback = document.querySelector("#orderFeedback");
-      if (task.mode === "compare") {
-        const expected = task.left < task.right ? "lt" : "gt";
-        const buttons = document.querySelectorAll("[data-compare]");
-        buttons.forEach(function(button) {
-          setClass(button, "correct", button.dataset.compare === expected);
-          setClass(button, "wrong", button.classList.contains("selected") && button.dataset.compare !== expected);
+    function checkOrder(){
+      const task=sets.order[state.index.order];
+      const feedback=document.querySelector("#orderFeedback");
+      if(task.mode==="compare"){
+        const expected=task.left<task.right?"lt":"gt";
+        document.querySelectorAll("[data-compare]").forEach(b=>{
+          setClass(b,"correct",b.dataset.compare===expected);
+          setClass(b,"wrong",b.classList.contains("selected")&&b.dataset.compare!==expected);
         });
-        const ok = state.selectedCompare === expected;
-        feedback.textContent = ok ? "Bravo !" : "Regarde quel nombre est le plus grand";
-        feedback.className = `feedback ${ok ? "ok" : "bad"}`;
-        if (ok) scheduleNext("order");
+        const ok=state.selectedCompare===expected;
+        feedback.textContent=ok?"Bravo !":"Regarde quel nombre est le plus grand";
+        feedback.className=`feedback ${ok?"ok":"bad"}`;
+        if(ok) scheduleNext("order");
         return;
       }
-      const expectedValues = [...task.values].sort((a, b) => task.mode === "desc" ? b - a : a - b);
-      const expected = expectedValues.join(",");
-      const actual = state.orderAnswer.join(",");
-      const ok = expected === actual;
-      feedback.textContent = ok ? "Bravo !" : task.mode === "desc" ? "Regarde le nombre le plus grand qui reste" : "Regarde le nombre le plus petit qui reste";
-      feedback.className = `feedback ${ok ? "ok" : "bad"}`;
-      if (ok) scheduleNext("order");
+      const expectedValues=[...task.values].sort((a,b)=>task.mode==="desc"?b-a:a-b);
+      const ok=expectedValues.join(",")===state.orderAnswer.join(",");
+      feedback.textContent=ok?"Bravo !":task.mode==="desc"?"Regarde le nombre le plus grand qui reste":"Regarde le nombre le plus petit qui reste";
+      feedback.className=`feedback ${ok?"ok":"bad"}`;
+      if(ok) scheduleNext("order");
     }
 
-    function checkHours() {
-      const target = sets.hours[state.index.hours];
-      const feedback = document.querySelector("#hoursFeedback");
-      const hourInput = document.querySelector('[data-kind="time-hour"]');
-      const minuteInput = document.querySelector('[data-kind="time-minute"]');
-      const hour = Number(hourInput.value);
-      const minute = Number(pad2(minuteInput.value));
-      const ok = hour === target.hour && minute === target.minute && minuteInput.value.trim() !== "";
-      hourInput.style.borderColor = hour === target.hour ? "var(--ok)" : "var(--bad)";
-      minuteInput.style.borderColor = minute === target.minute && minuteInput.value.trim() !== "" ? "var(--ok)" : "var(--bad)";
-      feedback.textContent = ok ? "Bravo !" : `Essaie encore : écris les minutes avec deux chiffres`;
-      feedback.className = `feedback ${ok ? "ok" : "bad"}`;
-      if (ok) scheduleNext("hours");
+    function checkHours(){
+      const target=sets.hours[state.index.hours];
+      const feedback=document.querySelector("#hoursFeedback");
+      const hourInput=document.querySelector('[data-kind="time-hour"]');
+      const minuteInput=document.querySelector('[data-kind="time-minute"]');
+      const hour=Number(hourInput.value);
+      const minute=Number(pad2(minuteInput.value));
+      const ok=hour===target.hour&&minute===target.minute&&minuteInput.value.trim()!=="";
+      hourInput.style.borderColor=hour===target.hour?"var(--ok)":"var(--bad)";
+      minuteInput.style.borderColor=minute===target.minute&&minuteInput.value.trim()!==""?"var(--ok)":"var(--bad)";
+      feedback.textContent=ok?"Bravo !":`Essaie encore : écris les minutes avec deux chiffres`;
+      feedback.className=`feedback ${ok?"ok":"bad"}`;
+      if(ok) scheduleNext("hours");
     }
 
-    function checkReading() {
-      const task = sets.reading[state.index.reading];
-      const feedback = document.querySelector("#readingFeedback");
-      document.querySelectorAll("[data-reading-choice]").forEach(button => {
-        setClass(button, "correct", button.dataset.readingChoice === task.answer);
-        setClass(button, "wrong", button.classList.contains("selected") && button.dataset.readingChoice !== task.answer);
-      });
-      const ok = state.selectedReading === task.answer;
-      feedback.textContent = ok ? "Bravo !" : "Relis doucement la phrase";
-      feedback.className = `feedback ${ok ? "ok" : "bad"}`;
-      if (ok) scheduleNext("reading");
-    }
-
-    function nextSet(id) {
+    function nextSet(id){
       clearAutoAdvance();
-      if (id === "problems") {
-        const recent = new Set(state.problemHistory.slice(0, 4));
-        let candidates = sets.problems
-          .map((problem, index) => ({ problem, index }))
-          .filter(item => !recent.has(item.problem.id));
-        if (!candidates.length) {
-          candidates = sets.problems
-            .map((problem, index) => ({ problem, index }))
-            .filter(item => index !== state.index.problems);
-        }
-        const chosen = candidates[Math.floor(Math.random() * candidates.length)];
-        state.index.problems = chosen.index;
-        renderProblems();
-        wireInputs();
-        var problemInput = document.querySelector("#problems input");
-        if (problemInput) problemInput.focus();
-        return;
+      if(id==="hours"){
+        let next=state.index.hours;
+        while(next===state.index.hours&&sets.hours.length>1) next=Math.floor(Math.random()*sets.hours.length);
+        state.index.hours=next;
+        renderHours();wireInputs();return;
       }
-      if (id === "hours") {
-        let next = state.index.hours;
-        while (next === state.index.hours && sets.hours.length > 1) {
-          next = Math.floor(Math.random() * sets.hours.length);
-        }
-        state.index.hours = next;
-        renderHours();
-        wireInputs();
-        return;
+      if(id==="order"||id==="mental"||id==="written"){
+        let next=state.index[id];
+        while(next===state.index[id]&&sets[id].length>1) next=Math.floor(Math.random()*sets[id].length);
+        state.index[id]=next;
+        renderAll();return;
       }
-      if (id === "order" || id === "reading" || id === "mental" || id === "written") {
-        let next = state.index[id];
-        while (next === state.index[id] && sets[id].length > 1) {
-          next = Math.floor(Math.random() * sets[id].length);
-        }
-        state.index[id] = next;
-        renderAll();
-        return;
-      }
-      state.index[id] = (state.index[id] + 1) % sets[id].length;
-      renderAll();
-      const screen = document.querySelector(`#${id}`);
-      const firstInput = screen.querySelector("input");
-      if (firstInput) firstInput.focus();
     }
 
-    function renderAll() {
-      renderMental();
-      renderOrder();
-      renderProblems();
-      renderWritten();
-      renderHours();
-      renderReading();
-      wireInputs();
-      updateKeypadVisibility();
+    function renderAll(){
+      renderMental();renderOrder();renderWritten();renderHours();
+      wireInputs();updateKeypadVisibility();
     }
 
-    function updateKeypadVisibility() {
+    function updateKeypadVisibility(){
+      const activeScreen=document.querySelector(".screen.active");
+      const keypad=document.querySelector(".keypad");
+      if(!activeScreen||!keypad) return;
+      keypad.style.display=activeScreen.id==="order"?"none":"grid";
     }
 
-    function wireInputs() {
-      document.querySelectorAll("input").forEach(input => {
-        input.addEventListener("focus", () => { state.activeInput = input; });
-        input.addEventListener("click", () => { state.activeInput = input; });
-        input.addEventListener("touchstart", () => { state.activeInput = input; });
-        input.addEventListener("input", () => {
-          const maxLength = input.dataset.kind === "written-digit" ? 1 : 2;
-          input.value = input.value.replace(/\D/g, "").slice(0, maxLength);
-          input.style.borderColor = "#d1d5db";
-          const feedback = input.closest(".exercise").querySelector(".feedback");
-          feedback.textContent = "";
-          feedback.className = "feedback";
+    function wireInputs(){
+      document.querySelectorAll("input").forEach(input=>{
+        input.addEventListener("focus",()=>{state.activeInput=input;});
+        input.addEventListener("click",()=>{state.activeInput=input;});
+        input.addEventListener("touchstart",()=>{state.activeInput=input;});
+        input.addEventListener("input",()=>{
+          const maxLength=(input.dataset.kind==="written-digit"||input.dataset.kind==="retenue-digit")?1:2;
+          input.value=input.value.replace(/\D/g,"").slice(0,maxLength);
+          input.style.borderColor="#d1d5db";
+          const feedback=input.closest(".exercise").querySelector(".feedback");
+          feedback.textContent="";feedback.className="feedback";
           maybeAutoCheckInput(input);
         });
       });
-      document.querySelectorAll(".check-one").forEach(button => {
-        button.addEventListener("click", () => checkInput(button.parentElement.querySelector("input")));
-      });
-      document.querySelectorAll("[data-order-value]").forEach(button => {
-        button.addEventListener("click", () => {
-          if (button.classList.contains("selected")) return;
-          const value = Number(button.dataset.orderValue);
-          button.classList.add("selected");
+      document.querySelectorAll(".check-one").forEach(b=>b.addEventListener("click",()=>checkInput(b.parentElement.querySelector("input"))));
+      document.querySelectorAll("[data-order-value]").forEach(b=>{
+        b.addEventListener("click",()=>{
+          if(b.classList.contains("selected")) return;
+          const value=Number(b.dataset.orderValue);
+          b.classList.add("selected");
           state.orderAnswer.push(value);
-          document.querySelector("#orderAnswer").insertAdjacentHTML("beforeend", `<span class="pill">${colorNumber(value)}</span>`);
-          const task = sets.order[state.index.order];
-          if (task.mode !== "compare" && state.orderAnswer.length === task.values.length) {
-            checkOrder();
-          }
+          document.querySelector("#orderAnswer").insertAdjacentHTML("beforeend",`<span class="pill">${colorNumber(value)}</span>`);
+          const task=sets.order[state.index.order];
+          if(task.mode!=="compare"&&state.orderAnswer.length===task.values.length) checkOrder();
         });
       });
-      document.querySelectorAll("[data-compare]").forEach(button => {
-        button.addEventListener("click", () => {
-          state.selectedCompare = button.dataset.compare;
-          document.querySelectorAll("[data-compare]").forEach(item => item.classList.remove("selected", "correct", "wrong"));
-          button.classList.add("selected");
-          const display = document.querySelector("#compareDisplay");
-          if (display) {
-            display.textContent = button.dataset.compare === "lt" ? "<" : ">";
-            display.classList.remove("muted-text");
-          }
+      document.querySelectorAll("[data-compare]").forEach(b=>{
+        b.addEventListener("click",()=>{
+          state.selectedCompare=b.dataset.compare;
+          document.querySelectorAll("[data-compare]").forEach(i=>i.classList.remove("selected","correct","wrong"));
+          b.classList.add("selected");
+          const display=document.querySelector("#compareDisplay");
+          if(display){display.textContent=b.dataset.compare==="lt"?"<":">";display.classList.remove("muted-text");}
           checkOrder();
         });
       });
-      document.querySelectorAll("[data-reading-choice]").forEach(button => {
-        button.addEventListener("click", () => {
-          state.selectedReading = button.dataset.readingChoice;
-          document.querySelectorAll("[data-reading-choice]").forEach(item => item.classList.remove("selected", "correct", "wrong"));
-          button.classList.add("selected");
-          checkReading();
-        });
-      });
-      document.querySelectorAll("[data-problem-id]").forEach(button => {
-        button.addEventListener("click", () => {
-          const index = sets.problems.findIndex(problem => problem.id === button.dataset.problemId);
-          if (index === -1) return;
-          state.index.problems = index;
-          renderProblems();
-          wireInputs();
-          var problemInput = document.querySelector("#problems input");
-          if (problemInput) problemInput.focus();
-        });
-      });
-      document.querySelectorAll("[data-markable]").forEach(button => {
-        button.addEventListener("click", () => {
-          if (!button.classList.contains("marked") && !button.classList.contains("crossed")) {
-            button.classList.add("marked");
-            return;
-          }
-          if (button.classList.contains("marked")) {
-            button.classList.remove("marked");
-            button.classList.add("crossed");
-            return;
-          }
-          button.classList.remove("crossed");
-        });
-      });
-      document.querySelectorAll("[data-sort-token]").forEach(button => {
-        button.addEventListener("click", () => {
-          const sortingVisual = button.closest(".sorting-visual");
-          const bank = sortingVisual ? sortingVisual.querySelector(".token-bank") : null;
-          if (button.closest(".carton") && bank) {
-            bank.appendChild(button);
-            button.classList.remove("selected", "marked", "crossed");
-            updateCartons(button.closest(".sorting-visual"));
-            return;
-          }
-          document.querySelectorAll("[data-sort-token]").forEach(item => item.classList.remove("selected"));
-          button.classList.add("selected");
-        });
-      });
-      document.querySelectorAll("[data-carton]").forEach(carton => {
-        carton.addEventListener("click", () => {
-          const visual = carton.closest(".sorting-visual");
-          const selected = visual.querySelector("[data-sort-token].selected");
-          if (!selected) {
-            carton.classList.toggle("selected");
-            return;
-          }
-          const capacity = Number(carton.dataset.capacity);
-          const current = carton.querySelectorAll("[data-sort-token]").length;
-          if (current >= capacity) return;
-          selected.classList.remove("selected");
-          selected.classList.add("carton-token");
-          carton.appendChild(selected);
-          updateCartons(visual);
-        });
-      });
-      document.querySelectorAll("[data-line-point]").forEach(button => {
-        button.addEventListener("click", () => button.classList.toggle("marked"));
-      });
     }
 
-    function updateCartons(visual) {
-      visual.querySelectorAll("[data-carton]").forEach(carton => {
-        const capacity = Number(carton.dataset.capacity);
-        const current = carton.querySelectorAll("[data-sort-token]").length;
-        setClass(carton, "full", current === capacity);
-        carton.classList.remove("selected");
-      });
-    }
-
-    document.querySelectorAll("nav button").forEach(button => {
-      button.addEventListener("click", () => {
-        document.querySelectorAll("nav button").forEach(item => item.classList.remove("active"));
-        document.querySelectorAll(".screen").forEach(item => item.classList.remove("active"));
-        button.classList.add("active");
-        document.querySelector(`#${button.dataset.screen}`).classList.add("active");
-        state.activeInput = document.querySelector(".screen.active input");
-        if (state.activeInput) state.activeInput.focus();
+    document.querySelectorAll("nav button").forEach(b=>{
+      b.addEventListener("click",()=>{
+        document.querySelectorAll("nav button").forEach(i=>i.classList.remove("active"));
+        document.querySelectorAll(".screen").forEach(i=>i.classList.remove("active"));
+        b.classList.add("active");
+        document.querySelector(`#${b.dataset.screen}`).classList.add("active");
+        state.activeInput=document.querySelector(".screen.active input");
+        if(state.activeInput) state.activeInput.focus();
         updateKeypadVisibility();
       });
     });
 
-    document.querySelectorAll("[data-check-screen]").forEach(button => {
-      button.addEventListener("click", () => checkScreen(button.dataset.checkScreen));
+    document.querySelectorAll("[data-check-screen]").forEach(b=>b.addEventListener("click",()=>checkScreen(b.dataset.checkScreen)));
+    document.querySelectorAll("[data-new]").forEach(b=>b.addEventListener("click",()=>nextSet(b.dataset.new)));
+
+    document.querySelector("#undoOrder").addEventListener("click",()=>{
+      const removed=state.orderAnswer.pop();
+      if(removed===undefined) return;
+      const btn=document.querySelector(`#orderBank [data-order-value="${removed}"]`);
+      if(btn) btn.classList.remove("selected");
+      const last=document.querySelector("#orderAnswer").lastElementChild;
+      if(last) last.remove();
     });
 
-    document.querySelectorAll("[data-new]").forEach(button => {
-      button.addEventListener("click", () => nextSet(button.dataset.new));
-    });
-
-    document.querySelector("#undoOrder").addEventListener("click", () => {
-      const removed = state.orderAnswer.pop();
-      if (removed === undefined) return;
-      const restoredButton = document.querySelector(`#orderBank [data-order-value="${removed}"]`);
-      if (restoredButton) restoredButton.classList.remove("selected");
-      const lastAnswer = document.querySelector("#orderAnswer").lastElementChild;
-      if (lastAnswer) lastAnswer.remove();
-    });
-
-    document.querySelector("#clearProblemHistory").addEventListener("click", () => {
-      state.problemHistory = [];
-      localStorage.removeItem("problemHistory");
-      renderProblemHistory();
-    });
-
-    document.querySelector("#resetProgress").addEventListener("click", () => {
-      Object.keys(state.index).forEach(key => { state.index[key] = 0; });
+    document.querySelector("#resetProgress").addEventListener("click",()=>{
+      if(!confirm("Recommencer depuis le début ?")) return;
+      Object.keys(state.index).forEach(k=>{state.index[k]=0;});
       renderAll();
     });
 
-    document.querySelectorAll("[data-key]").forEach(button => {
-      button.addEventListener("click", () => {
-        const activeScreen = document.querySelector(".screen.active");
-        const focusedInput = document.activeElement && document.activeElement.tagName === "INPUT" && activeScreen && activeScreen.contains(document.activeElement) ? document.activeElement : null;
-        const activeInputIsUsable = state.activeInput && state.activeInput.isConnected && activeScreen && activeScreen.contains(state.activeInput);
-        const input = focusedInput ? focusedInput : activeInputIsUsable ? state.activeInput : activeScreen ? activeScreen.querySelector("input") : null;
-        if (!input) return;
-        state.activeInput = input;
-        input.focus();
-        const key = button.dataset.key;
-        const maxLength = input.dataset.kind === "written-digit" ? 1 : 2;
-        if (/^\d$/.test(key)) input.value = (input.value + key).slice(0, maxLength);
-        if (key === "back") input.value = input.value.slice(0, -1);
-        if (key === "clear") input.value = "";
-        if (key === "next") {
-          const inputs = [...document.querySelectorAll(".screen.active input")];
-          const next = inputs[(inputs.indexOf(input) + 1) % inputs.length];
-          if (next) {
-            state.activeInput = next;
-            next.focus();
-          }
+    document.querySelectorAll("[data-key]").forEach(b=>{
+      b.addEventListener("click",()=>{
+        const activeScreen=document.querySelector(".screen.active");
+        const focusedInput=document.activeElement&&document.activeElement.tagName==="INPUT"&&activeScreen&&activeScreen.contains(document.activeElement)?document.activeElement:null;
+        const activeInputIsUsable=state.activeInput&&state.activeInput.isConnected&&activeScreen&&activeScreen.contains(state.activeInput);
+        const input=focusedInput?focusedInput:activeInputIsUsable?state.activeInput:activeScreen?activeScreen.querySelector("input"):null;
+        if(!input) return;
+        state.activeInput=input;input.focus();
+        const key=b.dataset.key;
+        const maxLength=(input.dataset.kind==="written-digit"||input.dataset.kind==="retenue-digit")?1:2;
+        if(/^\d$/.test(key)) input.value=(input.value+key).slice(0,maxLength);
+        if(key==="back") input.value=input.value.slice(0,-1);
+        if(key==="clear") input.value="";
+        if(key==="next"){
+          const inputs=[...document.querySelectorAll(".screen.active input")];
+          const next=inputs[(inputs.indexOf(input)+1)%inputs.length];
+          if(next){state.activeInput=next;next.focus();}
           return;
         }
         input.dispatchEvent(new Event("input"));
