@@ -3,22 +3,72 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#fdf1f8">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito:wght@500;600;700;800&display=swap" rel="stylesheet">
   <title>Feuille d'exercices interactive</title>
   <style>
     :root {
-      --bg: #fff8ed;
-      --ink: #243043;
-      --muted: #6b7280;
+      /* Palette « Bonbon » — rose & lavande (mockup 1a) */
+      --bg: #fdf1f8;
+      --blob-rose: #ffcded;
+      --blob-lav: #d6cfff;
+
+      --title: #764065;
+      --subtitle: #6c5f67;
+      --label: #7a6d75;
+      --du: #897c84;
+      --digit: #42373e;
+      --ink: #42373e;
+      --muted: #7a6d75;
+
+      --brand: #f3b4dd;
+      --brand-ink: #6b3459;
+      --brand-deep: #c588b0;
+      --tab-ink: #705d69;
+      --key-ink: #654d5c;
+      --op: #a46b91;
+      --rule: #eebcdc;
+
       --panel: #ffffff;
-      --line: #e5ded2;
-      --tens: #16a34a;
-      --ones: #eab308;
-      --ones-ink: #a16207;
-      --ok: #16a34a;
-      --bad: #dc2626;
-      --focus: #7c3aed;
-      --shadow: 0 14px 36px rgba(36, 48, 67, .12);
-      font-family: ui-rounded, "SF Pro Rounded", "Arial Rounded MT Bold", system-ui, sans-serif;
+      --line: #f2e3ec;
+      --field: #fef8fc;
+      --field-line: #e8d9e2;
+
+      --ok-bg: #b9eec2;
+      --ok-ink: #00481b;
+      --ok-line: #79c289;
+      --bravo-ink: #137738;
+      --bravo-bg: #c8f6d0;
+
+      --bad-ink: #bd413f;
+      --bad-bg: #ffdfda;
+      --bad-line: #f8a49d;
+
+      --carry-bg: #ffca9b;
+      --carry-ink: #6d3800;
+
+      --tens: #6959ae;
+      --tens-dot: #b0a5f2;
+      --tens-soft: #eae7ff;
+      --ones: #945a00;
+      --ones-dot: #efb062;
+      --ones-soft: #ffe9cb;
+
+      --ok: var(--bravo-ink);
+      --bad: var(--bad-ink);
+      --focus: #6959ae;
+
+      --shadow-card: 0 4px 14px rgba(118, 64, 101, .08);
+      --shadow-lift: 0 8px 24px rgba(118, 64, 101, .10);
+      --radius-card: 22px;
+      --radius-tile: 18px;
+      --radius-key: 14px;
+
+      --font-display: "Baloo 2", "Nunito", ui-rounded, "SF Pro Rounded", system-ui, sans-serif;
+      --font-body: "Nunito", ui-rounded, "SF Pro Rounded", system-ui, sans-serif;
+      font-family: var(--font-body);
     }
 
     * { box-sizing: border-box; }
@@ -26,17 +76,46 @@
     body {
       margin: 0;
       color: var(--ink);
-      background:
-        linear-gradient(90deg, rgba(22, 163, 74, .08) 1px, transparent 1px) 0 0 / 34px 34px,
-        linear-gradient(rgba(234, 179, 8, .1) 1px, transparent 1px) 0 0 / 34px 34px,
-        var(--bg);
+      background: var(--bg);
       min-height: 100vh;
+      overflow-x: hidden;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    /* Pastilles décoratives du mockup */
+    body::before,
+    body::after {
+      content: "";
+      position: fixed;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    body::before {
+      top: -120px;
+      right: -110px;
+      width: 340px;
+      height: 340px;
+      background: var(--blob-rose);
+      opacity: .55;
+    }
+
+    body::after {
+      bottom: 90px;
+      left: -100px;
+      width: 240px;
+      height: 240px;
+      background: var(--blob-lav);
+      opacity: .45;
     }
 
     .app {
+      position: relative;
+      z-index: 1;
       width: min(1180px, 100%);
       margin: 0 auto;
-      padding: 18px;
+      padding: 22px 18px 18px;
     }
 
     header {
@@ -44,115 +123,588 @@
       grid-template-columns: 1fr auto;
       gap: 14px;
       align-items: center;
-      margin-bottom: 12px;
+      margin-bottom: 16px;
     }
 
-    h1 { margin: 0; font-size: clamp(1.45rem, 3vw, 2.25rem); line-height: 1.1; }
+    h1 {
+      margin: 0;
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: clamp(1.5rem, 4vw, 2.1rem);
+      line-height: 1.1;
+      color: var(--title);
+    }
 
-    .legend { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; color: var(--muted); font-weight: 800; }
+    .greeting {
+      margin-top: 3px;
+      font-size: clamp(.9rem, 2.4vw, 1rem);
+      font-weight: 600;
+      color: var(--subtitle);
+    }
 
-    .chip { display: inline-flex; align-items: center; gap: 7px; border: 2px solid var(--line); border-radius: 999px; background: #fff; padding: 8px 12px; font-size: .95rem; }
+    .header-side {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
 
-    .dot { width: 16px; height: 16px; border-radius: 50%; display: inline-block; }
-    .dot.tens { background: var(--tens); }
-    .dot.ones { background: var(--ones); }
+    .progress-dots {
+      display: flex;
+      gap: 5px;
+      align-items: center;
+    }
 
-    nav { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; margin: 8px 0 14px; }
+    .pdot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: rgba(118, 64, 101, .13);
+      transition: background .2s ease, transform .2s ease;
+    }
 
-    button { appearance: none; border: 0; border-radius: 8px; background: #eef2ff; color: var(--ink); min-height: 48px; padding: 10px 12px; font: inherit; font-weight: 900; cursor: pointer; touch-action: manipulation; }
+    .pdot.on {
+      background: var(--brand);
+      transform: scale(1.12);
+    }
 
-    button:active { transform: translateY(1px); }
-    button:focus-visible, input:focus-visible { outline: 4px solid rgba(124, 58, 237, .3); outline-offset: 2px; }
-    nav button.active { background: var(--focus); color: #fff; }
+    .legend {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items: center;
+      color: var(--muted);
+      font-weight: 700;
+      margin-top: 10px;
+    }
 
-    main { background: var(--panel); border: 2px solid var(--line); border-radius: 8px; box-shadow: var(--shadow); overflow: hidden; }
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      border: 0;
+      border-radius: 999px;
+      background: #fff;
+      box-shadow: var(--shadow-card);
+      padding: 7px 13px;
+      font-size: .86rem;
+    }
 
-    .toolbar { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 12px; border-bottom: 2px solid var(--line); background: #fffbf5; }
-    .toolbar strong { font-size: 1.05rem; }
-    .toolbar-actions { display: flex; gap: 8px; flex-wrap: wrap; justify-content: end; }
+    .dot { width: 13px; height: 13px; border-radius: 50%; display: inline-block; }
+    .dot.tens { background: var(--tens-dot); }
+    .dot.ones { background: var(--ones-dot); }
 
-    .primary { background: #243043; color: #fff; }
-    .soft { background: #f1f5f9; }
-    .success { background: #dcfce7; color: #166534; }
+    /* Onglets */
+    nav {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 8px;
+      margin: 0 0 16px;
+    }
 
-    .screen { display: none; padding: 16px; }
+    button {
+      appearance: none;
+      border: 0;
+      border-radius: var(--radius-key);
+      background: #fff;
+      color: var(--key-ink);
+      min-height: 48px;
+      padding: 10px 12px;
+      font-family: var(--font-display);
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      touch-action: manipulation;
+      transition: transform .12s ease, box-shadow .12s ease, background .15s ease;
+    }
+
+    button:active { transform: translateY(2px); }
+
+    button:focus-visible,
+    input:focus-visible {
+      outline: 4px solid rgba(105, 89, 174, .32);
+      outline-offset: 2px;
+    }
+
+    nav button {
+      color: var(--tab-ink);
+      box-shadow: 0 2px 0 rgba(118, 64, 101, .07);
+    }
+
+    nav button.active {
+      background: var(--brand);
+      color: var(--brand-ink);
+      font-weight: 800;
+      box-shadow: 0 4px 0 var(--brand-deep);
+    }
+
+    nav button.active:active { box-shadow: 0 2px 0 var(--brand-deep); }
+
+    main {
+      background: transparent;
+      border: 0;
+      box-shadow: none;
+      overflow: visible;
+    }
+
+    .toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 16px;
+      border: 0;
+      border-radius: var(--radius-tile);
+      background: #fff;
+      box-shadow: var(--shadow-card);
+      margin-bottom: 14px;
+    }
+
+    .toolbar strong {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 1.02rem;
+      color: var(--title);
+    }
+
+    .toolbar-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: end;
+    }
+
+    .toolbar-actions button { min-height: 44px; font-size: .95rem; }
+
+    .primary {
+      background: var(--brand);
+      color: var(--brand-ink);
+      font-weight: 800;
+      box-shadow: 0 4px 0 var(--brand-deep);
+    }
+
+    .primary:active { box-shadow: 0 2px 0 var(--brand-deep); }
+
+    .soft {
+      background: #fff;
+      color: var(--tab-ink);
+      box-shadow: inset 0 0 0 2px var(--line);
+    }
+
+    .success {
+      background: var(--bravo-bg);
+      color: var(--bravo-ink);
+      font-weight: 800;
+    }
+
+    .screen { display: none; padding: 0; }
     .screen.active { display: block; }
 
-    .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+    .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
 
-    .exercise { border: 2px solid var(--line); border-radius: 8px; padding: 14px; min-height: 150px; display: grid; gap: 12px; align-content: start; background: #fff; }
+    .exercise {
+      border: 0;
+      border-radius: var(--radius-card);
+      padding: 20px 18px;
+      min-height: 150px;
+      display: grid;
+      gap: 12px;
+      align-content: start;
+      background: #fff;
+      box-shadow: var(--shadow-card);
+    }
 
-    .prompt { font-size: clamp(1.3rem, 4vw, 2.1rem); font-weight: 950; line-height: 1.15; }
-    .small-prompt { font-size: clamp(1.05rem, 3vw, 1.45rem); font-weight: 900; line-height: 1.28; }
+    .prompt {
+      font-family: var(--font-display);
+      font-size: clamp(1.35rem, 4vw, 2rem);
+      font-weight: 700;
+      line-height: 1.15;
+      color: var(--digit);
+    }
 
-    .num { display: inline-flex; align-items: baseline; gap: .02em; letter-spacing: 0; font-variant-numeric: tabular-nums; }
+    .small-prompt {
+      font-family: var(--font-display);
+      font-size: clamp(1rem, 2.8vw, 1.3rem);
+      font-weight: 700;
+      line-height: 1.3;
+      color: var(--title);
+    }
+
+    .num {
+      display: inline-flex;
+      align-items: baseline;
+      gap: .02em;
+      letter-spacing: 0;
+      font-variant-numeric: tabular-nums;
+    }
+
     .tens { color: var(--tens); }
-    .ones { color: var(--ones-ink); }
+    .ones { color: var(--ones); }
 
     .answer-row { display: grid; grid-template-columns: 1fr auto; gap: 8px; align-items: center; }
 
-    input { width: 100%; min-height: 56px; border: 3px solid #d1d5db; border-radius: 8px; padding: 8px 12px; font: inherit; font-size: 1.55rem; font-weight: 950; text-align: center; background: #fff; }
+    input {
+      width: 100%;
+      min-height: 56px;
+      border: 3px solid var(--field-line);
+      border-radius: var(--radius-key);
+      padding: 8px 12px;
+      font-family: var(--font-display);
+      font-size: 1.55rem;
+      font-weight: 700;
+      text-align: center;
+      color: var(--digit);
+      background: var(--field);
+      transition: background .15s ease, border-color .15s ease, color .15s ease;
+    }
 
-    .feedback { min-height: 28px; font-weight: 950; font-size: 1.05rem; }
-    .feedback.ok { color: var(--ok); animation: pop .35s ease; }
-    .feedback.bad { color: var(--bad); }
+    input.is-ok {
+      background: var(--ok-bg);
+      border-color: var(--ok-line);
+      color: var(--ok-ink);
+    }
+
+    input.is-bad {
+      background: var(--bad-bg);
+      border-color: var(--bad-line);
+      color: var(--bad-ink);
+    }
+
+    /* Bulle de retour « Bravo ! » */
+    .feedback { min-height: 32px; font-weight: 800; font-size: .95rem; }
+
+    .feedback.ok,
+    .feedback.bad {
+      display: inline-flex;
+      align-items: center;
+      justify-self: start;
+      width: fit-content;
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-family: var(--font-display);
+      font-weight: 800;
+    }
+
+    .feedback.ok {
+      color: var(--bravo-ink);
+      background: var(--bravo-bg);
+      animation: pop .35s ease;
+    }
+
+    .feedback.bad { color: var(--bad-ink); background: var(--bad-bg); }
 
     @keyframes pop { 0% { transform: scale(0.8); } 60% { transform: scale(1.08); } 100% { transform: scale(1); } }
-    @media (prefers-reduced-motion: reduce) { .feedback.ok { animation: none; } }
+    @media (prefers-reduced-motion: reduce) {
+      .feedback.ok { animation: none; }
+      button, input, .pdot { transition: none; }
+    }
 
-    .keypad { position: sticky; bottom: 0; display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; padding: 12px; background: rgba(255, 248, 237, .96); border-top: 2px solid var(--line); backdrop-filter: blur(8px); }
-    .keypad button { min-height: 54px; background: #fff; border: 2px solid var(--line); font-size: 1.25rem; }
-    .keypad .wide { grid-column: span 2; }
+    /* Astuce + barre d'actions (l'appareil ouvre son propre clavier numérique) */
+    .toolbelt {
+      display: grid;
+      gap: 12px;
+      margin-top: 16px;
+    }
 
+    .hint-card {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      background: #fff;
+      border-radius: var(--radius-tile);
+      box-shadow: var(--shadow-card);
+      padding: 14px 16px;
+    }
+
+    .hint-icon {
+      flex: 0 0 auto;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: var(--carry-bg);
+      display: grid;
+      place-items: center;
+      font-size: 1rem;
+      line-height: 1;
+    }
+
+    .hint-body strong {
+      display: block;
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: .74rem;
+      text-transform: uppercase;
+      letter-spacing: .07em;
+      color: var(--label);
+    }
+
+    .hint-body p {
+      margin: 3px 0 0;
+      font-weight: 600;
+      font-size: .97rem;
+      line-height: 1.42;
+      color: var(--tab-ink);
+    }
+
+    .toolbelt-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .score-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border-radius: 999px;
+      background: #fff;
+      box-shadow: var(--shadow-card);
+      padding: 10px 16px;
+      font-weight: 700;
+      font-size: .93rem;
+      color: var(--tab-ink);
+    }
+
+    .score-star { color: rgba(118, 64, 101, .22); font-size: 1.1rem; line-height: 1; }
+    .score-pill.earned { background: var(--bravo-bg); color: var(--bravo-ink); }
+    .score-pill.earned .score-star { color: #e8a33c; }
+
+    .actionbar {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(104px, 1fr));
+      gap: 8px;
+    }
+
+    .actionbar button {
+      min-height: 52px;
+      box-shadow: 0 2px 6px rgba(118, 64, 101, .08);
+    }
+
+    .actionbar .primary { box-shadow: 0 4px 0 var(--brand-deep); }
+    .actionbar .primary:active { box-shadow: 0 2px 0 var(--brand-deep); }
+
+    /* Écran « Ranger » */
     .word-bank, .order-zone { display: flex; gap: 8px; flex-wrap: wrap; }
-    .pill { border: 2px solid #d1d5db; background: #fff; min-height: 48px; border-radius: 8px; padding: 8px 12px; font-weight: 950; }
-    .pill.selected { border-color: var(--focus); background: #f3e8ff; }
+
+    .order-zone {
+      min-height: 64px;
+      border-radius: var(--radius-tile);
+      background: var(--field);
+      padding: 8px;
+    }
+
+    .pill {
+      border: 0;
+      background: #fff;
+      min-height: 52px;
+      border-radius: var(--radius-key);
+      padding: 8px 16px;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.3rem;
+      box-shadow: var(--shadow-card);
+    }
+
+    .pill.selected {
+      background: var(--brand);
+      box-shadow: 0 2px 0 var(--brand-deep);
+      opacity: .5;
+    }
+
+    .pill.selected .tens, .pill.selected .ones { color: var(--brand-ink); }
 
     .symbol-row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
-    .symbol-button { background: #fff; border: 2px solid var(--line); font-size: 1.2rem; text-align: center; min-width: 84px; font-size: 2rem; }
-    .symbol-button.selected { border-color: var(--focus); background: #f3e8ff; }
-    .symbol-button.correct { border-color: var(--ok); background: #dcfce7; color: #166534; }
-    .symbol-button.wrong { border-color: var(--bad); background: #fee2e2; color: #991b1b; }
 
-    .written-board { display: grid; grid-template-columns: 44px 74px 74px; width: 192px; border: 3px solid #334155; border-radius: 8px; overflow: hidden; background: #fff; }
-    .written-board span, .written-board input { min-height: 48px; display: grid; place-items: center; border-right: 2px solid #334155; border-bottom: 2px solid #334155; font-size: 1.7rem; font-weight: 950; border-radius: 0; padding: 0; text-align: center; }
-    .written-board .col-end { border-right: 0; }
-    .written-board .last-row { border-bottom: 0; }
-    .written-board input { width: 100%; background: #fffef0; color: var(--ink); border-top: 0; border-left: 0; }
-    .written-board input:focus-visible { outline: 4px solid rgba(124, 58, 237, .3); outline-offset: -4px; }
-    .written-board .retenue-cell { border: 0; min-height: 22px; background: transparent; padding: 0; }
-    .written-board input.retenue-input { width: 28px; height: 28px; min-height: 28px; border-radius: 50%; border: 2px solid var(--focus); background: #f3e8ff; color: var(--focus); font-size: 1rem; margin: 2px auto 0; padding: 0; }
-    .rule { grid-column: 1 / -1; min-height: 8px; background: #334155; border: 0; }
-    .operator { color: #475569; background: #f8fafc; }
+    .symbol-button {
+      background: #fff;
+      border: 0;
+      box-shadow: var(--shadow-card);
+      text-align: center;
+      min-width: 84px;
+      min-height: 64px;
+      font-size: 2rem;
+      color: var(--title);
+    }
 
-    .clock-area { display: grid; grid-template-columns: minmax(220px, 310px) 1fr; gap: 18px; align-items: center; }
-    .time-context { display: inline-flex; align-items: center; gap: 8px; border: 2px solid var(--line); border-radius: 999px; background: #fff; padding: 8px 12px; margin-bottom: 10px; font-weight: 950; }
-    .sky-icon { width: 24px; height: 24px; display: inline-block; position: relative; border-radius: 50%; flex: 0 0 auto; }
-    .sky-icon.matin { background: #fdba74; box-shadow: 0 0 0 5px rgba(253,186,116,.25); }
-    .sky-icon.apresmidi { background: #facc15; box-shadow: 0 0 0 5px rgba(250,204,21,.2); }
-    .sky-icon.soir { background: #f97316; box-shadow: 0 0 0 5px rgba(249,115,22,.22); }
-    .sky-icon.nuit { background: #334155; }
-    .sky-icon.nuit::after { content: ""; position: absolute; width: 18px; height: 18px; right: -2px; top: 2px; border-radius: 50%; background: #fff; }
-    .clock-face { width: min(310px, 100%); aspect-ratio: 1; display: block; margin: 0 auto; }
-    .clock-number { font: 900 13px ui-rounded, "SF Pro Rounded", system-ui, sans-serif; fill: var(--ink); text-anchor: middle; dominant-baseline: middle; }
+    .symbol-button.selected { background: var(--brand); color: var(--brand-ink); box-shadow: 0 3px 0 var(--brand-deep); }
+    .symbol-button.correct { background: var(--ok-bg); color: var(--ok-ink); box-shadow: 0 3px 0 var(--ok-line); }
+    .symbol-button.wrong { background: var(--bad-bg); color: var(--bad-ink); box-shadow: 0 3px 0 var(--bad-line); }
+
+    .muted-text { color: var(--label); font-weight: 700; }
+
+    /* Écran « Poser » — opération posée */
+    .written-board {
+      position: relative;
+      display: grid;
+      grid-template-columns: 38px 62px 62px;
+      row-gap: 4px;
+      width: max-content;
+      margin: 4px auto 0;
+      border: 0;
+      border-radius: 0;
+      overflow: visible;
+      background: transparent;
+      font-family: var(--font-display);
+    }
+
+    .written-board span,
+    .written-board input {
+      min-height: 46px;
+      display: grid;
+      place-items: center;
+      border: 0;
+      background: transparent;
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: var(--digit);
+      border-radius: 0;
+      padding: 0;
+      text-align: center;
+    }
+
+    /* En-têtes « d » et « u » */
+    .written-board > span:nth-child(2),
+    .written-board > span:nth-child(3) {
+      min-height: 20px;
+      font-family: var(--font-body);
+      font-size: .72rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+    }
+
+    .written-board span.tens { color: var(--tens); }
+    .written-board span.ones { color: var(--ones); }
+
+    .written-board span.retenue-cell { border: 0; min-height: 26px; background: transparent; padding: 0; }
+
+    .written-board input.retenue-input {
+      width: 26px;
+      height: 26px;
+      min-height: 26px;
+      border-radius: 50%;
+      border: 0;
+      background: var(--carry-bg);
+      color: var(--carry-ink);
+      font-family: var(--font-body);
+      font-size: .85rem;
+      font-weight: 800;
+      margin: 0 auto;
+      padding: 0;
+    }
+
+    .written-board input.retenue-input.is-ok { background: var(--ok-bg); color: var(--ok-ink); }
+    .written-board input.retenue-input.is-bad { background: var(--bad-bg); color: var(--bad-ink); }
+
+    .written-board input.written-digit {
+      border: 0;
+      border-radius: 12px;
+      background: var(--field);
+      color: var(--digit);
+      font-size: 1.75rem;
+      min-height: 46px;
+      box-shadow: inset 0 0 0 2px var(--field-line);
+    }
+
+    .written-board input.written-digit.is-ok {
+      background: var(--ok-bg);
+      color: var(--ok-ink);
+      box-shadow: none;
+    }
+
+    .written-board input.written-digit.is-bad {
+      background: var(--bad-bg);
+      color: var(--bad-ink);
+      box-shadow: none;
+    }
+
+    .written-board input:focus-visible { outline: 4px solid rgba(105, 89, 174, .3); outline-offset: 0; }
+
+    .written-board span.rule {
+      grid-column: 2 / -1;
+      min-height: 0;
+      height: 0;
+      background: transparent;
+      border: 0;
+      border-top: 3px solid var(--rule);
+      margin: 3px 0;
+    }
+
+    .written-board span.operator { color: var(--op); background: transparent; }
+
+    /* Écran « Heure » */
+    .clock-area { display: grid; grid-template-columns: minmax(220px, 300px) 1fr; gap: 20px; align-items: center; }
+
+    .time-context {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: 0;
+      border-radius: 999px;
+      background: var(--field);
+      box-shadow: inset 0 0 0 2px var(--line);
+      padding: 8px 14px;
+      margin-bottom: 10px;
+      font-weight: 700;
+      color: var(--tab-ink);
+    }
+
+    .sky-icon { width: 22px; height: 22px; display: inline-block; position: relative; border-radius: 50%; flex: 0 0 auto; }
+    .sky-icon.matin { background: #ffc98f; box-shadow: 0 0 0 5px rgba(255, 201, 143, .28); }
+    .sky-icon.apresmidi { background: #ffd75e; box-shadow: 0 0 0 5px rgba(255, 215, 94, .25); }
+    .sky-icon.soir { background: #f79a6a; box-shadow: 0 0 0 5px rgba(247, 154, 106, .25); }
+    .sky-icon.nuit { background: #6959ae; }
+    .sky-icon.nuit::after { content: ""; position: absolute; width: 16px; height: 16px; right: -2px; top: 2px; border-radius: 50%; background: var(--panel); }
+
+    .clock-face { width: min(300px, 100%); aspect-ratio: 1; display: block; margin: 0 auto; }
+
+    .clock-number {
+      font: 700 14px var(--font-display);
+      fill: var(--digit);
+      text-anchor: middle;
+      dominant-baseline: middle;
+    }
+
     .hand-hour { stroke: var(--tens); stroke-width: 8; stroke-linecap: round; }
-    .hand-minute { stroke: var(--ones-ink); stroke-width: 5; stroke-linecap: round; }
-    .time-answer { display: grid; grid-template-columns: minmax(82px,1fr) auto minmax(82px,1fr); gap: 8px; align-items: center; margin-top: 12px; max-width: 360px; }
+    .hand-minute { stroke: var(--ones-dot); stroke-width: 5; stroke-linecap: round; }
+
+    .time-answer {
+      display: grid;
+      grid-template-columns: minmax(82px, 1fr) auto minmax(82px, 1fr);
+      gap: 10px;
+      align-items: center;
+      margin: 12px 0;
+      max-width: 340px;
+    }
+
     .time-answer input { min-height: 64px; font-size: 1.8rem; }
-    .time-separator { font-size: 2rem; font-weight: 950; color: var(--ink); }
+
+    .time-separator {
+      font-family: var(--font-display);
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--op);
+      text-align: center;
+    }
 
     @media (max-width: 760px) {
-      .app { padding: 10px; }
+      .app { padding: 16px 12px 12px; }
       header { grid-template-columns: 1fr; }
-      nav { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .header-side { justify-content: space-between; }
+      nav { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; }
+      nav button { font-size: .84rem; padding: 10px 4px; }
       .grid { grid-template-columns: 1fr; }
       .toolbar { align-items: start; flex-direction: column; }
       .toolbar-actions { justify-content: start; }
-      .answer-row { grid-template-columns: 1fr; }
-      .keypad { grid-template-columns: repeat(5, 1fr); }
-      .keypad .wide { grid-column: span 2; }
+      .answer-row { grid-template-columns: minmax(0, 1fr) auto; }
+      .toolbelt-row { flex-direction: column; align-items: stretch; }
+      .actionbar { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .actionbar button { font-size: .88rem; padding: 10px 4px; }
       .clock-area { grid-template-columns: 1fr; }
       .clock-face { width: min(240px, 100%); }
+      body::before { width: 220px; height: 220px; top: -90px; right: -80px; }
+      body::after { width: 170px; height: 170px; }
     }
   </style>
 </head>
@@ -160,20 +712,24 @@
   <div class="app">
     <header>
       <div>
-        <h1>Exercices de nombres</h1>
+        <h1>Mes exercices</h1>
+        <div class="greeting" id="greeting"></div>
         <div class="legend" aria-label="Légende des couleurs">
           <span class="chip"><span class="dot tens"></span>dizaines</span>
           <span class="chip"><span class="dot ones"></span>unités</span>
         </div>
       </div>
-      <button class="primary" id="resetProgress" type="button">Recommencer</button>
+      <div class="header-side">
+        <div class="progress-dots" id="progressDots" role="img" aria-label="Progression"></div>
+        <button class="primary" id="resetProgress" type="button">Recommencer</button>
+      </div>
     </header>
 
     <nav aria-label="Choisir un exercice">
       <button class="active" data-screen="mental" type="button">Calcul</button>
       <button data-screen="order" type="button">Ranger</button>
       <button data-screen="written" type="button">Poser</button>
-      <button data-screen="hours" type="button">Heures</button>
+      <button data-screen="hours" type="button">Heure</button>
     </nav>    <main>
       <section class="screen active" id="mental">
         <div class="toolbar">
@@ -227,76 +783,130 @@
       </section>
     </main>
 
-    <div class="keypad" aria-label="Clavier tactile">
-      <button data-key="1" type="button">1</button>
-      <button data-key="2" type="button">2</button>
-      <button data-key="3" type="button">3</button>
-      <button data-key="4" type="button">4</button>
-      <button data-key="5" type="button">5</button>
-      <button data-key="6" type="button">6</button>
-      <button data-key="7" type="button">7</button>
-      <button data-key="8" type="button">8</button>
-      <button data-key="9" type="button">9</button>
-      <button data-key="0" type="button">0</button>
-      <button class="wide" data-key="back" type="button">Effacer</button>
-      <button class="wide" data-key="clear" type="button">Vider</button>
-      <button class="wide primary" data-key="next" type="button">Suivant</button>
+    <div class="toolbelt">
+      <div class="hint-card">
+        <span class="hint-icon" aria-hidden="true">💡</span>
+        <div class="hint-body">
+          <strong>Astuce</strong>
+          <p id="hintText"></p>
+        </div>
+      </div>
+      <div class="toolbelt-row">
+        <div class="score-pill" id="scorePill" role="status">
+          <span class="score-star" aria-hidden="true">★</span><span id="scoreText">0 série réussie</span>
+        </div>
+        <div class="actionbar" aria-label="Actions">
+          <button data-key="back" type="button">Effacer</button>
+          <button data-key="clear" type="button">Vider</button>
+          <button class="primary" data-key="next" type="button">Suivant</button>
+        </div>
+      </div>
     </div>
   </div>
 
   <script>
     const sets = {
       mental: [
-        [[54,"+",10],[66,"+",20],[57,"-",20],[35,"+",20],[68,"-",10],[81,"-",10]],
-        [[46,"+",30],[75,"-",10],[49,"-",30],[72,"-",20],[35,"+",30],[23,"+",40]],
-        [[63,"+",10],[75,"+",10],[49,"+",30],[35,"-",10],[79,"-",10],[54,"-",20]],
-        [{left:35,op:"+",right:null,result:75,answer:40},{left:42,op:"+",right:null,result:72,answer:30},{left:18,op:"+",right:null,result:98,answer:80},{left:null,op:"+",right:20,result:70,answer:50},{left:90,op:"-",right:null,result:20,answer:70},{left:86,op:"-",right:null,result:56,answer:30}],
-        [{left:14,op:"+",right:null,result:94,answer:80},{left:27,op:"+",right:null,result:57,answer:30},{left:60,op:"-",right:null,result:10,answer:50},{left:100,op:"-",right:null,result:20,answer:80},{left:null,op:"-",right:30,result:40,answer:70},{left:null,op:"-",right:20,result:60,answer:80}],
-        [{left:23,op:"+",right:null,result:93,answer:70},{left:8,op:"+",right:null,result:98,answer:90},{left:74,op:"-",right:null,result:34,answer:40},{left:95,op:"-",right:null,result:5,answer:90},{left:null,op:"+",right:40,result:90,answer:50},{left:null,op:"-",right:60,result:20,answer:80}],
-        [[12,"+",40],[31,"+",50],[96,"-",60],[84,"-",40],[7,"+",70],[99,"-",90]],
-        [{left:55,op:"+",right:null,result:95,answer:40},{left:null,op:"+",right:30,result:80,answer:50},{left:70,op:"-",right:null,result:10,answer:60},{left:null,op:"-",right:40,result:30,answer:70},{left:9,op:"+",right:null,result:99,answer:90},{left:100,op:"-",right:null,result:50,answer:50}]
+        [[35,"+",40],[42,"+",40],[20,"+",40],[63,"-",50],[19,"+",50],[87,"-",50]],
+        [[48,"+",50],[17,"+",30],[95,"-",30],[88,"-",40],[17,"+",10],[60,"-",30]],
+        [[58,"-",50],[51,"+",2],[14,"+",30],[21,"+",7],[48,"-",40],[48,"+",20]],
+        [[19,"-",7],[81,"+",4],[96,"-",4],[92,"+",2],[80,"+",2],[86,"-",6]],
+        [[16,"+",3],[69,"+",7],[34,"+",4],[75,"+",9],[20,"+",8],[22,"+",8]],
+        [[39,"-",8],[67,"+",5],[39,"+",5],[44,"-",2],[19,"-",8],[83,"+",7]],
+        [[23,"+",30],[74,"+",3],[25,"-",2],[49,"+",3],[49,"+",30],[32,"-",30]],
+        [{left:27,op:"+",right:null,result:67,answer:40},{left:43,op:"+",right:null,result:63,answer:20},{left:null,op:"+",right:10,result:32,answer:22},{left:59,op:"+",right:null,result:79,answer:20},{left:34,op:"+",right:null,result:54,answer:20},{left:null,op:"+",right:20,result:57,answer:37}],
+        [{left:58,op:"-",right:null,result:48,answer:10},{left:null,op:"-",right:10,result:63,answer:73},{left:88,op:"-",right:null,result:48,answer:40},{left:null,op:"-",right:10,result:52,answer:62},{left:82,op:"-",right:null,result:72,answer:10},{left:null,op:"-",right:20,result:31,answer:51}],
+        [{left:null,op:"-",right:30,result:25,answer:55},{left:74,op:"+",right:null,result:84,answer:10},{left:null,op:"+",right:50,result:89,answer:39},{left:null,op:"+",right:30,result:91,answer:61},{left:61,op:"-",right:null,result:21,answer:40},{left:59,op:"+",right:null,result:99,answer:40}],
+        [{left:90,op:"+",right:null,result:100,answer:10},{left:26,op:"+",right:null,result:86,answer:60},{left:70,op:"+",right:null,result:100,answer:30},{left:33,op:"+",right:null,result:93,answer:60},{left:32,op:"+",right:null,result:72,answer:40},{left:50,op:"+",right:null,result:100,answer:50}],
+        [[39,"+",39],[58,"+",7],[21,"+",9],[22,"+",22],[88,"+",3],[24,"+",24]],
+        [[18,"+",20],[52,"+",9],[78,"-",20],{left:60,op:"+",right:null,result:70,answer:10},{left:null,op:"+",right:30,result:76,answer:46},[48,"-",2]],
+        [[70,"-",50],[92,"-",2],[38,"-",30],[95,"-",4],{left:33,op:"-",right:null,result:13,answer:20},{left:49,op:"-",right:null,result:29,answer:20}],
+        [[26,"+",7],[19,"+",9],[48,"+",48],[20,"+",20],[63,"+",8],[58,"+",9]],
+        [[44,"-",40],{left:35,op:"+",right:null,result:100,answer:65},[27,"+",50],{left:55,op:"+",right:null,result:100,answer:45},[70,"-",10],[61,"+",20]],
+        [{left:null,op:"+",right:20,result:82,answer:62},{left:null,op:"-",right:30,result:36,answer:66},{left:null,op:"-",right:20,result:59,answer:79},{left:null,op:"+",right:20,result:38,answer:18},{left:null,op:"+",right:40,result:58,answer:18},{left:null,op:"-",right:30,result:0,answer:30}],
+        [[16,"-",5],[25,"+",9],[64,"+",3],[38,"+",8],[50,"+",2],[17,"-",4]],
+        [[52,"+",40],[98,"-",50],{left:10,op:"+",right:null,result:100,answer:90},[47,"-",7],[55,"+",7],[21,"+",21]],
+        [{left:47,op:"+",right:null,result:97,answer:50},[15,"+",5],[85,"+",8],{left:23,op:"+",right:null,result:63,answer:40},[49,"+",7],{left:36,op:"+",right:null,result:46,answer:10}],
+        [[29,"-",2],[38,"-",6],[61,"-",10],[86,"-",30],[45,"-",5],[99,"-",5]],
+        [[45,"+",45],{left:65,op:"+",right:null,result:100,answer:35},[11,"+",11],{left:null,op:"+",right:20,result:36,answer:16},{left:75,op:"+",right:null,result:100,answer:25},{left:null,op:"+",right:10,result:94,answer:84}],
+        [[65,"+",8],{left:76,op:"-",right:null,result:26,answer:50},{left:null,op:"-",right:40,result:52,answer:92},[58,"+",20],[97,"-",6],[41,"+",41]],
+        [{left:20,op:"+",right:null,result:100,answer:80},[37,"+",50],{left:12,op:"+",right:null,result:62,answer:50},[31,"+",30],{left:38,op:"+",right:null,result:48,answer:10},{left:80,op:"+",right:null,result:100,answer:20}]
       ],
       order: [
-        {mode:"asc",values:[51,83,75,70,62,49]},
-        {mode:"desc",values:[59,86,42,60,15,73]},
-        {mode:"compare",left:68,right:62},
-        {mode:"asc",values:[22,68,35,81,54,75]},
-        {mode:"desc",values:[19,47,73,28,64,55]},
-        {mode:"compare",left:35,right:53},
-        {mode:"asc",values:[14,40,27,72,58,33]},
-        {mode:"desc",values:[91,76,48,83,29,67]},
-        {mode:"compare",left:90,right:89},
-        {mode:"asc",values:[6,16,60,26,62,36]},
-        {mode:"desc",values:[12,21,42,24,84,48]},
-        {mode:"compare",left:74,right:47}
+        {mode:"compare",left:83,right:93},
+        {mode:"asc",values:[84,8,93,26,68,40]},
+        {mode:"asc",values:[24,19,40,44,28,17]},
+        {mode:"compare",left:44,right:86},
+        {mode:"compare",left:44,right:11},
+        {mode:"compare",left:13,right:19},
+        {mode:"asc",values:[98,26,68,28,49,54]},
+        {mode:"compare",left:76,right:30},
+        {mode:"compare",left:77,right:79},
+        {mode:"desc",values:[67,79,49,39,56,98]},
+        {mode:"compare",left:46,right:42},
+        {mode:"asc",values:[74,53,14,24,32,45]},
+        {mode:"asc",values:[15,86,47,30,51,11]},
+        {mode:"desc",values:[16,28,17,98,63,32]},
+        {mode:"desc",values:[45,19,67,94,31,25]},
+        {mode:"desc",values:[49,84,60,78,56,33]},
+        {mode:"desc",values:[50,95,74,27,66,75]},
+        {mode:"desc",values:[97,35,17,69,68,96]},
+        {mode:"asc",values:[47,46,85,62,36,8]},
+        {mode:"desc",values:[29,19,79,10,84,24]},
+        {mode:"desc",values:[53,78,98,40,10,60]},
+        {mode:"desc",values:[25,87,37,31,7,73]},
+        {mode:"asc",values:[95,88,15,50,98,51]},
+        {mode:"asc",values:[52,40,45,69,11,16]},
+        {mode:"compare",left:29,right:66},
+        {mode:"asc",values:[43,79,30,53,29,84]},
+        {mode:"desc",values:[79,94,68,82,86,73]},
+        {mode:"compare",left:75,right:27},
+        {mode:"asc",values:[15,24,82,45,48,27]},
+        {mode:"compare",left:92,right:20}
       ],
       written: [
-        [[14,"+",65],[53,"+",32],[21,"+",51],[73,"+",22]],
-        [[35,"+",43],[24,"+",52],[46,"+",31],[62,"+",17]],
-        [[68,"-",10],[75,"-",30],[54,"-",20],[81,"-",10]],
-        [[12,"+",37],[45,"+",23],[61,"+",18],[30,"+",46]],
-        [[89,"-",20],[76,"-",30],[58,"-",40],[97,"-",50]],
-        [[26,"+",52],[71,"+",14],[33,"+",45],[64,"+",25]],
-        [[27,"+",15],[38,"+",24],[19,"+",13],[46,"+",17]],
-        [[25,"+",28],[34,"+",19],[57,"+",16],[29,"+",34]],
-        [[48,"+",13],[36,"+",29],[17,"+",26],[58,"+",19]],
-        [[24,"+",68],[39,"+",45],[16,"+",59],[47,"+",28]]
+        [[51,"+",45],[22,"+",60],[32,"+",23],[11,"+",31]],
+        [[20,"+",12],[16,"+",72],[26,"+",70],[71,"+",26]],
+        [[29,"-",14],[48,"-",35],[89,"-",36],[52,"-",30]],
+        [[16,"+",51],[12,"+",67],[24,"+",41],[75,"-",54]],
+        [[96,"-",53],[37,"-",22],[39,"-",13],[84,"+",14]],
+        [[54,"+",11],[58,"+",21],[70,"+",12],[32,"+",50]],
+        [[19,"+",71],[46,"+",14],[61,"+",15],[53,"+",36]],
+        [[38,"+",47],[58,"+",16],[39,"+",12],[21,"+",35]],
+        [[37,"+",19],[33,"+",27],[28,"+",49],[69,"+",28]],
+        [[34,"+",26],[43,"+",18],[11,"+",59],[17,"+",39]],
+        [[26,"+",35],[26,"+",69],[97,"-",10],[76,"-",33]],
+        [[28,"+",16],[68,"+",26],[45,"+",25],[69,"-",40]],
+        [[35,"-",12],[81,"-",41],[28,"+",23],[18,"+",23]],
+        [[43,"+",41],[51,"+",27],[79,"+",16],[29,"+",25]],
+        [[35,"+",58],[59,"+",14],[79,"+",13],[58,"+",15]],
+        [[32,"-",20],[65,"-",33],[79,"-",26],[86,"-",32]],
+        [[13,"+",74],[22,"+",69],[69,"-",39],[18,"+",28]],
+        [[53,"+",39],[75,"+",15],[43,"+",48],[26,"+",36]],
+        [[25,"+",44],[42,"+",34],[64,"-",44],[36,"-",20]],
+        [[29,"+",21],[54,"+",27],[75,"+",24],[88,"-",41]],
+        [[78,"-",21],[86,"-",64],[30,"-",20],[34,"+",16]],
+        [[57,"+",38],[27,"+",13],[27,"+",69],[14,"+",18]],
+        [[41,"+",54],[31,"+",14],[52,"+",30],[31,"+",15]],
+        [[63,"+",29],[59,"-",12],[16,"+",46],[94,"-",61]]
       ]
     };
 
-    sets.hours = Array.from({length:50},(_,i)=>{
-      const minutes=[0,15,30,45];
-      const minute=minutes[i%minutes.length];
-      const hour=i%24;
-      return {hour,minute,label:`${hour} h ${pad2(minute)}`};
-    });
+    sets.hours=(function(){
+      const list=[];
+      for(let h=0;h<24;h++) for(const m of [0,15,30,45]) list.push({hour:h,minute:m});
+      for(let h=1;h<=12;h++) for(const m of [5,10,20,25,35,40,50,55]) list.push({hour:h,minute:m});
+      return list.map(t=>({hour:t.hour,minute:t.minute,label:`${t.hour} h ${pad2(t.minute)}`}));
+    })();
 
     const state = {
       activeInput: null,
       index: {mental:0,order:0,written:0,hours:0},
       orderAnswer: [],
       selectedCompare: null,
-      advanceTimer: null
+      advanceTimer: null,
+      lastPick: {},
+      solved: 0
     };
 
     function colorNumber(value) {
@@ -323,6 +933,120 @@
       return "nuit";
     }
 
+    const greetings=["On continue ? C'est parti !","À toi de jouer !","Une nouvelle série t'attend !","Choisis un exercice et c'est parti !","Allez, on s'entraîne !"];
+
+    const praises=["Bravo !","Super !","Génial !","Bien joué !","Parfait !","Trop fort !","Excellent !","Tu assures !","Nickel !","C'est exactement ça !","Impeccable !","Quel talent !","Tu gères !","Magnifique !","Sans faute !"];
+
+    const retries=["Essaie encore","Presque !","Pas tout à fait…","Tu y es presque","Regarde encore une fois","Encore un petit effort","Recompte doucement","Reprends calmement"];
+
+    const hints={
+      mental:[
+        {tag:"addTens",  text:"Pour ajouter 10, la dizaine augmente de 1 et l'unité ne bouge pas."},
+        {tag:"addTens",  text:"Pour ajouter 20, compte 2 dizaines de plus : 34 + 20, c'est 54."},
+        {tag:"subTens",  text:"Pour enlever 10, la dizaine diminue de 1 : 68 − 10, c'est 58."},
+        {tag:"hole",     text:"Quand un nombre est caché, demande-toi : combien faut-il ajouter pour arriver au résultat ?"},
+        {tag:"hole",     text:"Un nombre caché, c'est l'écart entre les deux nombres que tu vois."},
+        {tag:"hundred",  text:"Pour aller jusqu'à 100, complète d'abord la dizaine, puis compte les dizaines qui manquent."},
+        {tag:"carry",    text:"Si les unités dépassent 9, tu viens de former une dizaine de plus."},
+        {tag:"carry",    text:"45 + 7 : va d'abord jusqu'à 50, puis ajoute ce qui reste."},
+        {tag:"double",   text:"Un doublé, c'est le même nombre deux fois : 23 + 23, c'est 46."},
+        {tag:"subUnits", text:"Pour enlever quelques unités, il suffit de reculer chiffre par chiffre."}
+      ],
+      order:[
+        {tag:"asc",     text:"Cherche à chaque fois le plus petit nombre qui reste."},
+        {tag:"asc",     text:"Compare d'abord les dizaines. Si elles sont égales, regarde les unités."},
+        {tag:"desc",    text:"Cherche à chaque fois le plus grand nombre qui reste."},
+        {tag:"desc",    text:"Les dizaines comptent plus que les unités : 40 est plus grand que 39."},
+        {tag:"compare", text:"Le signe < s'ouvre toujours du côté du plus grand nombre."},
+        {tag:"compare", text:"Attention : 19 et 91 ont les mêmes chiffres, mais pas la même valeur !"}
+      ],
+      written:[
+        {tag:"any",   text:"Vérifie que chaque chiffre est bien aligné dans sa colonne d et u."},
+        {tag:"add",   text:"On commence toujours par la colonne des unités, à droite."},
+        {tag:"carry", text:"Si les unités font 10 ou plus, on pose une retenue au-dessus des dizaines."},
+        {tag:"carry", text:"La retenue vaut 1 dizaine : n'oublie pas de l'ajouter aux dizaines."},
+        {tag:"sub",   text:"Pour une soustraction, enlève d'abord les unités, puis les dizaines."}
+      ],
+      hours:[
+        {tag:"any",     text:"La petite aiguille donne les heures, la grande donne les minutes."},
+        {tag:"pile",    text:"Quand la grande aiguille est sur le 12, il est l'heure « pile »."},
+        {tag:"quart",   text:"Quand la grande aiguille est sur le 3, il est « et quart »."},
+        {tag:"demie",   text:"Quand la grande aiguille est sur le 6, il est « et demie »."},
+        {tag:"moins",   text:"Quand la grande aiguille est sur le 9, il est « moins le quart »."},
+        {tag:"cinq",    text:"Chaque chiffre de l'horloge vaut 5 minutes pour la grande aiguille."},
+        {tag:"apresmidi", text:"L'après-midi, on ajoute 12 : 3 h de l'après-midi, c'est 15 h."}
+      ]
+    };
+
+    // On ne propose que les astuces qui parlent de la série affichée
+    function hintsFor(id){
+      const keep=(list,tags)=>{
+        const out=list.filter(h=>tags.includes(h.tag));
+        return out.length?out:list;
+      };
+      if(id==="mental"){
+        const serie=sets.mental[state.index.mental];
+        const tags=[];
+        const plain=f=>serie.some(it=>Array.isArray(it)&&f(it[0],it[1],it[2]));
+        if(plain((a,op,b)=>op==="+"&&b%10===0)) tags.push("addTens");
+        if(plain((a,op,b)=>op==="-"&&b%10===0)) tags.push("subTens");
+        if(plain((a,op,b)=>op==="+"&&b<10&&(a%10+b)>=10)) tags.push("carry");
+        if(plain((a,op,b)=>op==="-"&&b<10)) tags.push("subUnits");
+        if(plain((a,op,b)=>op==="+"&&a===b)) tags.push("double");
+        if(serie.some(it=>!Array.isArray(it))) tags.push("hole");
+        if(serie.some(it=>!Array.isArray(it)&&it.result===100)) tags.push("hundred");
+        return keep(hints.mental,tags);
+      }
+      if(id==="written"){
+        const serie=sets.written[state.index.written];
+        const tags=["any"];
+        if(serie.some(it=>it[1]==="+")) tags.push("add");
+        if(serie.some(it=>it[1]==="+"&&(it[0]%10+it[2]%10)>=10)) tags.push("carry");
+        if(serie.some(it=>it[1]==="-")) tags.push("sub");
+        return keep(hints.written,tags);
+      }
+      if(id==="order") return keep(hints.order,[sets.order[state.index.order].mode]);
+      if(id==="hours"){
+        const t=sets.hours[state.index.hours];
+        const tags=["any"];
+        if(t.minute===0) tags.push("pile");
+        else if(t.minute===15) tags.push("quart");
+        else if(t.minute===30) tags.push("demie");
+        else if(t.minute===45) tags.push("moins");
+        else tags.push("cinq");
+        if(t.hour>12) tags.push("apresmidi");
+        return keep(hints.hours,tags);
+      }
+      return [];
+    }
+
+    function pickVaried(list,key){
+      if(list.length<2) return list[0];
+      let i=Math.floor(Math.random()*list.length);
+      if(i===state.lastPick[key]) i=(i+1)%list.length;
+      state.lastPick[key]=i;
+      return list[i];
+    }
+
+    function praise(){ return pickVaried(praises,"praise"); }
+    function retry(){ return pickVaried(retries,"retry"); }
+
+    function updateHint(id){
+      const el=document.querySelector("#hintText");
+      if(!el) return;
+      const list=hintsFor(id);
+      if(!list.length) return;
+      el.textContent=pickVaried(list,"hint-"+id).text;
+    }
+
+    function updateScore(){
+      const el=document.querySelector("#scoreText");
+      if(!el) return;
+      const n=state.solved;
+      el.textContent=n<=1?`${n} série réussie`:`${n} séries réussies`;
+      document.querySelector("#scorePill").classList.toggle("earned",n>0);
+    }
+
     function setClass(el,cls,on){ if(!el)return; on?el.classList.add(cls):el.classList.remove(cls); }
 
     function clearAutoAdvance(){ if(state.advanceTimer){clearTimeout(state.advanceTimer);state.advanceTimer=null;} }
@@ -331,7 +1055,7 @@
       clearAutoAdvance();
       state.advanceTimer=setTimeout(()=>{
         const active=document.querySelector(".screen.active");
-        if(active&&active.id===id) nextSet(id);
+        if(active&&active.id===id){ state.solved+=1; updateScore(); nextSet(id); }
       },1100);
     }
 
@@ -413,16 +1137,33 @@
         const angle=(i*6-90)*Math.PI/180,outer=92,inner=i%5===0?84:88;
         const x1=100+Math.cos(angle)*outer,y1=100+Math.sin(angle)*outer;
         const x2=100+Math.cos(angle)*inner,y2=100+Math.sin(angle)*inner;
-        return `<line x1="${x1.toFixed(1)}" y1="${y1.toFixed(1)}" x2="${x2.toFixed(1)}" y2="${y2.toFixed(1)}" stroke="#94a3b8" stroke-width="${i%5===0?2:1}"/>`;
+        return `<line x1="${x1.toFixed(1)}" y1="${y1.toFixed(1)}" x2="${x2.toFixed(1)}" y2="${y2.toFixed(1)}" stroke="var(--du)" stroke-width="${i%5===0?2.5:1}"/>`;
       }).join("");
-      return `<svg class="clock-face" viewBox="0 0 200 200" role="img" aria-label="Horloge à aiguilles"><circle cx="100" cy="100" r="96" fill="#fff" stroke="#334155" stroke-width="4"/>${ticks}${numbers}<line class="hand-hour" x1="100" y1="100" x2="100" y2="48" transform="rotate(${hourAngle} 100 100)"/><line class="hand-minute" x1="100" y1="100" x2="100" y2="28" transform="rotate(${minuteAngle} 100 100)"/><circle cx="100" cy="100" r="6" fill="#243043"/></svg>`;
+      return `<svg class="clock-face" viewBox="0 0 200 200" role="img" aria-label="Horloge à aiguilles"><circle cx="100" cy="100" r="95" fill="#fff" stroke="var(--rule)" stroke-width="6"/>${ticks}${numbers}<line class="hand-hour" x1="100" y1="100" x2="100" y2="48" transform="rotate(${hourAngle} 100 100)"/><line class="hand-minute" x1="100" y1="100" x2="100" y2="28" transform="rotate(${minuteAngle} 100 100)"/><circle cx="100" cy="100" r="6" fill="var(--brand-deep)"/></svg>`;
+    }
+
+    function setInputState(input,state){
+      if(!input) return;
+      input.classList.toggle("is-ok",state===true);
+      input.classList.toggle("is-bad",state===false);
+    }
+
+    function updateProgressDots(){
+      const screen=document.querySelector(".screen.active");
+      const host=document.querySelector("#progressDots");
+      if(!screen||!host) return;
+      const cards=[...screen.querySelectorAll(".exercise")];
+      const total=Math.max(cards.length,1);
+      const done=cards.filter(c=>c.querySelector(".feedback.ok")).length;
+      host.innerHTML=Array.from({length:total},(_,i)=>`<span class="pdot${i<done?" on":""}"></span>`).join("");
+      host.setAttribute("aria-label",`${done} sur ${total} réussis`);
     }
 
     function setFeedback(input,ok){
       const feedback=input.closest(".exercise").querySelector(".feedback");
-      feedback.textContent=ok?"Bravo !":"Essaie encore";
+      feedback.textContent=ok?praise():retry();
       feedback.className=`feedback ${ok?"ok":"bad"}`;
-      input.style.borderColor=ok?"var(--ok)":"var(--bad)";
+      setInputState(input,ok);
     }
 
     function checkInput(input){
@@ -467,10 +1208,10 @@
       const digitsOk=actual.length===2&&actual===expected;
       const ok=digitsOk&&retenueOk;
       const feedback=exercise.querySelector(".feedback");
-      feedback.textContent=ok?"Bravo !":digitsOk&&retenueInput&&!retenueOk?"N'oublie pas la retenue !":"Essaie encore";
+      feedback.textContent=ok?praise():digitsOk&&retenueInput&&!retenueOk?"N'oublie pas la retenue !":retry();
       feedback.className=`feedback ${ok?"ok":"bad"}`;
-      inputs.forEach((inp,i)=>{inp.style.borderColor=inp.value===expected[i]?"var(--ok)":"var(--bad)";});
-      if(retenueInput) retenueInput.style.borderColor=retenueInput.value==="1"?"var(--ok)":retenueFilled?"var(--bad)":"#d1d5db";
+      inputs.forEach((inp,i)=>{setInputState(inp,inp.value===expected[i]);});
+      if(retenueInput) setInputState(retenueInput,retenueInput.value==="1"?true:retenueFilled?false:null);
       if(ok&&allWrittenBoardsCorrect()) scheduleNext("written");
       return ok;
     }
@@ -492,14 +1233,14 @@
           setClass(b,"wrong",b.classList.contains("selected")&&b.dataset.compare!==expected);
         });
         const ok=state.selectedCompare===expected;
-        feedback.textContent=ok?"Bravo !":"Regarde quel nombre est le plus grand";
+        feedback.textContent=ok?praise():"Regarde bien quel nombre est le plus grand";
         feedback.className=`feedback ${ok?"ok":"bad"}`;
         if(ok) scheduleNext("order");
         return;
       }
       const expectedValues=[...task.values].sort((a,b)=>task.mode==="desc"?b-a:a-b);
       const ok=expectedValues.join(",")===state.orderAnswer.join(",");
-      feedback.textContent=ok?"Bravo !":task.mode==="desc"?"Regarde le nombre le plus grand qui reste":"Regarde le nombre le plus petit qui reste";
+      feedback.textContent=ok?praise():task.mode==="desc"?"Regarde le nombre le plus grand qui reste":"Regarde le nombre le plus petit qui reste";
       feedback.className=`feedback ${ok?"ok":"bad"}`;
       if(ok) scheduleNext("order");
     }
@@ -512,9 +1253,9 @@
       const hour=Number(hourInput.value);
       const minute=Number(pad2(minuteInput.value));
       const ok=hour===target.hour&&minute===target.minute&&minuteInput.value.trim()!=="";
-      hourInput.style.borderColor=hour===target.hour?"var(--ok)":"var(--bad)";
-      minuteInput.style.borderColor=minute===target.minute&&minuteInput.value.trim()!==""?"var(--ok)":"var(--bad)";
-      feedback.textContent=ok?"Bravo !":`Essaie encore : écris les minutes avec deux chiffres`;
+      setInputState(hourInput,hour===target.hour);
+      setInputState(minuteInput,minute===target.minute&&minuteInput.value.trim()!=="");
+      feedback.textContent=ok?praise():hour!==target.hour?"Regarde la petite aiguille : elle donne les heures":"Regarde la grande aiguille, et écris les minutes avec deux chiffres";
       feedback.className=`feedback ${ok?"ok":"bad"}`;
       if(ok) scheduleNext("hours");
     }
@@ -537,14 +1278,16 @@
 
     function renderAll(){
       renderMental();renderOrder();renderWritten();renderHours();
-      wireInputs();updateKeypadVisibility();
+      wireInputs();updateToolbelt();
     }
 
-    function updateKeypadVisibility(){
+    function updateToolbelt(){
       const activeScreen=document.querySelector(".screen.active");
-      const keypad=document.querySelector(".keypad");
-      if(!activeScreen||!keypad) return;
-      keypad.style.display=activeScreen.id==="order"?"none":"grid";
+      const bar=document.querySelector(".actionbar");
+      if(!activeScreen) return;
+      // l'écran « Ranger » se joue au doigt : ni saisie, ni touches d'édition
+      if(bar) bar.style.display=activeScreen.id==="order"?"none":"grid";
+      updateHint(activeScreen.id);
     }
 
     function wireInputs(){
@@ -555,7 +1298,7 @@
         input.addEventListener("input",()=>{
           const maxLength=(input.dataset.kind==="written-digit"||input.dataset.kind==="retenue-digit")?1:2;
           input.value=input.value.replace(/\D/g,"").slice(0,maxLength);
-          input.style.borderColor="#d1d5db";
+          setInputState(input,null);
           const feedback=input.closest(".exercise").querySelector(".feedback");
           feedback.textContent="";feedback.className="feedback";
           maybeAutoCheckInput(input);
@@ -593,7 +1336,7 @@
         document.querySelector(`#${b.dataset.screen}`).classList.add("active");
         state.activeInput=document.querySelector(".screen.active input");
         if(state.activeInput) state.activeInput.focus();
-        updateKeypadVisibility();
+        updateToolbelt();
       });
     });
 
@@ -624,8 +1367,6 @@
         if(!input) return;
         state.activeInput=input;input.focus();
         const key=b.dataset.key;
-        const maxLength=(input.dataset.kind==="written-digit"||input.dataset.kind==="retenue-digit")?1:2;
-        if(/^\d$/.test(key)) input.value=(input.value+key).slice(0,maxLength);
         if(key==="back") input.value=input.value.slice(0,-1);
         if(key==="clear") input.value="";
         if(key==="next"){
@@ -638,7 +1379,11 @@
       });
     });
 
+    document.querySelector("#greeting").textContent=pickVaried(greetings,"greeting");
+    updateScore();
     renderAll();
+    updateProgressDots();
+    new MutationObserver(updateProgressDots).observe(document.querySelector("main"),{subtree:true,childList:true,attributes:true,attributeFilter:["class"]});
   </script>
 </body>
 </html>
