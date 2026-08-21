@@ -10,7 +10,7 @@
   <title>Feuille d'exercices interactive</title>
   <style>
     :root {
-      /* Palette « Bonbon » — rose & lavande (mockup 1a) */
+      /* Palette « Bonbon » — rose & lavande (mockup 1a) : inchangée */
       --bg: #fdf1f8;
       --blob-rose: #ffcded;
       --blob-lav: #d6cfff;
@@ -51,20 +51,16 @@
 
       --tens: #6959ae;
       --tens-dot: #b0a5f2;
-      --tens-soft: #eae7ff;
       --ones: #945a00;
       --ones-dot: #efb062;
-      --ones-soft: #ffe9cb;
 
-      --ok: var(--bravo-ink);
-      --bad: var(--bad-ink);
       --focus: #6959ae;
-
       --shadow-card: 0 4px 14px rgba(118, 64, 101, .08);
-      --shadow-lift: 0 8px 24px rgba(118, 64, 101, .10);
+      --shadow-lift: 0 10px 30px rgba(118, 64, 101, .12);
       --radius-card: 22px;
       --radius-tile: 18px;
       --radius-key: 14px;
+      --col-pose: 56px;
 
       --font-display: "Baloo 2", "Nunito", ui-rounded, "SF Pro Rounded", system-ui, sans-serif;
       --font-body: "Nunito", ui-rounded, "SF Pro Rounded", system-ui, sans-serif;
@@ -83,124 +79,36 @@
     }
 
     /* Pastilles décoratives du mockup */
-    body::before,
-    body::after {
-      content: "";
-      position: fixed;
-      border-radius: 50%;
-      pointer-events: none;
-      z-index: 0;
-    }
-
-    body::before {
-      top: -120px;
-      right: -110px;
-      width: 340px;
-      height: 340px;
-      background: var(--blob-rose);
-      opacity: .55;
-    }
-
-    body::after {
-      bottom: 90px;
-      left: -100px;
-      width: 240px;
-      height: 240px;
-      background: var(--blob-lav);
-      opacity: .45;
-    }
+    body::before, body::after { content: ""; position: fixed; border-radius: 50%; pointer-events: none; z-index: 0; }
+    body::before { top: -120px; right: -110px; width: 340px; height: 340px; background: var(--blob-rose); opacity: .55; }
+    body::after { bottom: 60px; left: -100px; width: 240px; height: 240px; background: var(--blob-lav); opacity: .45; }
 
     .app {
       position: relative;
       z-index: 1;
-      width: min(1180px, 100%);
+      width: min(1080px, 100%);
       margin: 0 auto;
-      padding: 22px 18px 18px;
+      padding: 18px 18px calc(18px + env(safe-area-inset-bottom));
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      min-height: 100vh;
     }
 
-    header {
-      display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 14px;
-      align-items: center;
-      margin-bottom: 16px;
-    }
+    header { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
 
     h1 {
       margin: 0;
       font-family: var(--font-display);
       font-weight: 800;
-      font-size: clamp(1.5rem, 4vw, 2.1rem);
+      font-size: clamp(1.35rem, 4vw, 1.9rem);
       line-height: 1.1;
       color: var(--title);
     }
 
-    .greeting {
-      margin-top: 3px;
-      font-size: clamp(.9rem, 2.4vw, 1rem);
-      font-weight: 600;
-      color: var(--subtitle);
-    }
+    .header-side { display: flex; align-items: center; gap: 8px; }
 
-    .header-side {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .progress-dots {
-      display: flex;
-      gap: 5px;
-      align-items: center;
-    }
-
-    .pdot {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background: rgba(118, 64, 101, .13);
-      transition: background .2s ease, transform .2s ease;
-    }
-
-    .pdot.on {
-      background: var(--brand);
-      transform: scale(1.12);
-    }
-
-    .legend {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-      align-items: center;
-      color: var(--muted);
-      font-weight: 700;
-      margin-top: 10px;
-    }
-
-    .chip {
-      display: inline-flex;
-      align-items: center;
-      gap: 7px;
-      border: 0;
-      border-radius: 999px;
-      background: #fff;
-      box-shadow: var(--shadow-card);
-      padding: 7px 13px;
-      font-size: .86rem;
-    }
-
-    .dot { width: 13px; height: 13px; border-radius: 50%; display: inline-block; }
-    .dot.tens { background: var(--tens-dot); }
-    .dot.ones { background: var(--ones-dot); }
-
-    /* Onglets */
-    nav {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 8px;
-      margin: 0 0 16px;
-    }
-
+    /* ---------- Boutons ---------- */
     button {
       appearance: none;
       border: 0;
@@ -208,448 +116,429 @@
       background: #fff;
       color: var(--key-ink);
       min-height: 48px;
-      padding: 10px 12px;
+      padding: 10px 16px;
       font-family: var(--font-display);
       font-size: 1rem;
       font-weight: 700;
       cursor: pointer;
       touch-action: manipulation;
+      -webkit-user-select: none;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
       transition: transform .12s ease, box-shadow .12s ease, background .15s ease;
     }
 
     button:active { transform: translateY(2px); }
+    button:focus-visible, input:focus-visible { outline: 4px solid rgba(105, 89, 174, .32); outline-offset: 2px; }
 
-    button:focus-visible,
-    input:focus-visible {
-      outline: 4px solid rgba(105, 89, 174, .32);
-      outline-offset: 2px;
-    }
-
-    nav button {
-      color: var(--tab-ink);
-      box-shadow: 0 2px 0 rgba(118, 64, 101, .07);
-    }
-
-    nav button.active {
-      background: var(--brand);
-      color: var(--brand-ink);
-      font-weight: 800;
-      box-shadow: 0 4px 0 var(--brand-deep);
-    }
-
-    nav button.active:active { box-shadow: 0 2px 0 var(--brand-deep); }
-
-    main {
-      background: transparent;
-      border: 0;
-      box-shadow: none;
-      overflow: visible;
-    }
-
-    .toolbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      padding: 14px 16px;
-      border: 0;
-      border-radius: var(--radius-tile);
-      background: #fff;
-      box-shadow: var(--shadow-card);
-      margin-bottom: 14px;
-    }
-
-    .toolbar strong {
-      font-family: var(--font-display);
-      font-weight: 800;
-      font-size: 1.02rem;
-      color: var(--title);
-    }
-
-    .toolbar-actions {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-      justify-content: end;
-    }
-
-    .toolbar-actions button { min-height: 44px; font-size: .95rem; }
-
-    .primary {
-      background: var(--brand);
-      color: var(--brand-ink);
-      font-weight: 800;
-      box-shadow: 0 4px 0 var(--brand-deep);
-    }
-
+    .primary { background: var(--brand); color: var(--brand-ink); font-weight: 800; box-shadow: 0 4px 0 var(--brand-deep); }
     .primary:active { box-shadow: 0 2px 0 var(--brand-deep); }
+    .primary.gros { font-size: 1.25rem; min-height: 62px; padding: 14px 40px; border-radius: 20px; }
 
-    .soft {
-      background: #fff;
+    .soft { background: #fff; color: var(--tab-ink); box-shadow: inset 0 0 0 2px var(--line); }
+    .soft.petit { min-height: 42px; font-size: .9rem; padding: 8px 14px; justify-self: start; }
+
+    .ghost {
+      background: rgba(255, 255, 255, .7);
       color: var(--tab-ink);
-      box-shadow: inset 0 0 0 2px var(--line);
-    }
-
-    .success {
-      background: var(--bravo-bg);
-      color: var(--bravo-ink);
-      font-weight: 800;
-    }
-
-    .screen { display: none; padding: 0; }
-    .screen.active { display: block; }
-
-    .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
-
-    .exercise {
-      border: 0;
-      border-radius: var(--radius-card);
-      padding: 20px 18px;
-      min-height: 150px;
-      display: grid;
-      gap: 12px;
-      align-content: start;
-      background: #fff;
-      box-shadow: var(--shadow-card);
-    }
-
-    .prompt {
-      font-family: var(--font-display);
-      font-size: clamp(1.35rem, 4vw, 2rem);
-      font-weight: 700;
-      line-height: 1.15;
-      color: var(--digit);
-    }
-
-    .small-prompt {
-      font-family: var(--font-display);
-      font-size: clamp(1rem, 2.8vw, 1.3rem);
-      font-weight: 700;
-      line-height: 1.3;
-      color: var(--title);
-    }
-
-    .num {
-      display: inline-flex;
-      align-items: baseline;
-      gap: .02em;
-      letter-spacing: 0;
-      font-variant-numeric: tabular-nums;
-    }
-
-    .tens { color: var(--tens); }
-    .ones { color: var(--ones); }
-
-    .answer-row { display: grid; grid-template-columns: 1fr auto; gap: 8px; align-items: center; }
-
-    input {
-      width: 100%;
-      min-height: 56px;
-      border: 3px solid var(--field-line);
-      border-radius: var(--radius-key);
+      min-height: 44px;
+      min-width: 44px;
       padding: 8px 12px;
-      font-family: var(--font-display);
-      font-size: 1.55rem;
-      font-weight: 700;
-      text-align: center;
-      color: var(--digit);
-      background: var(--field);
-      transition: background .15s ease, border-color .15s ease, color .15s ease;
-    }
-
-    input.is-ok {
-      background: var(--ok-bg);
-      border-color: var(--ok-line);
-      color: var(--ok-ink);
-    }
-
-    input.is-bad {
-      background: var(--bad-bg);
-      border-color: var(--bad-line);
-      color: var(--bad-ink);
-    }
-
-    /* Bulle de retour « Bravo ! » */
-    .feedback { min-height: 32px; font-weight: 800; font-size: .95rem; }
-
-    .feedback.ok,
-    .feedback.bad {
-      display: inline-flex;
-      align-items: center;
-      justify-self: start;
-      width: fit-content;
-      padding: 6px 16px;
-      border-radius: 20px;
-      font-family: var(--font-display);
-      font-weight: 800;
-    }
-
-    .feedback.ok {
-      color: var(--bravo-ink);
-      background: var(--bravo-bg);
-      animation: pop .35s ease;
-    }
-
-    .feedback.bad { color: var(--bad-ink); background: var(--bad-bg); }
-
-    @keyframes pop { 0% { transform: scale(0.8); } 60% { transform: scale(1.08); } 100% { transform: scale(1); } }
-    @media (prefers-reduced-motion: reduce) {
-      .feedback.ok { animation: none; }
-      button, input, .pdot { transition: none; }
-    }
-
-    /* Astuce + barre d'actions (l'appareil ouvre son propre clavier numérique) */
-    .toolbelt {
-      display: grid;
-      gap: 12px;
-      margin-top: 16px;
-    }
-
-    .hint-card {
-      display: flex;
-      gap: 12px;
-      align-items: flex-start;
-      background: #fff;
-      border-radius: var(--radius-tile);
+      font-size: 1.05rem;
       box-shadow: var(--shadow-card);
-      padding: 14px 16px;
     }
-
-    .hint-icon {
-      flex: 0 0 auto;
-      width: 34px;
-      height: 34px;
-      border-radius: 50%;
-      background: var(--carry-bg);
-      display: grid;
-      place-items: center;
-      font-size: 1rem;
-      line-height: 1;
-    }
-
-    .hint-body strong {
-      display: block;
-      font-family: var(--font-display);
-      font-weight: 800;
-      font-size: .74rem;
-      text-transform: uppercase;
-      letter-spacing: .07em;
-      color: var(--label);
-    }
-
-    .hint-body p {
-      margin: 3px 0 0;
-      font-weight: 600;
-      font-size: .97rem;
-      line-height: 1.42;
-      color: var(--tab-ink);
-    }
-
-    .toolbelt-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
+    .ghost.coupe { color: var(--label); opacity: .7; }
 
     .score-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      border-radius: 999px;
-      background: #fff;
-      box-shadow: var(--shadow-card);
-      padding: 10px 16px;
-      font-weight: 700;
-      font-size: .93rem;
-      color: var(--tab-ink);
+      display: inline-flex; align-items: center; gap: 7px;
+      border-radius: 999px; background: #fff; box-shadow: var(--shadow-card);
+      padding: 10px 16px; font-family: var(--font-display); font-weight: 800; font-size: 1rem; color: var(--tab-ink);
     }
-
     .score-star { color: rgba(118, 64, 101, .22); font-size: 1.1rem; line-height: 1; }
     .score-pill.earned { background: var(--bravo-bg); color: var(--bravo-ink); }
     .score-pill.earned .score-star { color: #e8a33c; }
+    .score-pill.levelup { animation: pop .5s ease 3; }
 
-    .actionbar {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(104px, 1fr));
-      gap: 8px;
+    /* ---------- Scènes ---------- */
+    main { flex: 1; display: flex; }
+    .scene { display: none; flex: 1; flex-direction: column; gap: 16px; }
+    .scene.active { display: flex; }
+
+    /* ---------- Accueil ---------- */
+    .accueil-carte {
+      display: flex; align-items: center; gap: 18px; flex-wrap: wrap;
+      background: #fff; border-radius: var(--radius-card); box-shadow: var(--shadow-card);
+      padding: 22px 24px;
+    }
+    .accueil-texte { flex: 1; min-width: 200px; display: flex; flex-direction: column; align-items: flex-start; gap: 14px; }
+    .accueil-sous { margin: 4px 0 0; font-weight: 700; color: var(--label); font-size: .95rem; }
+
+    .tuiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 10px; }
+    .tuile {
+      display: flex; flex-direction: column; align-items: center; gap: 6px;
+      padding: 18px 8px; min-height: 92px; background: #fff;
+      border-radius: var(--radius-tile); box-shadow: 0 3px 0 rgba(118, 64, 101, .08);
+      color: var(--tab-ink); font-size: .95rem;
+    }
+    .tuile:active { box-shadow: 0 1px 0 rgba(118, 64, 101, .08); }
+    .tuile-ico {
+      width: 40px; height: 40px; border-radius: 50%;
+      display: grid; place-items: center;
+      background: var(--blob-rose); color: var(--brand-ink);
+      font-size: 1.2rem; font-weight: 800;
+    }
+    .tuile:nth-child(2) .tuile-ico { background: var(--blob-lav); }
+    .tuile:nth-child(3) .tuile-ico { background: var(--carry-bg); }
+    .tuile:nth-child(4) .tuile-ico { background: var(--bravo-bg); }
+    .tuile:nth-child(5) .tuile-ico { background: var(--blob-rose); }
+    .tuile:nth-child(6) .tuile-ico { background: var(--tens-dot); }
+    .tuile:nth-child(7) .tuile-ico { background: var(--ok-bg); }
+
+    .legend { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; color: var(--muted); font-weight: 700; }
+    .chip {
+      display: inline-flex; align-items: center; gap: 7px; border-radius: 999px;
+      background: #fff; box-shadow: var(--shadow-card); padding: 7px 13px; font-size: .84rem;
+    }
+    .dot { width: 13px; height: 13px; border-radius: 50%; display: inline-block; }
+    .dot.tens { background: var(--tens-dot); }
+    .dot.ones { background: var(--ones-dot); }
+
+    /* ---------- Barre de jeu ---------- */
+    .jeu-barre { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .etiquette {
+      font-family: var(--font-display); font-weight: 800; font-size: .95rem;
+      color: var(--title); background: #fff; box-shadow: var(--shadow-card);
+      padding: 9px 16px; border-radius: 999px;
+    }
+    .serie-pill {
+      flex: 1; min-width: 140px; text-align: center;
+      font-weight: 700; font-size: .88rem; color: var(--label);
+      background: #fff; box-shadow: var(--shadow-card); padding: 10px 14px; border-radius: 999px;
+      transition: background .25s ease, color .25s ease;
+    }
+    .serie-pill.chaude { background: var(--carry-bg); color: var(--carry-ink); }
+
+    /* ---------- Jalons de la séance ---------- */
+    .jalons { display: flex; align-items: center; gap: 12px; }
+    .jalons-titre {
+      font-family: var(--font-display); font-weight: 800; font-size: .88rem;
+      color: var(--title); white-space: nowrap;
+    }
+    .jalons-barre { flex: 1; display: flex; gap: 8px; }
+    .jalon {
+      flex: 1; height: 12px; border-radius: 999px;
+      background: rgba(118, 64, 101, .13);
+      transition: background .3s ease, box-shadow .3s ease;
+    }
+    .jalon.ok { background: var(--ok-line); }
+    .jalon.apres { background: var(--carry-bg); }
+    .jalon.passe { background: var(--bad-line); }
+    .jalon.actif { background: var(--brand); box-shadow: 0 0 0 4px rgba(243, 180, 221, .45); }
+
+    /* ---------- Bilan ---------- */
+    .bilan-carte {
+      position: relative; overflow: hidden;
+      display: flex; flex-direction: column; align-items: center; gap: 12px;
+      background: #fff; border-radius: var(--radius-card); box-shadow: var(--shadow-lift);
+      padding: 30px 24px; margin: auto 0;
+    }
+    .bilan-mot {
+      margin: 0; font-family: var(--font-display); font-weight: 800;
+      font-size: clamp(1.5rem, 5vw, 2.2rem); color: var(--title); text-align: center;
+    }
+    .bilan-score { margin: 0; font-weight: 700; font-size: 1.05rem; color: var(--tab-ink); }
+    .bilan-etoiles {
+      margin: 0; display: inline-flex; align-items: center; gap: 8px;
+      background: var(--bravo-bg); color: var(--bravo-ink);
+      border-radius: 999px; padding: 8px 18px; font-family: var(--font-display); font-weight: 800;
+    }
+    .bilan-etoiles .score-star { color: #e8a33c; }
+
+    .bilan-listes {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 12px; width: 100%; margin-top: 6px;
+    }
+    .bilan-bloc { background: var(--field); border-radius: var(--radius-tile); padding: 14px 16px; }
+    .bilan-bloc h3 {
+      margin: 0 0 8px; font-family: var(--font-display); font-size: .76rem; font-weight: 800;
+      text-transform: uppercase; letter-spacing: .07em; color: var(--label);
+    }
+    .bilan-solide h3 { color: var(--bravo-ink); }
+    .bilan-revoir h3 { color: var(--carry-ink); }
+    .bilan-bloc ul { margin: 0; padding-left: 18px; }
+    .bilan-bloc li { font-weight: 700; font-size: .95rem; color: var(--tab-ink); margin-bottom: 4px; }
+    .bilan-vide { margin: 0; font-weight: 600; font-size: .92rem; color: var(--label); }
+    .bilan-actions { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; margin-top: 8px; }
+
+    /* ---------- Corps du jeu ---------- */
+    .jeu-corps { flex: 1; display: grid; grid-template-columns: minmax(0, 1fr) 210px; gap: 16px; align-items: stretch; }
+
+    .question-carte {
+      position: relative;
+      background: #fff; border-radius: var(--radius-card); box-shadow: var(--shadow-lift);
+      padding: 28px 24px; min-height: 260px;
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px;
+      overflow: hidden;
+    }
+    .question-carte.entre { animation: glisse .32s cubic-bezier(.2, .8, .3, 1); }
+
+    .q-enonce {
+      font-family: var(--font-display); font-weight: 700;
+      font-size: clamp(1.6rem, 5.5vw, 2.6rem); line-height: 1.2;
+      color: var(--digit); text-align: center;
+    }
+    .q-enonce.q-texte {
+      font-size: clamp(1.05rem, 3vw, 1.35rem); font-weight: 700; line-height: 1.5;
+      color: var(--tab-ink); max-width: 34ch;
+    }
+    .q-enonce-petit {
+      font-size: clamp(.95rem, 2.6vw, 1.15rem); font-weight: 800;
+      color: var(--label); text-transform: uppercase; letter-spacing: .05em;
+    }
+    .q-reponse { width: min(320px, 100%); }
+
+    .num { display: inline-flex; align-items: baseline; gap: .02em; font-variant-numeric: tabular-nums; }
+    .tens { color: var(--tens); }
+    .ones { color: var(--ones); }
+
+    input {
+      width: 100%; min-height: 68px;
+      border: 3px solid var(--field-line); border-radius: var(--radius-key);
+      padding: 8px 12px;
+      font-family: var(--font-display); font-size: 2rem; font-weight: 700;
+      text-align: center; color: var(--digit); background: var(--field);
+      transition: background .15s ease, border-color .15s ease, color .15s ease;
+    }
+    input.is-ok { background: var(--ok-bg); border-color: var(--ok-line); color: var(--ok-ink); animation: pop .35s ease; }
+    input.is-bad { background: var(--bad-bg); border-color: var(--bad-line); color: var(--bad-ink); }
+
+    /* ---------- Avatar ---------- */
+    .avatar-zone { display: flex; flex-direction: column; align-items: center; gap: 10px; align-self: start; }
+    .avatar-boite { width: 100%; max-width: 180px; }
+    .avatar-grand { max-width: 116px; }
+    .avatar { width: 100%; height: auto; display: block; overflow: visible; }
+
+    .av-ombre { fill: var(--brand); opacity: .22; }
+    .av-tige { stroke: var(--brand-deep); stroke-width: 4; fill: none; stroke-linecap: round; }
+    .av-pastille { fill: var(--tens-dot); }
+    .av-corps { fill: var(--brand); }
+    .av-reflet { fill: #fff; opacity: .35; }
+    .av-joue { fill: var(--brand-deep); opacity: .4; }
+    .av-yeux-ronds circle { fill: var(--brand-ink); }
+    .av-yeux-joie path, .av-yeux-songe path { stroke: var(--brand-ink); stroke-width: 3.5; fill: none; stroke-linecap: round; }
+    .av-b { stroke: var(--brand-ink); stroke-width: 3.5; fill: none; stroke-linecap: round; }
+    .av-b-songe { fill: var(--brand-ink); stroke: none; }
+
+    .avatar .av-b, .avatar .av-yeux-joie, .avatar .av-yeux-songe { display: none; }
+    .avatar[data-humeur="neutre"] .av-b-neutre,
+    .avatar[data-humeur="songe"] .av-b-songe,
+    .avatar[data-humeur="encourage"] .av-b-encourage,
+    .avatar[data-humeur="content"] .av-b-content,
+    .avatar[data-humeur="bravo"] .av-b-content { display: block; }
+    .avatar[data-humeur="content"] .av-yeux-joie,
+    .avatar[data-humeur="bravo"] .av-yeux-joie { display: block; }
+    .avatar[data-humeur="songe"] .av-yeux-songe { display: block; }
+    .avatar[data-humeur="content"] .av-yeux-ronds,
+    .avatar[data-humeur="bravo"] .av-yeux-ronds,
+    .avatar[data-humeur="songe"] .av-yeux-ronds { display: none; }
+    .avatar[data-humeur="bravo"] { animation: saute .45s ease 2; }
+    .avatar[data-humeur="encourage"] { animation: penche .5s ease; }
+
+    .bulle {
+      position: relative; margin: 0; max-width: 100%;
+      background: #fff; box-shadow: var(--shadow-card);
+      border-radius: 18px; padding: 12px 16px;
+      font-weight: 700; font-size: .95rem; color: var(--tab-ink);
+      text-align: center; opacity: 0; transform: translateY(6px);
+      transition: opacity .18s ease, transform .18s ease;
+      min-height: 0;
+    }
+    .bulle.visible { opacity: 1; transform: none; }
+    .bulle.joie { background: var(--bravo-bg); color: var(--bravo-ink); }
+    .bulle.doux { background: var(--bad-bg); color: var(--bad-ink); }
+    .bulle::after {
+      content: ""; position: absolute; top: -8px; left: 50%; transform: translateX(-50%);
+      border-left: 9px solid transparent; border-right: 9px solid transparent; border-bottom: 9px solid #fff;
+    }
+    .bulle.joie::after { border-bottom-color: var(--bravo-bg); }
+    .bulle.doux::after { border-bottom-color: var(--bad-bg); }
+
+    /* Sur l'accueil, la bulle est toujours à droite de l'avatar */
+    #bulleAccueil::after {
+      top: 50%; left: -8px; transform: translateY(-50%);
+      border-left: 0; border-right: 9px solid #fff;
+      border-top: 9px solid transparent; border-bottom: 9px solid transparent;
     }
 
-    .actionbar button {
-      min-height: 52px;
-      box-shadow: 0 2px 6px rgba(118, 64, 101, .08);
+    /* ---------- Ranger ---------- */
+    .compare-ligne {
+      display: flex; align-items: center; justify-content: center; gap: 18px;
+      font-family: var(--font-display); font-weight: 700; font-size: clamp(1.8rem, 6vw, 2.8rem); color: var(--digit);
     }
+    .compare-display { color: var(--label); }
+    .compare-display.choisi { color: var(--op); }
 
-    .actionbar .primary { box-shadow: 0 4px 0 var(--brand-deep); }
-    .actionbar .primary:active { box-shadow: 0 2px 0 var(--brand-deep); }
-
-    /* Écran « Ranger » */
-    .word-bank, .order-zone { display: flex; gap: 8px; flex-wrap: wrap; }
-
-    .order-zone {
-      min-height: 64px;
-      border-radius: var(--radius-tile);
-      background: var(--field);
-      padding: 8px;
-    }
+    .word-bank, .order-zone { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+    .order-zone { min-height: 68px; width: 100%; border-radius: var(--radius-tile); background: var(--field); padding: 8px; align-items: center; }
 
     .pill {
-      border: 0;
-      background: #fff;
-      min-height: 52px;
-      border-radius: var(--radius-key);
-      padding: 8px 16px;
-      font-family: var(--font-display);
-      font-weight: 700;
-      font-size: 1.3rem;
+      border: 0; background: #fff; min-height: 56px; border-radius: var(--radius-key);
+      padding: 10px 18px; font-family: var(--font-display); font-weight: 700; font-size: 1.4rem;
       box-shadow: var(--shadow-card);
     }
-
-    .pill.selected {
-      background: var(--brand);
-      box-shadow: 0 2px 0 var(--brand-deep);
-      opacity: .5;
-    }
-
+    .pill.selected { background: var(--brand); box-shadow: 0 2px 0 var(--brand-deep); opacity: .5; }
     .pill.selected .tens, .pill.selected .ones { color: var(--brand-ink); }
+    .pill.posee { animation: pop .3s ease; }
 
-    .symbol-row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
-
+    .symbol-row { display: flex; gap: 12px; justify-content: center; }
     .symbol-button {
-      background: #fff;
-      border: 0;
-      box-shadow: var(--shadow-card);
-      text-align: center;
-      min-width: 84px;
-      min-height: 64px;
-      font-size: 2rem;
-      color: var(--title);
+      background: #fff; box-shadow: var(--shadow-card); min-width: 92px; min-height: 72px;
+      font-size: 2.2rem; color: var(--title);
     }
-
     .symbol-button.selected { background: var(--brand); color: var(--brand-ink); box-shadow: 0 3px 0 var(--brand-deep); }
     .symbol-button.correct { background: var(--ok-bg); color: var(--ok-ink); box-shadow: 0 3px 0 var(--ok-line); }
     .symbol-button.wrong { background: var(--bad-bg); color: var(--bad-ink); box-shadow: 0 3px 0 var(--bad-line); }
 
-    .muted-text { color: var(--label); font-weight: 700; }
+    /* ---------- Géométrie : figures ---------- */
+    .figure { width: min(150px, 40vw); height: auto; display: block; margin: 10px auto 0; overflow: visible; }
+    .figure-large { width: min(200px, 58vw); }
+    .figure polygon, .figure circle, .figure rect, .figure ellipse, .figure path {
+      fill: var(--blob-lav); fill-opacity: .5;
+      stroke: var(--tens); stroke-width: 4; stroke-linejoin: round; stroke-linecap: round;
+    }
+    .figure-solide path, .figure-solide ellipse, .figure-solide circle { fill: var(--blob-rose); fill-opacity: .45; stroke: var(--brand-deep); }
+    .figure-solide .arete { fill: none; stroke: var(--brand-deep); stroke-width: 2.5; stroke-dasharray: 5 4; opacity: .8; }
+    .cote-txt {
+      fill: var(--op); stroke: none; font: 700 13px var(--font-display);
+      text-anchor: middle; dominant-baseline: middle;
+    }
 
-    /* Écran « Poser » — opération posée */
-    .written-board {
+    /* ---------- Géométrie : cartes de choix ---------- */
+    .q-enonce-choix { font-size: clamp(1.05rem, 3.2vw, 1.4rem); font-weight: 700; color: var(--title); text-align: center; }
+    .choix-grille { display: grid; gap: 12px; width: min(430px, 100%); }
+    .choix-carte {
+      min-height: 96px; padding: 12px; background: #fff;
+      border-radius: var(--radius-tile); box-shadow: 0 3px 0 rgba(118, 64, 101, .1);
+      display: grid; place-items: center;
+    }
+    .choix-carte .figure { margin: 0; width: min(96px, 22vw); }
+    .choix-mot { font-family: var(--font-display); font-weight: 700; font-size: 1.05rem; color: var(--tab-ink); }
+    .choix-carte.choisi { background: var(--brand); box-shadow: 0 3px 0 var(--brand-deep); }
+    .choix-carte.choisi .choix-mot { color: var(--brand-ink); }
+    .choix-carte.correct { background: var(--ok-bg); box-shadow: 0 3px 0 var(--ok-line); }
+    .choix-carte.correct .choix-mot { color: var(--ok-ink); }
+    .choix-carte.wrong { background: var(--bad-bg); box-shadow: 0 3px 0 var(--bad-line); }
+    .choix-carte.wrong .choix-mot { color: var(--bad-ink); }
+
+    /* ---------- Géométrie : symétrie sur quadrillage ---------- */
+    .grille-sym {
       position: relative;
       display: grid;
-      grid-template-columns: 38px 62px 62px;
-      row-gap: 4px;
-      width: max-content;
-      margin: 4px auto 0;
-      border: 0;
-      border-radius: 0;
-      overflow: visible;
-      background: transparent;
+      grid-template-columns: repeat(var(--cols), 1fr);
+      grid-template-rows: repeat(var(--rows), 1fr);
+      gap: 3px;
+      width: min(420px, 92%);
+      aspect-ratio: var(--cols) / var(--rows);
+      padding: 3px;
+      background: var(--field);
+      border-radius: 12px;
+    }
+    .case { border-radius: 5px; background: #fff; box-shadow: inset 0 0 0 1px var(--field-line); min-height: 0; padding: 0; }
+    .case.pleine { background: var(--tens-dot); box-shadow: none; }
+    .case.cliquable { cursor: pointer; transition: background .15s ease; }
+    .case.cliquable.choisie { background: var(--brand); box-shadow: none; }
+    .case.cliquable.juste { background: var(--ok-line); }
+    .case.cliquable.faux { background: var(--bad-line); }
+    .axe-sym {
+      position: absolute; top: 4px; bottom: 4px;
+      left: calc(var(--axe) / var(--cols) * 100%);
+      width: 3px; margin-left: -1.5px; border-radius: 999px;
+      background: var(--brand-deep); pointer-events: none;
+    }
+
+    /* ---------- Opération posée ---------- */
+    .written-board {
+      position: relative; display: grid; row-gap: 4px; width: max-content; margin: 0 auto;
       font-family: var(--font-display);
     }
-
-    .written-board span,
-    .written-board input {
-      min-height: 46px;
-      display: grid;
-      place-items: center;
-      border: 0;
-      background: transparent;
-      font-size: 1.75rem;
-      font-weight: 700;
-      color: var(--digit);
-      border-radius: 0;
-      padding: 0;
-      text-align: center;
+    .written-board span, .written-board input {
+      min-height: 48px; display: grid; place-items: center; border: 0; background: transparent;
+      font-size: 1.85rem; font-weight: 700; color: var(--digit); border-radius: 0; padding: 0; text-align: center;
     }
-
-    /* En-têtes « d » et « u » */
-    .written-board > span:nth-child(2),
-    .written-board > span:nth-child(3) {
-      min-height: 20px;
-      font-family: var(--font-body);
-      font-size: .72rem;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: .06em;
+    .written-board .rang {
+      min-height: 20px; font-family: var(--font-body); font-size: .72rem; font-weight: 800;
+      text-transform: uppercase; letter-spacing: .06em;
     }
-
     .written-board span.tens { color: var(--tens); }
     .written-board span.ones { color: var(--ones); }
-
-    .written-board span.retenue-cell { border: 0; min-height: 26px; background: transparent; padding: 0; }
-
+    .written-board span.retenue-cell { border: 0; min-height: 28px; background: transparent; padding: 0; }
     .written-board input.retenue-input {
-      width: 26px;
-      height: 26px;
-      min-height: 26px;
-      border-radius: 50%;
-      border: 0;
-      background: var(--carry-bg);
-      color: var(--carry-ink);
-      font-family: var(--font-body);
-      font-size: .85rem;
-      font-weight: 800;
-      margin: 0 auto;
-      padding: 0;
+      width: 28px; height: 28px; min-height: 28px; border-radius: 50%; border: 0;
+      background: var(--carry-bg); color: var(--carry-ink);
+      font-family: var(--font-body); font-size: .88rem; font-weight: 800; margin: 0 auto; padding: 0;
     }
-
     .written-board input.retenue-input.is-ok { background: var(--ok-bg); color: var(--ok-ink); }
     .written-board input.retenue-input.is-bad { background: var(--bad-bg); color: var(--bad-ink); }
-
     .written-board input.written-digit {
-      border: 0;
-      border-radius: 12px;
-      background: var(--field);
-      color: var(--digit);
-      font-size: 1.75rem;
-      min-height: 46px;
-      box-shadow: inset 0 0 0 2px var(--field-line);
+      border: 0; border-radius: 12px; background: var(--field); color: var(--digit);
+      font-size: 1.85rem; min-height: 48px; box-shadow: inset 0 0 0 2px var(--field-line);
     }
-
-    .written-board input.written-digit.is-ok {
-      background: var(--ok-bg);
-      color: var(--ok-ink);
-      box-shadow: none;
-    }
-
-    .written-board input.written-digit.is-bad {
-      background: var(--bad-bg);
-      color: var(--bad-ink);
-      box-shadow: none;
-    }
-
-    .written-board input:focus-visible { outline: 4px solid rgba(105, 89, 174, .3); outline-offset: 0; }
-
+    .written-board input.written-digit.is-ok { background: var(--ok-bg); color: var(--ok-ink); box-shadow: none; }
+    .written-board input.written-digit.is-bad { background: var(--bad-bg); color: var(--bad-ink); box-shadow: none; }
     .written-board span.rule {
-      grid-column: 2 / -1;
-      min-height: 0;
-      height: 0;
-      background: transparent;
-      border: 0;
-      border-top: 3px solid var(--rule);
-      margin: 3px 0;
+      grid-column: 2 / -1; min-height: 0; height: 0; background: transparent;
+      border: 0; border-top: 3px solid var(--rule); margin: 3px 0;
     }
-
     .written-board span.operator { color: var(--op); background: transparent; }
 
-    /* Écran « Heure » */
-    .clock-area { display: grid; grid-template-columns: minmax(220px, 300px) 1fr; gap: 20px; align-items: center; }
+    /* ---------- Division posée : la potence ---------- */
+    .potence {
+      display: inline-grid; grid-template-columns: auto auto;
+      font-family: var(--font-display); margin: 4px auto 0;
+    }
+    .pot-dividende {
+      padding: 6px 16px 10px 6px; text-align: right;
+      font-size: 1.85rem; font-weight: 700; letter-spacing: .1em; color: var(--digit);
+    }
+    .pot-diviseur {
+      padding: 6px 6px 10px 16px; border-left: 3px solid var(--rule);
+      font-size: 1.85rem; font-weight: 700; color: var(--tens); text-align: left;
+    }
+    .pot-reste {
+      padding: 10px 16px 6px 6px; display: flex; align-items: center; justify-content: flex-end; gap: 8px;
+    }
+    .pot-mot { font-family: var(--font-body); font-size: .78rem; font-weight: 800; text-transform: uppercase; letter-spacing: .06em; color: var(--label); }
+    .pot-quotient {
+      padding: 10px 6px 6px 16px; border-left: 3px solid var(--rule); border-top: 3px solid var(--rule);
+      display: flex; gap: 6px; align-items: center;
+    }
+    .pot-champ {
+      width: 46px; min-height: 48px; padding: 0; font-size: 1.7rem; border: 0; border-radius: 12px;
+      background: var(--field); color: var(--digit); box-shadow: inset 0 0 0 2px var(--field-line); text-align: center;
+    }
+    .pot-champ-reste { width: 56px; }
+    .pot-champ.is-ok { background: var(--ok-bg); color: var(--ok-ink); box-shadow: none; }
+    .pot-champ.is-bad { background: var(--bad-bg); color: var(--bad-ink); box-shadow: none; }
 
-    .time-context {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      border: 0;
-      border-radius: 999px;
-      background: var(--field);
-      box-shadow: inset 0 0 0 2px var(--line);
-      padding: 8px 14px;
-      margin-bottom: 10px;
-      font-weight: 700;
-      color: var(--tab-ink);
+    @media (max-width: 600px) {
+      .pot-champ { width: 38px; min-height: 44px; font-size: 1.45rem; }
+      .pot-champ-reste { width: 46px; }
+      .pot-dividende, .pot-diviseur { font-size: 1.55rem; }
     }
 
+    /* ---------- Horloge ---------- */
+    .clock-area { display: flex; align-items: center; justify-content: center; gap: 22px; flex-wrap: wrap; }
+    .clock-cote { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+    .clock-face { width: min(240px, 62vw); aspect-ratio: 1; display: block; }
+    .clock-number { font: 700 14px var(--font-display); fill: var(--digit); text-anchor: middle; dominant-baseline: middle; }
+    .hand-hour { stroke: var(--tens); stroke-width: 8; stroke-linecap: round; }
+    .hand-minute { stroke: var(--ones-dot); stroke-width: 5; stroke-linecap: round; }
+
+    .time-context {
+      display: inline-flex; align-items: center; gap: 8px; border-radius: 999px;
+      background: var(--field); box-shadow: inset 0 0 0 2px var(--line);
+      padding: 8px 14px; font-weight: 700; color: var(--tab-ink);
+    }
     .sky-icon { width: 22px; height: 22px; display: inline-block; position: relative; border-radius: 50%; flex: 0 0 auto; }
     .sky-icon.matin { background: #ffc98f; box-shadow: 0 0 0 5px rgba(255, 201, 143, .28); }
     .sky-icon.apresmidi { background: #ffd75e; box-shadow: 0 0 0 5px rgba(255, 215, 94, .25); }
@@ -657,733 +546,2236 @@
     .sky-icon.nuit { background: #6959ae; }
     .sky-icon.nuit::after { content: ""; position: absolute; width: 16px; height: 16px; right: -2px; top: 2px; border-radius: 50%; background: var(--panel); }
 
-    .clock-face { width: min(300px, 100%); aspect-ratio: 1; display: block; margin: 0 auto; }
+    .time-answer { display: flex; align-items: center; gap: 10px; }
+    .time-answer input { width: 96px; min-height: 68px; font-size: 2rem; }
+    .time-separator { font-family: var(--font-display); font-size: 1.8rem; font-weight: 700; color: var(--op); }
 
-    .clock-number {
-      font: 700 14px var(--font-display);
-      fill: var(--digit);
-      text-anchor: middle;
-      dominant-baseline: middle;
+    /* ---------- Astuce et actions ---------- */
+    .hint-card {
+      display: flex; gap: 12px; align-items: flex-start;
+      background: #fff; border-radius: var(--radius-tile); box-shadow: var(--shadow-card); padding: 14px 16px;
     }
-
-    .hand-hour { stroke: var(--tens); stroke-width: 8; stroke-linecap: round; }
-    .hand-minute { stroke: var(--ones-dot); stroke-width: 5; stroke-linecap: round; }
-
-    .time-answer {
-      display: grid;
-      grid-template-columns: minmax(82px, 1fr) auto minmax(82px, 1fr);
-      gap: 10px;
-      align-items: center;
-      margin: 12px 0;
-      max-width: 340px;
+    .hint-icon {
+      flex: 0 0 auto; width: 34px; height: 34px; border-radius: 50%;
+      background: var(--carry-bg); display: grid; place-items: center; font-size: 1rem; line-height: 1;
     }
+    .hint-body strong {
+      display: block; font-family: var(--font-display); font-weight: 800; font-size: .74rem;
+      text-transform: uppercase; letter-spacing: .07em; color: var(--label);
+    }
+    .hint-body p { margin: 3px 0 0; font-weight: 600; font-size: .97rem; line-height: 1.42; color: var(--tab-ink); }
 
-    .time-answer input { min-height: 64px; font-size: 1.8rem; }
+    .actionbar { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+    .actionbar button { min-height: 54px; box-shadow: 0 2px 6px rgba(118, 64, 101, .08); }
+    .actionbar .primary { box-shadow: 0 4px 0 var(--brand-deep); }
+    .actionbar .primary:active { box-shadow: 0 2px 0 var(--brand-deep); }
 
-    .time-separator {
+    /* ---------- Espace parent ---------- */
+    .pied-accueil { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+    .lien-parent {
+      background: none; box-shadow: none; min-height: 40px; padding: 8px 10px;
+      font-family: var(--font-body); font-weight: 700; font-size: .86rem;
+      color: var(--label); text-decoration: underline; text-underline-offset: 3px;
+    }
+    .lien-parent:active { transform: none; }
+
+    .parent {
+      width: min(720px, 92vw); max-height: 88vh; overflow: auto;
+      border: 0; border-radius: var(--radius-card); padding: 24px;
+      background: var(--panel); color: var(--ink); box-shadow: var(--shadow-lift);
+    }
+    .lien-parent { position: relative; overflow: hidden; -webkit-touch-callout: none; }
+    .lien-parent .jauge {
+      position: absolute; left: 0; bottom: 2px; height: 3px; width: 0;
+      border-radius: 999px; background: var(--brand-deep); pointer-events: none;
+    }
+    .lien-parent.en-appui .jauge { width: 100%; transition: width 10s linear; }
+
+    .p-verrou { display: flex; flex-direction: column; align-items: center; gap: 12px; padding: 26px 4px 6px; text-align: center; }
+    .p-verrou-mot { margin: 0; font-weight: 700; font-size: .98rem; color: var(--tab-ink); max-width: 34ch; line-height: 1.45; }
+    .p-verrou-form { display: flex; flex-direction: column; align-items: center; gap: 10px; width: min(240px, 100%); }
+    .p-verrou-form input {
+      width: 100%; min-height: 56px; font-size: 1.5rem; letter-spacing: .3em; text-align: center;
+      border: 3px solid var(--field-line); border-radius: var(--radius-key); background: var(--field); color: var(--digit);
       font-family: var(--font-display);
-      font-size: 1.8rem;
-      font-weight: 700;
-      color: var(--op);
-      text-align: center;
+    }
+    .p-verrou-form button { width: 100%; }
+    .p-verrou-err { margin: 0; min-height: 20px; font-weight: 800; font-size: .88rem; color: var(--bad-ink); }
+    .p-verrou .p-note { text-align: center; max-width: 38ch; }
+
+    .p-pied { flex-wrap: wrap; gap: 10px; }
+
+    .parent::backdrop { background: rgba(118, 64, 101, .35); backdrop-filter: blur(2px); }
+    .p-entete { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+    .parent h2 {
+      margin: 0; font-family: var(--font-display); font-weight: 800;
+      font-size: 1.5rem; color: var(--title);
+    }
+    .parent h3 {
+      margin: 22px 0 4px; font-family: var(--font-display); font-weight: 800;
+      font-size: .8rem; text-transform: uppercase; letter-spacing: .07em; color: var(--label);
+    }
+    .p-note { margin: 0 0 12px; font-size: .86rem; line-height: 1.45; color: var(--muted); font-weight: 600; }
+
+    .p-resume { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 16px; }
+    .p-stat {
+      background: var(--field); border-radius: var(--radius-tile); padding: 14px 12px; text-align: center;
+      display: flex; flex-direction: column; gap: 3px;
+    }
+    .p-stat strong { font-family: var(--font-display); font-size: 1.3rem; color: var(--title); }
+    .p-stat span { font-size: .78rem; font-weight: 700; color: var(--label); }
+
+    .p-ligne { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; padding: 8px 0; }
+    .p-domaine { font-weight: 800; font-size: .95rem; color: var(--tab-ink); }
+    .p-niveaux { display: flex; gap: 5px; }
+    .p-niv {
+      min-height: 38px; min-width: 46px; padding: 6px 8px; font-size: .82rem;
+      background: var(--field); color: var(--tab-ink); box-shadow: inset 0 0 0 2px var(--line);
+    }
+    .p-niv.actif { background: var(--brand); color: var(--brand-ink); box-shadow: 0 3px 0 var(--brand-deep); }
+
+    .p-bloc { margin-bottom: 14px; }
+    .p-bloc h4 {
+      margin: 0 0 6px; font-family: var(--font-display); font-size: 1rem; font-weight: 800; color: var(--title);
+      display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap;
+    }
+    .p-niveau-actuel { font-family: var(--font-body); font-size: .76rem; font-weight: 700; color: var(--label); }
+    .p-bloc ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 5px; }
+    .p-comp {
+      display: grid; grid-template-columns: 1fr auto auto; align-items: center; gap: 10px;
+      background: var(--field); border-radius: 12px; padding: 9px 12px;
+    }
+    .p-comp-nom { font-weight: 700; font-size: .92rem; color: var(--tab-ink); }
+    .p-comp-chiffres { font-family: var(--font-display); font-weight: 700; font-size: .88rem; color: var(--label); font-variant-numeric: tabular-nums; }
+    .p-badge {
+      font-size: .72rem; font-weight: 800; padding: 4px 10px; border-radius: 999px; white-space: nowrap;
+      background: rgba(118, 64, 101, .1); color: var(--label);
+    }
+    .p-acquise { background: var(--bravo-bg); color: var(--bravo-ink); }
+    .p-fragile { background: var(--bad-bg); color: var(--bad-ink); }
+    .p-en-cours { background: var(--carry-bg); color: var(--carry-ink); }
+
+    .p-pied { margin-top: 20px; padding-top: 16px; border-top: 2px solid var(--line); display: flex; justify-content: center; }
+
+    @media (max-width: 600px) {
+      .parent { padding: 18px 14px; width: 94vw; }
+      .p-resume { grid-template-columns: repeat(3, 1fr); }
+      .p-stat strong { font-size: 1rem; }
+      .p-stat span { font-size: .68rem; }
+      /* une seule rangée : le nom se replie, chiffres et badge restent à droite */
+      .p-comp { grid-template-columns: minmax(0, 1fr) auto auto; gap: 8px; padding: 8px 10px; }
+      .p-comp-nom { font-size: .84rem; line-height: 1.25; }
+      .p-comp-chiffres { font-size: .8rem; }
+      .p-badge { font-size: .64rem; padding: 3px 7px; }
+      .p-ligne { padding: 6px 0; }
+      .p-niv { min-width: 40px; min-height: 36px; font-size: .74rem; padding: 5px 4px; }
     }
 
-    @media (max-width: 760px) {
-      .app { padding: 16px 12px 12px; }
-      header { grid-template-columns: 1fr; }
-      .header-side { justify-content: space-between; }
-      nav { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; }
-      nav button { font-size: .84rem; padding: 10px 4px; }
-      .grid { grid-template-columns: 1fr; }
-      .toolbar { align-items: start; flex-direction: column; }
-      .toolbar-actions { justify-content: start; }
-      .answer-row { grid-template-columns: minmax(0, 1fr) auto; }
-      .toolbelt-row { flex-direction: column; align-items: stretch; }
-      .actionbar { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-      .actionbar button { font-size: .88rem; padding: 10px 4px; }
-      .clock-area { grid-template-columns: 1fr; }
-      .clock-face { width: min(240px, 100%); }
-      body::before { width: 220px; height: 220px; top: -90px; right: -80px; }
-      body::after { width: 170px; height: 170px; }
+    /* ---------- Animations ---------- */
+    @keyframes pop { 0% { transform: scale(.8); } 60% { transform: scale(1.08); } 100% { transform: scale(1); } }
+    @keyframes saute { 0%, 100% { transform: translateY(0); } 40% { transform: translateY(-12px); } }
+    @keyframes penche { 0%, 100% { transform: rotate(0); } 30% { transform: rotate(-6deg); } 70% { transform: rotate(4deg); } }
+    @keyframes glisse { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+    @keyframes jaillit {
+      from { opacity: 1; transform: translate(0, 0) scale(1); }
+      to { opacity: 0; transform: translate(var(--dx), var(--dy)) scale(.4); }
+    }
+
+    .pastille-joie {
+      position: absolute; left: 50%; top: 50%;
+      width: var(--taille); height: var(--taille); border-radius: 50%;
+      pointer-events: none;
+      animation: jaillit .85s cubic-bezier(.2, .7, .3, 1) var(--delai) forwards;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation: none !important; transition: none !important; }
+    }
+
+    /* ---------- Tablette portrait et téléphone ---------- */
+    @media (max-width: 900px) {
+      .jeu-corps { grid-template-columns: 1fr; }
+      .avatar-zone { flex-direction: row; align-items: center; gap: 14px; }
+      .avatar-boite { max-width: 84px; flex: 0 0 auto; }
+      .bulle { flex: 1; text-align: left; }
+      .bulle::after { top: 50%; left: -8px; transform: translateY(-50%);
+        border-left: 0; border-right: 9px solid #fff; border-top: 9px solid transparent; border-bottom: 9px solid transparent; }
+      .bulle.joie::after { border-right-color: var(--bravo-bg); border-bottom-color: transparent; }
+      .bulle.doux::after { border-right-color: var(--bad-bg); border-bottom-color: transparent; }
+    }
+
+    @media (max-width: 600px) {
+      :root { --col-pose: 46px; }
+      .app { padding: 14px 12px calc(14px + env(safe-area-inset-bottom)); gap: 12px; }
+      .question-carte { padding: 22px 14px; min-height: 200px; }
+      .tuiles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .accueil-carte { flex-direction: column; text-align: center; }
+      .accueil-texte { align-items: stretch; }
+      /* l'avatar passe au-dessus : la pointe de la bulle vise le haut */
+      #bulleAccueil::after {
+        top: -8px; left: 50%; transform: translateX(-50%);
+        border-left: 9px solid transparent; border-right: 9px solid transparent;
+        border-top: 0; border-bottom: 9px solid #fff;
+      }
+      .primary.gros { width: 100%; }
+      .jeu-barre .serie-pill { order: 3; flex-basis: 100%; }
+      .actionbar button { font-size: .9rem; padding: 10px 6px; }
+      .time-answer input { width: 78px; }
     }
   </style>
 </head>
 <body>
   <div class="app">
     <header>
-      <div>
-        <h1>Mes exercices</h1>
-        <div class="greeting" id="greeting"></div>
-        <div class="legend" aria-label="Légende des couleurs">
-          <span class="chip"><span class="dot tens"></span>dizaines</span>
-          <span class="chip"><span class="dot ones"></span>unités</span>
-        </div>
-      </div>
+      <h1>Mes exercices</h1>
       <div class="header-side">
-        <div class="progress-dots" id="progressDots" role="img" aria-label="Progression"></div>
-        <button class="primary" id="resetProgress" type="button">Recommencer</button>
+        <div class="score-pill" id="scorePill" role="status" aria-label="Étoiles gagnées">
+          <span class="score-star" aria-hidden="true">★</span><span id="scoreText">0</span>
+        </div>
+        <button class="ghost" id="sonToggle" type="button" aria-pressed="true" aria-label="Couper le son">
+          <span id="sonIcone" aria-hidden="true">♪</span>
+        </button>
       </div>
     </header>
 
-    <nav aria-label="Choisir un exercice">
-      <button class="active" data-screen="mental" type="button">Calcul</button>
-      <button data-screen="order" type="button">Ranger</button>
-      <button data-screen="written" type="button">Poser</button>
-      <button data-screen="hours" type="button">Heure</button>
-    </nav>    <main>
-      <section class="screen active" id="mental">
-        <div class="toolbar">
-          <strong>Calcule dans ta tête</strong>
-          <div class="toolbar-actions">
-            <button class="soft" data-check-screen="mental" type="button">Corriger</button>
-            <button class="success" data-new="mental" type="button">Nouvelle série</button>
+    <main>
+      <!-- ---------- ACCUEIL ---------- -->
+      <section class="scene active" id="accueil">
+        <div class="accueil-carte">
+          <div class="avatar-boite avatar-grand" data-avatar></div>
+          <div class="accueil-texte">
+            <p class="bulle visible" id="bulleAccueil"></p>
+            <button class="primary gros" id="commencer" type="button">Commencer</button>
           </div>
         </div>
-        <div class="grid" id="mentalGrid"></div>
-      </section>
 
-      <section class="screen" id="order">
-        <div class="toolbar">
-          <strong>Touche les nombres du plus petit au plus grand</strong>
-          <div class="toolbar-actions">
-            <button class="soft" id="undoOrder" type="button">Effacer le dernier</button>
-            <button class="soft" data-check-screen="order" type="button">Corriger</button>
-            <button class="success" data-new="order" type="button">Nouvelle série</button>
-          </div>
+        <p class="accueil-sous">Ou choisis toi-même :</p>
+        <div class="tuiles">
+          <button class="tuile" data-domaine="mental" type="button"><span class="tuile-ico" aria-hidden="true">+</span>Calcul</button>
+          <button class="tuile" data-domaine="order" type="button"><span class="tuile-ico" aria-hidden="true">⇅</span>Ranger</button>
+          <button class="tuile" data-domaine="written" type="button"><span class="tuile-ico" aria-hidden="true">▤</span>Poser</button>
+          <button class="tuile" data-domaine="hours" type="button"><span class="tuile-ico" aria-hidden="true">◷</span>Heure</button>
+          <button class="tuile" data-domaine="mesures" type="button"><span class="tuile-ico" aria-hidden="true">⚖</span>Mesures</button>
+          <button class="tuile" data-domaine="formes" type="button"><span class="tuile-ico" aria-hidden="true">◇</span>Formes</button>
+          <button class="tuile" data-domaine="problemes" type="button"><span class="tuile-ico" aria-hidden="true">?</span>Problèmes</button>
         </div>
-        <div class="exercise">
-          <div class="small-prompt">Nombres à ranger</div>
-          <div class="word-bank" id="orderBank"></div>
-          <div class="small-prompt">Ma réponse</div>
-          <div class="order-zone" id="orderAnswer"></div>
-          <div class="feedback" id="orderFeedback"></div>
+
+        <div class="pied-accueil">
+          <div class="legend" aria-label="Légende des couleurs">
+            <span class="chip"><span class="dot tens"></span>dizaines</span>
+            <span class="chip"><span class="dot ones"></span>unités</span>
+          </div>
+          <button class="lien-parent" id="lienParent" type="button">Espace parent<span class="jauge" aria-hidden="true"></span></button>
         </div>
       </section>
 
-      <section class="screen" id="written">
-        <div class="toolbar">
-          <strong>Pose et calcule avec d et u</strong>
-          <div class="toolbar-actions">
-            <button class="soft" data-check-screen="written" type="button">Corriger</button>
-            <button class="success" data-new="written" type="button">Nouvelle série</button>
+      <!-- ---------- JEU ---------- -->
+      <section class="scene" id="jeu">
+        <div class="jeu-barre">
+          <button class="ghost" id="retour" type="button" aria-label="Retour à l'accueil">←</button>
+          <span class="etiquette" id="etiquetteDomaine"></span>
+          <div class="serie-pill" id="seriePill" role="status"><span id="serieTexte"></span></div>
+          <button class="ghost" id="passer" type="button">Passer</button>
+        </div>
+
+        <div class="jalons" id="jalons" hidden>
+          <span class="jalons-titre" id="jalonsTitre"></span>
+          <span class="jalons-barre" id="jalonsBarre"></span>
+        </div>
+
+        <div class="jeu-corps">
+          <div class="question-carte" id="questionHost"></div>
+          <div class="avatar-zone">
+            <div class="avatar-boite" data-avatar></div>
+            <p class="bulle" id="bulleJeu" aria-live="polite"></p>
           </div>
         </div>
-        <div class="grid" id="writtenGrid"></div>
+
+        <div class="hint-card">
+          <span class="hint-icon" aria-hidden="true">💡</span>
+          <div class="hint-body"><strong>Astuce</strong><p id="hintText"></p></div>
+        </div>
+
+        <div class="actionbar" aria-label="Actions">
+          <button id="btnEffacer" type="button">Effacer</button>
+          <button id="btnVider" type="button">Vider</button>
+          <button class="primary" id="btnSuivant" type="button">Suivant</button>
+        </div>
       </section>
 
-      <section class="screen" id="hours">
-        <div class="toolbar">
-          <strong>Lis l'heure avec les aiguilles</strong>
-          <div class="toolbar-actions">
-            <button class="soft" data-check-screen="hours" type="button">Corriger</button>
-            <button class="success" data-new="hours" type="button">Nouvelle heure</button>
+      <!-- ---------- BILAN ---------- -->
+      <section class="scene" id="bilan">
+        <div class="bilan-carte" id="bilanCarte">
+          <div class="avatar-boite avatar-grand" data-avatar></div>
+          <p class="bilan-mot" id="bilanMot"></p>
+          <p class="bilan-score" id="bilanScore"></p>
+          <p class="bilan-etoiles"><span class="score-star" aria-hidden="true">★</span><span id="bilanEtoiles"></span></p>
+
+          <div class="bilan-listes">
+            <div class="bilan-bloc bilan-solide">
+              <h3>Bien réussi</h3>
+              <div id="bilanSolides"></div>
+            </div>
+            <div class="bilan-bloc bilan-revoir">
+              <h3>À revoir</h3>
+              <div id="bilanRevoir"></div>
+            </div>
+          </div>
+
+          <div class="bilan-actions">
+            <button class="primary gros" id="bilanEncore" type="button">Encore une séance</button>
+            <button class="soft" id="bilanAccueil" type="button">Retour à l'accueil</button>
           </div>
         </div>
-        <div id="hoursGrid"></div>
       </section>
     </main>
-
-    <div class="toolbelt">
-      <div class="hint-card">
-        <span class="hint-icon" aria-hidden="true">💡</span>
-        <div class="hint-body">
-          <strong>Astuce</strong>
-          <p id="hintText"></p>
-        </div>
-      </div>
-      <div class="toolbelt-row">
-        <div class="score-pill" id="scorePill" role="status">
-          <span class="score-star" aria-hidden="true">★</span><span id="scoreText">0 série réussie</span>
-        </div>
-        <div class="actionbar" aria-label="Actions">
-          <button data-key="back" type="button">Effacer</button>
-          <button data-key="clear" type="button">Vider</button>
-          <button class="primary" data-key="next" type="button">Suivant</button>
-        </div>
-      </div>
-    </div>
   </div>
 
+  <dialog class="parent" id="parent" aria-labelledby="pTitre">
+    <div class="p-entete">
+      <h2 id="pTitre">Espace parent</h2>
+      <button class="ghost" id="pFermer" type="button" aria-label="Fermer">✕</button>
+    </div>
+
+    <div class="p-verrou" id="pVerrou" hidden>
+      <p class="p-verrou-mot" id="pVerrouMot"></p>
+      <form class="p-verrou-form" id="pForm">
+        <input id="pCode" type="password" inputmode="numeric" pattern="[0-9]*" maxlength="8"
+          autocomplete="off" aria-label="Code parent" placeholder="Code">
+        <input id="pCode2" type="password" inputmode="numeric" pattern="[0-9]*" maxlength="8"
+          autocomplete="off" aria-label="Confirmer le code" placeholder="Confirmer" hidden>
+        <button class="primary" type="submit" id="pValider">Entrer</button>
+      </form>
+      <p class="p-verrou-err" id="pErr" role="alert"></p>
+      <p class="p-note">Code oublié ? Reste appuyé <strong>10 secondes</strong> sur « Espace parent » à l'accueil.</p>
+    </div>
+
+    <div id="pContenu">
+    <div class="p-resume">
+      <div class="p-stat"><strong id="pEtoiles">0</strong><span>étoiles</span></div>
+      <div class="p-stat"><strong id="pJours">0</strong><span>jours d'affilée</span></div>
+      <div class="p-stat"><strong id="pDerniere">jamais</strong><span>dernière séance</span></div>
+    </div>
+
+    <h3>Niveau par domaine</h3>
+    <p class="p-note">Le niveau s'ajuste tout seul selon les résultats. Vous pouvez le forcer : la fenêtre de jugement du niveau choisi repart alors de zéro.</p>
+    <div id="pNiveaux"></div>
+
+    <h3>Suivi des notions</h3>
+    <p class="p-note">Notions du niveau en cours, avec le nombre de réussites sur le nombre de tentatives. Une notion est « acquise » à partir de 85 % de réussite sur ses 20 dernières tentatives.</p>
+    <div id="pSuivi"></div>
+
+    <div class="p-pied">
+      <button class="soft" id="pChangerCode" type="button">Changer le code</button>
+      <button class="soft" id="pReset" type="button">Effacer toute la progression</button>
+    </div>
+    </div>
+  </dialog>
+
   <script>
-    const sets = {
-      mental: [
-        [[35,"+",40],[42,"+",40],[20,"+",40],[63,"-",50],[19,"+",50],[87,"-",50]],
-        [[48,"+",50],[17,"+",30],[95,"-",30],[88,"-",40],[17,"+",10],[60,"-",30]],
-        [[58,"-",50],[51,"+",2],[14,"+",30],[21,"+",7],[48,"-",40],[48,"+",20]],
-        [[19,"-",7],[81,"+",4],[96,"-",4],[92,"+",2],[80,"+",2],[86,"-",6]],
-        [[16,"+",3],[69,"+",7],[34,"+",4],[75,"+",9],[20,"+",8],[22,"+",8]],
-        [[39,"-",8],[67,"+",5],[39,"+",5],[44,"-",2],[19,"-",8],[83,"+",7]],
-        [[23,"+",30],[74,"+",3],[25,"-",2],[49,"+",3],[49,"+",30],[32,"-",30]],
-        [{left:27,op:"+",right:null,result:67,answer:40},{left:43,op:"+",right:null,result:63,answer:20},{left:null,op:"+",right:10,result:32,answer:22},{left:59,op:"+",right:null,result:79,answer:20},{left:34,op:"+",right:null,result:54,answer:20},{left:null,op:"+",right:20,result:57,answer:37}],
-        [{left:58,op:"-",right:null,result:48,answer:10},{left:null,op:"-",right:10,result:63,answer:73},{left:88,op:"-",right:null,result:48,answer:40},{left:null,op:"-",right:10,result:52,answer:62},{left:82,op:"-",right:null,result:72,answer:10},{left:null,op:"-",right:20,result:31,answer:51}],
-        [{left:null,op:"-",right:30,result:25,answer:55},{left:74,op:"+",right:null,result:84,answer:10},{left:null,op:"+",right:50,result:89,answer:39},{left:null,op:"+",right:30,result:91,answer:61},{left:61,op:"-",right:null,result:21,answer:40},{left:59,op:"+",right:null,result:99,answer:40}],
-        [{left:90,op:"+",right:null,result:100,answer:10},{left:26,op:"+",right:null,result:86,answer:60},{left:70,op:"+",right:null,result:100,answer:30},{left:33,op:"+",right:null,result:93,answer:60},{left:32,op:"+",right:null,result:72,answer:40},{left:50,op:"+",right:null,result:100,answer:50}],
-        [[39,"+",39],[58,"+",7],[21,"+",9],[22,"+",22],[88,"+",3],[24,"+",24]],
-        [[18,"+",20],[52,"+",9],[78,"-",20],{left:60,op:"+",right:null,result:70,answer:10},{left:null,op:"+",right:30,result:76,answer:46},[48,"-",2]],
-        [[70,"-",50],[92,"-",2],[38,"-",30],[95,"-",4],{left:33,op:"-",right:null,result:13,answer:20},{left:49,op:"-",right:null,result:29,answer:20}],
-        [[26,"+",7],[19,"+",9],[48,"+",48],[20,"+",20],[63,"+",8],[58,"+",9]],
-        [[44,"-",40],{left:35,op:"+",right:null,result:100,answer:65},[27,"+",50],{left:55,op:"+",right:null,result:100,answer:45},[70,"-",10],[61,"+",20]],
-        [{left:null,op:"+",right:20,result:82,answer:62},{left:null,op:"-",right:30,result:36,answer:66},{left:null,op:"-",right:20,result:59,answer:79},{left:null,op:"+",right:20,result:38,answer:18},{left:null,op:"+",right:40,result:58,answer:18},{left:null,op:"-",right:30,result:0,answer:30}],
-        [[16,"-",5],[25,"+",9],[64,"+",3],[38,"+",8],[50,"+",2],[17,"-",4]],
-        [[52,"+",40],[98,"-",50],{left:10,op:"+",right:null,result:100,answer:90},[47,"-",7],[55,"+",7],[21,"+",21]],
-        [{left:47,op:"+",right:null,result:97,answer:50},[15,"+",5],[85,"+",8],{left:23,op:"+",right:null,result:63,answer:40},[49,"+",7],{left:36,op:"+",right:null,result:46,answer:10}],
-        [[29,"-",2],[38,"-",6],[61,"-",10],[86,"-",30],[45,"-",5],[99,"-",5]],
-        [[45,"+",45],{left:65,op:"+",right:null,result:100,answer:35},[11,"+",11],{left:null,op:"+",right:20,result:36,answer:16},{left:75,op:"+",right:null,result:100,answer:25},{left:null,op:"+",right:10,result:94,answer:84}],
-        [[65,"+",8],{left:76,op:"-",right:null,result:26,answer:50},{left:null,op:"-",right:40,result:52,answer:92},[58,"+",20],[97,"-",6],[41,"+",41]],
-        [{left:20,op:"+",right:null,result:100,answer:80},[37,"+",50],{left:12,op:"+",right:null,result:62,answer:50},[31,"+",30],{left:38,op:"+",right:null,result:48,answer:10},{left:80,op:"+",right:null,result:100,answer:20}]
-      ],
-      order: [
-        {mode:"compare",left:83,right:93},
-        {mode:"asc",values:[84,8,93,26,68,40]},
-        {mode:"asc",values:[24,19,40,44,28,17]},
-        {mode:"compare",left:44,right:86},
-        {mode:"compare",left:44,right:11},
-        {mode:"compare",left:13,right:19},
-        {mode:"asc",values:[98,26,68,28,49,54]},
-        {mode:"compare",left:76,right:30},
-        {mode:"compare",left:77,right:79},
-        {mode:"desc",values:[67,79,49,39,56,98]},
-        {mode:"compare",left:46,right:42},
-        {mode:"asc",values:[74,53,14,24,32,45]},
-        {mode:"asc",values:[15,86,47,30,51,11]},
-        {mode:"desc",values:[16,28,17,98,63,32]},
-        {mode:"desc",values:[45,19,67,94,31,25]},
-        {mode:"desc",values:[49,84,60,78,56,33]},
-        {mode:"desc",values:[50,95,74,27,66,75]},
-        {mode:"desc",values:[97,35,17,69,68,96]},
-        {mode:"asc",values:[47,46,85,62,36,8]},
-        {mode:"desc",values:[29,19,79,10,84,24]},
-        {mode:"desc",values:[53,78,98,40,10,60]},
-        {mode:"desc",values:[25,87,37,31,7,73]},
-        {mode:"asc",values:[95,88,15,50,98,51]},
-        {mode:"asc",values:[52,40,45,69,11,16]},
-        {mode:"compare",left:29,right:66},
-        {mode:"asc",values:[43,79,30,53,29,84]},
-        {mode:"desc",values:[79,94,68,82,86,73]},
-        {mode:"compare",left:75,right:27},
-        {mode:"asc",values:[15,24,82,45,48,27]},
-        {mode:"compare",left:92,right:20}
-      ],
-      written: [
-        [[51,"+",45],[22,"+",60],[32,"+",23],[11,"+",31]],
-        [[20,"+",12],[16,"+",72],[26,"+",70],[71,"+",26]],
-        [[29,"-",14],[48,"-",35],[89,"-",36],[52,"-",30]],
-        [[16,"+",51],[12,"+",67],[24,"+",41],[75,"-",54]],
-        [[96,"-",53],[37,"-",22],[39,"-",13],[84,"+",14]],
-        [[54,"+",11],[58,"+",21],[70,"+",12],[32,"+",50]],
-        [[19,"+",71],[46,"+",14],[61,"+",15],[53,"+",36]],
-        [[38,"+",47],[58,"+",16],[39,"+",12],[21,"+",35]],
-        [[37,"+",19],[33,"+",27],[28,"+",49],[69,"+",28]],
-        [[34,"+",26],[43,"+",18],[11,"+",59],[17,"+",39]],
-        [[26,"+",35],[26,"+",69],[97,"-",10],[76,"-",33]],
-        [[28,"+",16],[68,"+",26],[45,"+",25],[69,"-",40]],
-        [[35,"-",12],[81,"-",41],[28,"+",23],[18,"+",23]],
-        [[43,"+",41],[51,"+",27],[79,"+",16],[29,"+",25]],
-        [[35,"+",58],[59,"+",14],[79,"+",13],[58,"+",15]],
-        [[32,"-",20],[65,"-",33],[79,"-",26],[86,"-",32]],
-        [[13,"+",74],[22,"+",69],[69,"-",39],[18,"+",28]],
-        [[53,"+",39],[75,"+",15],[43,"+",48],[26,"+",36]],
-        [[25,"+",44],[42,"+",34],[64,"-",44],[36,"-",20]],
-        [[29,"+",21],[54,"+",27],[75,"+",24],[88,"-",41]],
-        [[78,"-",21],[86,"-",64],[30,"-",20],[34,"+",16]],
-        [[57,"+",38],[27,"+",13],[27,"+",69],[14,"+",18]],
-        [[41,"+",54],[31,"+",14],[52,"+",30],[31,"+",15]],
-        [[63,"+",29],[59,"-",12],[16,"+",46],[94,"-",61]]
-      ]
-    };
+    /* ============================================================
+       1. NIVEAUX ET UTILITAIRES
+       ============================================================ */
 
-    sets.hours=(function(){
-      const list=[];
-      for(let h=0;h<24;h++) for(const m of [0,15,30,45]) list.push({hour:h,minute:m});
-      for(let h=1;h<=12;h++) for(const m of [5,10,20,25,35,40,50,55]) list.push({hour:h,minute:m});
-      return list.map(t=>({hour:t.hour,minute:t.minute,label:`${t.hour} h ${pad2(t.minute)}`}));
-    })();
+    const NIVEAUX = ["CP", "CE1", "CE2", "CM1", "CM2"];
+    const NIVEAU_DEFAUT = "CP";
 
-    const state = {
-      activeInput: null,
-      index: {mental:0,order:0,written:0,hours:0},
-      orderAnswer: [],
-      selectedCompare: null,
-      advanceTimer: null,
-      lastPick: {},
-      solved: 0
-    };
+    // Bornes de numération par niveau (programmes 2025)
+    const BORNE = { CP: 100, CE1: 1000, CE2: 10000, CM1: 1000000, CM2: 1000000000 };
+    // Borne réduite pour les exercices manipulables à l'écran (ranger, comparer)
+    const BORNE_MANIP = { CP: 100, CE1: 1000, CE2: 10000, CM1: 100000, CM2: 1000000 };
 
-    function colorNumber(value) {
-      const text = String(value);
-      if (text.length===1) return `<span class="num"><span class="ones">${text}</span></span>`;
-      return `<span class="num"><span class="tens">${text.slice(0,-1)}</span><span class="ones">${text.slice(-1)}</span></span>`;
-    }
-
-    function answerFor(item) {
-      if (!Array.isArray(item)) return item.answer;
-      const [a,op,b]=item;
-      return op==="+"?a+b:a-b;
-    }
+    const rnd = n => Math.floor(Math.random() * n);
+    const entre = (a, b) => a + rnd(b - a + 1);
+    const choix = list => list[rnd(list.length)];
+    const rang = niveau => NIVEAUX.indexOf(niveau);
 
     function pad2(value) {
-      const text=String(value);
-      return text.length<2?"0"+text:text;
+      const text = String(value);
+      return text.length < 2 ? "0" + text : text;
+    }
+
+    // Le code couleur dizaines/unités n'a de sens que sur les petits nombres
+    function colorNumber(value) {
+      const text = String(value);
+      if (text.length === 1) return `<span class="num"><span class="ones">${text}</span></span>`;
+      if (text.length === 2) return `<span class="num"><span class="tens">${text[0]}</span><span class="ones">${text[1]}</span></span>`;
+      return `<span class="num">${espace(text)}</span>`;
+    }
+
+    // Espace fine tous les 3 chiffres, comme à l'école
+    function espace(text) {
+      return String(text).replace(/\B(?=(\d{3})+(?!\d))/g, " ");
     }
 
     function partOfDay(hour) {
-      if (hour>=6&&hour<12) return "matin";
-      if (hour>=12&&hour<18) return "apresmidi";
-      if (hour>=18&&hour<22) return "soir";
+      if (hour >= 6 && hour < 12) return "matin";
+      if (hour >= 12 && hour < 18) return "apresmidi";
+      if (hour >= 18 && hour < 22) return "soir";
       return "nuit";
     }
 
-    const greetings=["On continue ? C'est parti !","À toi de jouer !","Une nouvelle série t'attend !","Choisis un exercice et c'est parti !","Allez, on s'entraîne !"];
+    /* ============================================================
+       2. CATALOGUE DE COMPÉTENCES
+       Chaque compétence sait fabriquer un exercice pour un niveau.
+       ============================================================ */
 
-    const praises=["Bravo !","Super !","Génial !","Bien joué !","Parfait !","Trop fort !","Excellent !","Tu assures !","Nickel !","C'est exactement ça !","Impeccable !","Quel talent !","Tu gères !","Magnifique !","Sans faute !"];
+    const NOMS_RANG = ["unités", "dizaines", "centaines", "milliers"];
+    const LETTRE_RANG = ["u", "d", "c", "m"];
 
-    const retries=["Essaie encore","Presque !","Pas tout à fait…","Tu y es presque","Regarde encore une fois","Encore un petit effort","Recompte doucement","Reprends calmement"];
+    // Fabrique d'items --------------------------------------------------
+    const saisie = (enonce, reponse, format) => ({ type: "saisie", enonce, reponse: String(reponse), format: format || "entier" });
+    const pose = (op, a, b) => {
+      const reponse = op === "+" ? a + b : op === "-" ? a - b : a * b;
+      const chiffresA = String(a).length, chiffresB = String(b).length;
+      const colonnes = Math.max(String(reponse).length, chiffresA, chiffresB);
+      // retenues[c] = retenue sortant de la colonne c (0 = unités)
+      const retenues = [];
+      let report = 0;
+      for (let c = 0; c < colonnes; c++) {
+        const da = Math.floor(a / 10 ** c) % 10;
+        const db = Math.floor(b / 10 ** c) % 10;
+        let somme;
+        if (op === "+") somme = da + db + report;
+        else if (op === "-") somme = da - db - report;
+        else somme = da * b + report;
+        report = op === "-" ? (somme < 0 ? 1 : 0) : Math.floor(somme / 10);
+        retenues.push(op === "-" ? 0 : report);
+      }
+      return { type: "pose", op, a, b, reponse: String(reponse), colonnes, retenues };
+    };
+    // Division euclidienne : on fabrique quotient et reste d'abord,
+    // le dividende s'en déduit — impossible de générer une division fausse.
+    const division = (quotient, diviseur, reste) => ({
+      type: "division", dividende: quotient * diviseur + reste, diviseur, quotient: String(quotient), reste: String(reste)
+    });
 
-    const hints={
-      mental:[
-        {tag:"addTens",  text:"Pour ajouter 10, la dizaine augmente de 1 et l'unité ne bouge pas."},
-        {tag:"addTens",  text:"Pour ajouter 20, compte 2 dizaines de plus : 34 + 20, c'est 54."},
-        {tag:"subTens",  text:"Pour enlever 10, la dizaine diminue de 1 : 68 − 10, c'est 58."},
-        {tag:"hole",     text:"Quand un nombre est caché, demande-toi : combien faut-il ajouter pour arriver au résultat ?"},
-        {tag:"hole",     text:"Un nombre caché, c'est l'écart entre les deux nombres que tu vois."},
-        {tag:"hundred",  text:"Pour aller jusqu'à 100, complète d'abord la dizaine, puis compte les dizaines qui manquent."},
-        {tag:"carry",    text:"Si les unités dépassent 9, tu viens de former une dizaine de plus."},
-        {tag:"carry",    text:"45 + 7 : va d'abord jusqu'à 50, puis ajoute ce qui reste."},
-        {tag:"double",   text:"Un doublé, c'est le même nombre deux fois : 23 + 23, c'est 46."},
-        {tag:"subUnits", text:"Pour enlever quelques unités, il suffit de reculer chiffre par chiffre."}
-      ],
-      order:[
-        {tag:"asc",     text:"Cherche à chaque fois le plus petit nombre qui reste."},
-        {tag:"asc",     text:"Compare d'abord les dizaines. Si elles sont égales, regarde les unités."},
-        {tag:"desc",    text:"Cherche à chaque fois le plus grand nombre qui reste."},
-        {tag:"desc",    text:"Les dizaines comptent plus que les unités : 40 est plus grand que 39."},
-        {tag:"compare", text:"Le signe < s'ouvre toujours du côté du plus grand nombre."},
-        {tag:"compare", text:"Attention : 19 et 91 ont les mêmes chiffres, mais pas la même valeur !"}
-      ],
-      written:[
-        {tag:"any",   text:"Vérifie que chaque chiffre est bien aligné dans sa colonne d et u."},
-        {tag:"add",   text:"On commence toujours par la colonne des unités, à droite."},
-        {tag:"carry", text:"Si les unités font 10 ou plus, on pose une retenue au-dessus des dizaines."},
-        {tag:"carry", text:"La retenue vaut 1 dizaine : n'oublie pas de l'ajouter aux dizaines."},
-        {tag:"sub",   text:"Pour une soustraction, enlève d'abord les unités, puis les dizaines."}
-      ],
-      hours:[
-        {tag:"any",     text:"La petite aiguille donne les heures, la grande donne les minutes."},
-        {tag:"pile",    text:"Quand la grande aiguille est sur le 12, il est l'heure « pile »."},
-        {tag:"quart",   text:"Quand la grande aiguille est sur le 3, il est « et quart »."},
-        {tag:"demie",   text:"Quand la grande aiguille est sur le 6, il est « et demie »."},
-        {tag:"moins",   text:"Quand la grande aiguille est sur le 9, il est « moins le quart »."},
-        {tag:"cinq",    text:"Chaque chiffre de l'horloge vaut 5 minutes pour la grande aiguille."},
-        {tag:"apresmidi", text:"L'après-midi, on ajoute 12 : 3 h de l'après-midi, c'est 15 h."}
-      ]
+    const ranger = (mode, valeurs) => ({ type: "ranger", mode, valeurs });
+    const comparer = (g, d) => ({ type: "ranger", mode: "compare", gauche: g, droite: d });
+    const horloge = (hour, minute) => ({ type: "horloge", hour, minute, reponse: `${hour}h${pad2(minute)}` });
+
+    // Tirages utiles ----------------------------------------------------
+    function nombreDuNiveau(niveau, min) {
+      const max = Math.min(BORNE_MANIP[niveau], 999999);
+      return entre(min || (niveau === "CP" ? 2 : 11), max - 1);
+    }
+    function nDistincts(n, niveau) {
+      const vus = new Set();
+      const max = BORNE_MANIP[niveau];
+      while (vus.size < n) vus.add(entre(niveau === "CP" ? 1 : 5, Math.min(max - 1, 999999)));
+      return [...vus];
+    }
+
+    const competences = [
+
+      /* ---------- NOMBRES : numération ---------- */
+      {
+        id: "suivant-precedent", domaine: "nombres", niveaux: ["CP", "CE1"], ecran: "mental",
+        titre: "Le nombre juste avant ou juste après",
+        aides: ["Juste après, c'est un de plus. Juste avant, c'est un de moins.",
+                "Attention au passage de dizaine : après 39, c'est 40."],
+        genere(niveau) {
+          const n = entre(niveau === "CP" ? 5 : 50, BORNE.CP === 100 && niveau === "CP" ? 98 : 998);
+          return Math.random() < 0.5
+            ? saisie(`Le nombre juste <strong>après</strong> ${colorNumber(n)}`, n + 1)
+            : saisie(`Le nombre juste <strong>avant</strong> ${colorNumber(n)}`, n - 1);
+        }
+      },
+      {
+        id: "chiffre-des", domaine: "nombres", niveaux: ["CE1", "CE2", "CM1", "CM2"], ecran: "mental",
+        titre: "Le chiffre des …",
+        aides: ["De droite à gauche : unités, dizaines, centaines, milliers.",
+                "Le chiffre des centaines est le troisième en partant de la droite."],
+        genere(niveau) {
+          const chiffres = { CE1: 3, CE2: 4, CM1: 5, CM2: 6 }[niveau];
+          const n = entre(10 ** (chiffres - 1), 10 ** chiffres - 1);
+          const r = rnd(Math.min(chiffres, 4));
+          const val = Math.floor(n / 10 ** r) % 10;
+          return saisie(`Dans <strong>${espace(n)}</strong>, quel est le chiffre des <strong>${NOMS_RANG[r]}</strong> ?`, val);
+        }
+      },
+      {
+        id: "combien-de", domaine: "nombres", niveaux: ["CE2", "CM1", "CM2"], ecran: "mental",
+        titre: "Combien de dizaines, de centaines",
+        aides: ["Combien de dizaines en tout : on enlève le chiffre des unités.",
+                "Ce n'est pas la même chose que « le chiffre des dizaines » : ici on compte tout."],
+        genere(niveau) {
+          const chiffres = { CE2: 4, CM1: 5, CM2: 6 }[niveau];
+          const n = entre(10 ** (chiffres - 1), 10 ** chiffres - 1);
+          const r = 1 + rnd(Math.min(chiffres - 1, 3));
+          return saisie(`Combien de <strong>${NOMS_RANG[r]}</strong> en tout dans <strong>${espace(n)}</strong> ?`, Math.floor(n / 10 ** r));
+        }
+      },
+      {
+        id: "decompose", domaine: "nombres", niveaux: ["CE1", "CE2", "CM1", "CM2"], ecran: "mental",
+        titre: "Recomposer un nombre",
+        aides: ["Additionne chaque morceau pour retrouver le nombre entier.",
+                "Chaque terme correspond à un rang : milliers, centaines, dizaines, unités."],
+        genere(niveau) {
+          const chiffres = { CE1: 3, CE2: 4, CM1: 5, CM2: 5 }[niveau];
+          const n = entre(10 ** (chiffres - 1), 10 ** chiffres - 1);
+          const morceaux = [];
+          for (let c = chiffres - 1; c >= 0; c--) {
+            const d = Math.floor(n / 10 ** c) % 10;
+            if (d) morceaux.push(espace(d * 10 ** c));
+          }
+          return saisie(`${morceaux.join(" + ")} = ?`, n);
+        }
+      },
+
+      /* ---------- CALCUL : faits numériques ---------- */
+      {
+        id: "comp-10", domaine: "calcul", niveaux: ["CP"], ecran: "mental",
+        titre: "Compléments à 10",
+        aides: ["Compte sur tes doigts jusqu'à 10.", "7 et 3, 6 et 4, 5 et 5 : ce sont des paires à connaître par cœur."],
+        genere() { const a = entre(1, 9); return saisie(`${colorNumber(a)} + ? = ${colorNumber(10)}`, 10 - a); }
+      },
+      {
+        id: "add-petit", domaine: "calcul", niveaux: ["CP"], ecran: "mental",
+        titre: "Additions jusqu'à 20",
+        aides: ["Pars du plus grand nombre et compte en avançant.", "Passe d'abord par 10, puis ajoute le reste."],
+        genere() { const a = entre(2, 12), b = entre(2, 20 - a); return saisie(`${colorNumber(a)} + ${colorNumber(b)} =`, a + b); }
+      },
+      {
+        id: "sub-petit", domaine: "calcul", niveaux: ["CP", "CE1"], ecran: "mental",
+        titre: "Soustractions jusqu'à 20",
+        aides: ["Compte à reculons depuis le plus grand nombre.", "Tu peux aussi chercher ce qu'il faut ajouter au petit pour atteindre le grand."],
+        genere() { const a = entre(5, 20), b = entre(1, a - 1); return saisie(`${colorNumber(a)} − ${colorNumber(b)} =`, a - b); }
+      },
+      {
+        id: "double", domaine: "calcul", niveaux: ["CP", "CE1", "CE2"], ecran: "mental",
+        titre: "Les doubles",
+        aides: ["Le double, c'est le même nombre ajouté à lui-même.", "Double de 25 : double de 20 (40) plus double de 5 (10), donc 50."],
+        genere(niveau) { const n = entre(2, { CP: 10, CE1: 25, CE2: 50 }[niveau]); return saisie(`Le <strong>double</strong> de ${colorNumber(n)}`, n * 2); }
+      },
+      {
+        id: "moitie", domaine: "calcul", niveaux: ["CE1", "CE2", "CM1"], ecran: "mental",
+        titre: "Les moitiés",
+        aides: ["La moitié, c'est partager en deux parts égales.", "Moitié de 46 : moitié de 40 (20) plus moitié de 6 (3), donc 23."],
+        genere(niveau) { const n = 2 * entre(2, { CE1: 25, CE2: 50, CM1: 100 }[niveau]); return saisie(`La <strong>moitié</strong> de ${colorNumber(n)}`, n / 2); }
+      },
+      {
+        id: "comp-20-100", domaine: "calcul", niveaux: ["CE1", "CE2"], ecran: "mental",
+        titre: "Compléments à 20 et à 100",
+        aides: ["Pour aller à 100, complète d'abord la dizaine, puis compte les dizaines qui manquent.",
+                "35 pour aller à 100 : 5 pour faire 40, puis 60. Donc 65."],
+        genere(niveau) {
+          if (niveau === "CE1" && Math.random() < 0.5) { const a = entre(1, 19); return saisie(`${colorNumber(a)} + ? = ${colorNumber(20)}`, 20 - a); }
+          const a = entre(5, 95); return saisie(`${colorNumber(a)} + ? = <strong>100</strong>`, 100 - a);
+        }
+      },
+      {
+        id: "add-dizaines", domaine: "calcul", niveaux: ["CE1", "CE2"], ecran: "mental",
+        titre: "Ajouter et retirer des dizaines",
+        aides: ["Pour ajouter 10, la dizaine augmente de 1 et l'unité ne bouge pas.",
+                "Pour ajouter 20, compte 2 dizaines de plus : 34 + 20, c'est 54."],
+        genere() {
+          const a = entre(11, 89), d = choix([10, 20, 30, 40, 50]);
+          return Math.random() < 0.5 && a + d <= 99
+            ? saisie(`${colorNumber(a)} + ${colorNumber(d)} =`, a + d)
+            : saisie(`${colorNumber(Math.max(a, d + 1))} − ${colorNumber(d)} =`, Math.max(a, d + 1) - d);
+        }
+      },
+      {
+        id: "add-retenue", domaine: "calcul", niveaux: ["CE1", "CE2"], ecran: "mental",
+        titre: "Passer la dizaine",
+        aides: ["Va d'abord jusqu'à la dizaine ronde, puis ajoute ce qui reste.",
+                "58 + 7 : 58 + 2 font 60, puis + 5 font 65."],
+        genere() {
+          let a, b;
+          do { a = entre(13, 92); b = entre(3, 9); } while (a % 10 + b < 10 || a + b > 99);
+          return saisie(`${colorNumber(a)} + ${colorNumber(b)} =`, a + b);
+        }
+      },
+      {
+        id: "table-mult", domaine: "calcul", niveaux: ["CE1", "CE2", "CM1", "CM2"], ecran: "mental",
+        titre: "Tables de multiplication",
+        aides: ["Une multiplication, c'est une addition répétée : 4 × 3, c'est 3 + 3 + 3 + 3.",
+                "3 × 7 et 7 × 3 donnent le même résultat.",
+                "Appuie-toi sur une table que tu connais : 6 × 7, c'est 5 × 7 (35) plus 7."],
+        genere(niveau) {
+          const tables = niveau === "CE1" ? [2, 5, 10] : [2, 3, 4, 5, 6, 7, 8, 9];
+          const a = choix(tables), b = entre(2, 9);
+          return saisie(`${colorNumber(a)} × ${colorNumber(b)} =`, a * b);
+        }
+      },
+      {
+        id: "table-div", domaine: "calcul", niveaux: ["CE2", "CM1", "CM2"], ecran: "mental",
+        titre: "Divisions des tables",
+        aides: ["Cherche dans la table : 42 ÷ 6, c'est « combien de fois 6 dans 42 ? »",
+                "La division est l'opération inverse de la multiplication."],
+        genere() { const b = entre(2, 9), q = entre(2, 9); return saisie(`${colorNumber(b * q)} ÷ ${colorNumber(b)} =`, q); }
+      },
+      {
+        id: "mult-10-100", domaine: "calcul", niveaux: ["CE2", "CM1", "CM2"], ecran: "mental",
+        titre: "Multiplier par 10, 100, 1 000",
+        aides: ["Multiplier par 10, c'est décaler d'un rang : chaque chiffre vaut dix fois plus.",
+                "Par 100, on décale de deux rangs ; par 1 000, de trois."],
+        genere(niveau) {
+          const facteurs = niveau === "CE2" ? [10, 100] : [10, 100, 1000];
+          const f = choix(facteurs), n = entre(2, niveau === "CE2" ? 99 : 999);
+          return saisie(`${colorNumber(n)} × <strong>${espace(f)}</strong> =`, n * f);
+        }
+      },
+      {
+        id: "div-10-100", domaine: "calcul", niveaux: ["CM1", "CM2"], ecran: "mental",
+        titre: "Diviser par 10, 100, 1 000",
+        aides: ["Diviser par 10, c'est décaler d'un rang vers la droite.",
+                "4 500 ÷ 100 : on enlève deux zéros, il reste 45."],
+        genere() { const f = choix([10, 100, 1000]), q = entre(2, 999); return saisie(`<strong>${espace(q * f)}</strong> ÷ <strong>${espace(f)}</strong> =`, q); }
+      },
+      {
+        id: "operation-trou", domaine: "calcul", niveaux: ["CE1", "CE2", "CM1", "CM2"], ecran: "mental",
+        titre: "Le nombre caché",
+        aides: ["Demande-toi : combien faut-il ajouter pour arriver au résultat ?",
+                "Un nombre caché, c'est l'écart entre les deux nombres que tu vois."],
+        genere(niveau) {
+          const max = { CE1: 99, CE2: 999, CM1: 9999, CM2: 99999 }[niveau];
+          const r = entre(Math.floor(max / 4), max), a = entre(1, r - 1);
+          return Math.random() < 0.5
+            ? saisie(`${colorNumber(a)} + ? = ${colorNumber(r)}`, r - a)
+            : saisie(`? + ${colorNumber(a)} = ${colorNumber(r)}`, r - a);
+        }
+      },
+      {
+        id: "mult-trou", domaine: "calcul", niveaux: ["CE2", "CM1", "CM2"], ecran: "mental",
+        titre: "Le facteur caché",
+        aides: ["Cherche dans la table du nombre visible.", "× ? = résultat : c'est une division déguisée."],
+        genere() { const a = entre(2, 9), b = entre(2, 9); return saisie(`${colorNumber(a)} × ? = ${colorNumber(a * b)}`, b); }
+      },
+      {
+        id: "pourcentage", domaine: "calcul", niveaux: ["CM2"], ecran: "mental",
+        titre: "Pourcentages simples",
+        aides: ["50 %, c'est la moitié. 25 %, c'est le quart. 10 %, c'est diviser par 10.",
+                "75 %, c'est trois quarts : la moitié plus un quart."],
+        genere() {
+          const p = choix([10, 25, 50, 75]);
+          const base = p === 10 ? 10 * entre(2, 40) : 4 * entre(5, 50);
+          return saisie(`<strong>${p} %</strong> de ${colorNumber(base)}`, base * p / 100);
+        }
+      },
+
+      /* ---------- CALCUL POSÉ ---------- */
+      {
+        id: "pose-add", domaine: "calcul", niveaux: ["CP", "CE1", "CE2", "CM1", "CM2"], ecran: "written",
+        titre: "Additions posées",
+        aides: ["On commence toujours par la colonne des unités, à droite.",
+                "Si une colonne dépasse 9, on pose une retenue dans la colonne suivante.",
+                "Vérifie que chaque chiffre est bien aligné dans sa colonne."],
+        aideDe(item) {
+          const avecRetenue = item.retenues.some((r, c) => r > 0 && c < item.colonnes - 1);
+          return avecRetenue
+            ? choix(["Si une colonne dépasse 9, on pose une retenue dans la colonne suivante.",
+                     "La retenue vaut une unité du rang suivant : n'oublie pas de l'ajouter."])
+            : choix(["On commence toujours par la colonne des unités, à droite.",
+                     "Vérifie que chaque chiffre est bien aligné dans sa colonne."]);
+        },
+        genere(niveau) {
+          // Au CP le programme s'arrête à 100 : la somme ne doit pas le dépasser.
+          if (niveau === "CP") {
+            const a = entre(10, 89);
+            return pose("+", a, entre(10, 100 - a));
+          }
+          const chiffres = { CE1: 2, CE2: 3, CM1: 4, CM2: 4 }[niveau];
+          const max = 10 ** chiffres - 1, min = 10 ** (chiffres - 1);
+          let a, b;
+          do { a = entre(min, max); b = entre(min, max); } while (String(a + b).length > chiffres + 1);
+          return pose("+", a, b);
+        }
+      },
+      {
+        id: "pose-sub", domaine: "calcul", niveaux: ["CE1", "CE2", "CM1", "CM2"], ecran: "written",
+        titre: "Soustractions posées",
+        aides: ["Enlève d'abord les unités, puis les dizaines.",
+                "Chaque chiffre du bas doit être retiré au chiffre juste au-dessus."],
+        genere(niveau) {
+          // Sans emprunt : l'écran n'a pas de case pour le noter
+          const chiffres = { CE1: 2, CE2: 3, CM1: 4, CM2: 4 }[niveau];
+          let a = 0, b = 0;
+          for (let c = 0; c < chiffres; c++) {
+            const da = entre(c === chiffres - 1 ? 1 : 0, 9);
+            const db = entre(0, da);
+            a += da * 10 ** c; b += db * 10 ** c;
+          }
+          if (a - b < 10) return this.genere(niveau);
+          return pose("-", a, b);
+        }
+      },
+      {
+        id: "pose-div", domaine: "calcul", niveaux: ["CM1", "CM2"], ecran: "written",
+        titre: "Divisions posées",
+        aides: ["On cherche combien de fois le diviseur tient dans le dividende, chiffre après chiffre.",
+                "Le reste est toujours plus petit que le diviseur.",
+                "Vérifie : quotient × diviseur + reste doit redonner le dividende."],
+        genere(niveau) {
+          const diviseur = niveau === "CM1" ? entre(2, 9) : (Math.random() < 0.5 ? entre(2, 9) : entre(11, 25));
+          const quotient = entre(niveau === "CM1" ? 11 : 12, niveau === "CM1" ? 99 : 199);
+          return division(quotient, diviseur, rnd(diviseur));
+        }
+      },
+      {
+        id: "pose-mult", domaine: "calcul", niveaux: ["CE2", "CM1", "CM2"], ecran: "written",
+        titre: "Multiplications posées",
+        aides: ["Multiplie chaque chiffre du haut par le nombre du bas, en partant des unités.",
+                "Quand un produit dépasse 9, la retenue s'ajoute au produit suivant."],
+        genere(niveau) {
+          const chiffres = { CE2: 2, CM1: 3, CM2: 3 }[niveau];
+          const a = entre(10 ** (chiffres - 1), 10 ** chiffres - 1), b = entre(2, 9);
+          return pose("×", a, b);
+        }
+      },
+
+      /* ---------- NOMBRES : comparer et ranger ---------- */
+      {
+        id: "ranger-croissant", domaine: "nombres", niveaux: ["CP", "CE1", "CE2", "CM1", "CM2"], ecran: "order",
+        titre: "Ranger du plus petit au plus grand",
+        aides: ["Cherche à chaque fois le plus petit nombre qui reste.",
+                "Compare d'abord le nombre de chiffres, puis les chiffres de gauche à droite."],
+        genere(niveau) { return ranger("asc", nDistincts(niveau === "CP" ? 5 : 6, niveau)); }
+      },
+      {
+        id: "ranger-decroissant", domaine: "nombres", niveaux: ["CE1", "CE2", "CM1", "CM2"], ecran: "order",
+        titre: "Ranger du plus grand au plus petit",
+        aides: ["Cherche à chaque fois le plus grand nombre qui reste.",
+                "Le nombre qui a le plus de chiffres est le plus grand."],
+        genere(niveau) { return ranger("desc", nDistincts(6, niveau)); }
+      },
+      {
+        id: "comparer", domaine: "nombres", niveaux: ["CP", "CE1", "CE2", "CM1", "CM2"], ecran: "order",
+        titre: "Comparer deux nombres",
+        aides: ["Le signe < s'ouvre toujours du côté du plus grand nombre.",
+                "Attention : 19 et 91 ont les mêmes chiffres, mais pas la même valeur !",
+                "À nombre de chiffres égal, compare les chiffres de gauche à droite."],
+        aideDe(item) {
+          return String(item.gauche).length === String(item.droite).length
+            ? choix(["Le signe < s'ouvre toujours du côté du plus grand nombre.",
+                     "À nombre de chiffres égal, compare les chiffres de gauche à droite."])
+            : "Le nombre qui a le plus de chiffres est le plus grand.";
+        },
+        genere(niveau) {
+          const max = BORNE_MANIP[niveau];
+          const bas = niveau === "CP" ? 1 : 10, haut = Math.min(max - 1, 999999);
+          let g, d;
+          // le voisin proche ne doit pas sortir de la plage du niveau
+          do { g = entre(bas, haut); d = Math.random() < 0.4 ? g + choix([-9, -1, 1, 9, 10]) : entre(bas, haut); }
+          while (g === d || d < bas || d > haut);
+          return comparer(g, d);
+        }
+      },
+
+      /* ---------- GRANDEURS : l'heure ---------- */
+      {
+        id: "heure", domaine: "grandeurs", niveaux: ["CP", "CE1", "CE2", "CM1", "CM2"], ecran: "hours",
+        titre: "Lire l'heure",
+        aides: ["La petite aiguille donne les heures, la grande donne les minutes.",
+                "Quand la grande aiguille est sur le 3, il est « et quart ».",
+                "Quand la grande aiguille est sur le 6, il est « et demie ».",
+                "Quand la grande aiguille est sur le 9, il est « moins le quart ».",
+                "Chaque chiffre de l'horloge vaut 5 minutes pour la grande aiguille.",
+                "L'après-midi, on ajoute 12 : 3 h de l'après-midi, c'est 15 h."],
+        aideDe(item) {
+          if (item.minute === 0) return "Quand la grande aiguille est sur le 12, il est l'heure « pile ».";
+          if (item.minute === 15) return "Quand la grande aiguille est sur le 3, il est « et quart ».";
+          if (item.minute === 30) return "Quand la grande aiguille est sur le 6, il est « et demie ».";
+          if (item.minute === 45) return "Quand la grande aiguille est sur le 9, il est « moins le quart ».";
+          if (item.hour > 12) return "L'après-midi, on ajoute 12 : 3 h de l'après-midi, c'est 15 h.";
+          return "Chaque chiffre de l'horloge vaut 5 minutes pour la grande aiguille.";
+        },
+        genere(niveau) {
+          const minutes = { CP: [0, 30], CE1: [0, 15, 30, 45], CE2: [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55] }[niveau]
+            || [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 1, 7, 13, 22, 38, 47];
+          const heureMax = rang(niveau) <= 1 ? 12 : 23;
+          return horloge(entre(rang(niveau) <= 1 ? 1 : 0, heureMax), choix(minutes));
+        }
+      }
+    ];
+
+    /* ============================================================
+       GÉOMÉTRIE — figures planes, solides, symétrie
+       ============================================================ */
+
+    // Figures planes : sommets sur une grille de 120×120
+    const FIGURES = {
+      carre:      { nom: "un carré",              article: "le carré",       pts: [[22, 22], [98, 22], [98, 98], [22, 98]], cotes: 4, sommets: 4, droits: 4 },
+      rectangle:  { nom: "un rectangle",          article: "le rectangle",   pts: [[10, 32], [110, 32], [110, 88], [10, 88]], cotes: 4, sommets: 4, droits: 4 },
+      triangle:   { nom: "un triangle",           article: "le triangle",    pts: [[60, 14], [108, 100], [12, 100]], cotes: 3, sommets: 3, droits: 0 },
+      trianglerect: { nom: "un triangle rectangle", article: "le triangle rectangle", pts: [[18, 20], [18, 100], [104, 100]], cotes: 3, sommets: 3, droits: 1 },
+      losange:    { nom: "un losange",            article: "le losange",     pts: [[60, 10], [110, 60], [60, 110], [10, 60]], cotes: 4, sommets: 4, droits: 0 },
+      trapeze:    { nom: "un trapèze",            article: "le trapèze",     pts: [[32, 26], [88, 26], [112, 96], [8, 96]], cotes: 4, sommets: 4, droits: 0 },
+      pentagone:  { nom: "un pentagone",          article: "le pentagone",   pts: [[60, 10], [110, 46], [91, 105], [29, 105], [10, 46]], cotes: 5, sommets: 5, droits: 0 },
+      hexagone:   { nom: "un hexagone",           article: "l'hexagone",     pts: [[38, 14], [82, 14], [110, 60], [82, 106], [38, 106], [10, 60]], cotes: 6, sommets: 6, droits: 0 },
+      cercle:     { nom: "un cercle",             article: "le cercle",      cercle: true, cotes: 0, sommets: 0, droits: 0 }
     };
 
-    // On ne propose que les astuces qui parlent de la série affichée
-    function hintsFor(id){
-      const keep=(list,tags)=>{
-        const out=list.filter(h=>tags.includes(h.tag));
-        return out.length?out:list;
-      };
-      if(id==="mental"){
-        const serie=sets.mental[state.index.mental];
-        const tags=[];
-        const plain=f=>serie.some(it=>Array.isArray(it)&&f(it[0],it[1],it[2]));
-        if(plain((a,op,b)=>op==="+"&&b%10===0)) tags.push("addTens");
-        if(plain((a,op,b)=>op==="-"&&b%10===0)) tags.push("subTens");
-        if(plain((a,op,b)=>op==="+"&&b<10&&(a%10+b)>=10)) tags.push("carry");
-        if(plain((a,op,b)=>op==="-"&&b<10)) tags.push("subUnits");
-        if(plain((a,op,b)=>op==="+"&&a===b)) tags.push("double");
-        if(serie.some(it=>!Array.isArray(it))) tags.push("hole");
-        if(serie.some(it=>!Array.isArray(it)&&it.result===100)) tags.push("hundred");
-        return keep(hints.mental,tags);
+    // Solides : tracés simples, lisibles à petite taille
+    const SOLIDES = {
+      cube: {
+        nom: "un cube", faces: 6, sommets: 8, aretes: 12,
+        trace: `<path d="M30 45 L60 28 L90 45 L90 80 L60 97 L30 80 Z"/>
+                <path class="arete" d="M30 45 L60 62 L90 45"/><path class="arete" d="M60 62 L60 97"/>`
+      },
+      pave: {
+        nom: "un pavé droit", faces: 6, sommets: 8, aretes: 12,
+        trace: `<path d="M20 52 L82 52 L82 92 L20 92 Z"/>
+                <path d="M20 52 L42 32 L104 32 L82 52"/><path d="M82 52 L104 32 L104 72 L82 92"/>`
+      },
+      boule: {
+        nom: "une boule", faces: 0, sommets: 0, aretes: 0,
+        trace: `<circle cx="60" cy="62" r="42"/><ellipse class="arete" cx="60" cy="62" rx="42" ry="14"/>`
+      },
+      cylindre: {
+        nom: "un cylindre", faces: 3, sommets: 0, aretes: 2,
+        trace: `<path d="M26 34 L26 90"/><path d="M94 34 L94 90"/>
+                <ellipse cx="60" cy="34" rx="34" ry="13"/>
+                <path d="M26 90 A34 13 0 0 0 94 90"/>`
+      },
+      cone: {
+        nom: "un cône", faces: 2, sommets: 1, aretes: 1,
+        trace: `<path d="M60 18 L94 86"/><path d="M60 18 L26 86"/>
+                <ellipse cx="60" cy="86" rx="34" ry="13"/>`
+      },
+      pyramide: {
+        nom: "une pyramide", faces: 5, sommets: 5, aretes: 8,
+        trace: `<path d="M60 18 L104 78 L60 100 L16 78 Z"/>
+                <path class="arete" d="M16 78 L60 62 L104 78"/><path class="arete" d="M60 18 L60 62"/><path class="arete" d="M60 62 L60 100"/>`
       }
-      if(id==="written"){
-        const serie=sets.written[state.index.written];
-        const tags=["any"];
-        if(serie.some(it=>it[1]==="+")) tags.push("add");
-        if(serie.some(it=>it[1]==="+"&&(it[0]%10+it[2]%10)>=10)) tags.push("carry");
-        if(serie.some(it=>it[1]==="-")) tags.push("sub");
-        return keep(hints.written,tags);
-      }
-      if(id==="order") return keep(hints.order,[sets.order[state.index.order].mode]);
-      if(id==="hours"){
-        const t=sets.hours[state.index.hours];
-        const tags=["any"];
-        if(t.minute===0) tags.push("pile");
-        else if(t.minute===15) tags.push("quart");
-        else if(t.minute===30) tags.push("demie");
-        else if(t.minute===45) tags.push("moins");
-        else tags.push("cinq");
-        if(t.hour>12) tags.push("apresmidi");
-        return keep(hints.hours,tags);
-      }
-      return [];
+    };
+
+    function figureSvg(id) {
+      const f = FIGURES[id];
+      const trace = f.cercle ? `<circle cx="60" cy="60" r="47"/>` : `<polygon points="${f.pts.map(p => p.join(",")).join(" ")}"/>`;
+      return `<svg class="figure" viewBox="0 0 120 120" role="img" aria-label="${f.nom}">${trace}</svg>`;
     }
 
-    function pickVaried(list,key){
-      if(list.length<2) return list[0];
-      let i=Math.floor(Math.random()*list.length);
-      if(i===state.lastPick[key]) i=(i+1)%list.length;
-      state.lastPick[key]=i;
+    function solideSvg(id) {
+      return `<svg class="figure figure-solide" viewBox="0 0 120 120" role="img" aria-label="${SOLIDES[id].nom}">${SOLIDES[id].trace}</svg>`;
+    }
+
+    // Rectangle coté, pour périmètre et aire
+    function rectangleCote(L, l, unite) {
+      const w = 96, h = Math.max(34, Math.round(96 * l / L));
+      const x = 12, y = Math.round((120 - h) / 2);
+      return `<svg class="figure figure-large" viewBox="0 0 140 120" role="img" aria-label="Rectangle de ${L} sur ${l} ${unite}">
+        <rect x="${x}" y="${y}" width="${w}" height="${h}" rx="3"/>
+        <text class="cote-txt" x="${x + w / 2}" y="${y - 8}">${L} ${unite}</text>
+        <text class="cote-txt" x="${x + w + 20}" y="${y + h / 2 + 5}">${l} ${unite}</text>
+      </svg>`;
+    }
+
+    const choixItem = (enonce, options, reponse, colonnes) => ({ type: "choix", enonce, options, reponse, colonnes: colonnes || 2 });
+
+    // Une figure symétrique à compléter sur quadrillage
+    function grilleSymetrie(niveau) {
+      const cols = 8, rows = { CE2: 5, CM1: 6, CM2: 6 }[niveau] || 5;
+      const axe = 4;                       // l'axe passe entre les colonnes 3 et 4
+      const n = { CE2: 5, CM1: 7, CM2: 9 }[niveau] || 5;
+      const gauche = new Set();
+      // motif connexe : on part d'une case et on avance au hasard
+      let x = axe - 1, y = Math.floor(rows / 2);
+      gauche.add(`${x},${y}`);
+      let garde = 0;
+      while (gauche.size < n && garde++ < 200) {
+        const [dx, dy] = choix([[1, 0], [-1, 0], [0, 1], [0, -1]]);
+        const nx = Math.min(axe - 1, Math.max(0, x + dx));
+        const ny = Math.min(rows - 1, Math.max(0, y + dy));
+        x = nx; y = ny;
+        gauche.add(`${x},${y}`);
+      }
+      const attendu = [...gauche].map(c => {
+        const [cx, cy] = c.split(",").map(Number);
+        return `${2 * axe - 1 - cx},${cy}`;      // reflet par rapport à l'axe
+      });
+      return { type: "grille", cols, rows, axe, gauche: [...gauche], reponse: attendu };
+    }
+
+    const competencesGeo = [
+      {
+        id: "nommer-figure", domaine: "geometrie", niveaux: ["CP", "CE1", "CE2"], ecran: "formes",
+        titre: "Reconnaître les figures",
+        aides: ["Compte les côtés : 3 pour un triangle, 4 pour un carré ou un rectangle.",
+                "Le carré a ses 4 côtés de la même longueur.",
+                "Le cercle n'a aucun côté ni aucun sommet."],
+        genere(niveau) {
+          const jeu = niveau === "CP" ? ["carre", "rectangle", "triangle", "cercle"]
+            : niveau === "CE1" ? ["carre", "rectangle", "triangle", "cercle", "losange"]
+              : ["carre", "rectangle", "triangle", "cercle", "losange", "trapeze", "pentagone", "hexagone"];
+          const cible = choix(jeu);
+          if (Math.random() < 0.5) {
+            // on montre les figures, l'enfant désigne la bonne
+            const autres = jeu.filter(f => f !== cible).sort(() => Math.random() - .5).slice(0, 3);
+            const options = [cible, ...autres].sort(() => Math.random() - .5)
+              .map(f => ({ valeur: f, html: figureSvg(f) }));
+            return choixItem(`Où est <strong>${FIGURES[cible].nom}</strong> ?`, options, cible, 2);
+          }
+          // on montre une figure, l'enfant la nomme
+          const autres = jeu.filter(f => f !== cible).sort(() => Math.random() - .5).slice(0, 3);
+          const options = [cible, ...autres].sort(() => Math.random() - .5)
+            .map(f => ({ valeur: f, html: `<span class="choix-mot">${FIGURES[f].nom}</span>` }));
+          return choixItem(`Comment s'appelle cette figure ?${figureSvg(cible)}`, options, cible, 2);
+        }
+      },
+      {
+        id: "compter-cotes", domaine: "geometrie", niveaux: ["CE1", "CE2", "CM1"], ecran: "formes",
+        titre: "Compter côtés et sommets",
+        aides: ["Un côté est un segment droit ; un sommet est un coin où deux côtés se rejoignent.",
+                "Dans un polygone, il y a autant de côtés que de sommets."],
+        genere(niveau) {
+          const jeu = niveau === "CE1" ? ["carre", "rectangle", "triangle", "trianglerect"]
+            : ["carre", "rectangle", "triangle", "trianglerect", "losange", "trapeze", "pentagone", "hexagone"];
+          const f = choix(jeu);
+          const sommets = Math.random() < 0.5;
+          return saisie(`Combien de <strong>${sommets ? "sommets" : "côtés"}</strong> a cette figure ?${figureSvg(f)}`,
+            sommets ? FIGURES[f].sommets : FIGURES[f].cotes);
+        }
+      },
+      {
+        id: "angle-droit", domaine: "geometrie", niveaux: ["CE2", "CM1", "CM2"], ecran: "formes",
+        titre: "Les angles droits",
+        aides: ["Un angle droit, c'est le coin d'une feuille ou d'une équerre.",
+                "Le carré et le rectangle ont quatre angles droits.",
+                "Le losange n'a pas d'angle droit, même s'il ressemble à un carré penché."],
+        genere() {
+          const f = choix(["carre", "rectangle", "triangle", "trianglerect", "losange", "trapeze"]);
+          return saisie(`Combien d'<strong>angles droits</strong> a cette figure ?${figureSvg(f)}`, FIGURES[f].droits);
+        }
+      },
+      {
+        id: "nommer-solide", domaine: "geometrie", niveaux: ["CE2", "CM1", "CM2"], ecran: "formes",
+        titre: "Reconnaître les solides",
+        aides: ["Le cube a 6 faces carrées toutes pareilles.",
+                "Le pavé droit ressemble à une boîte : ses faces sont des rectangles.",
+                "Le cylindre a deux disques et une surface arrondie ; le cône n'a qu'un disque et une pointe."],
+        genere(niveau) {
+          const jeu = niveau === "CE2" ? ["cube", "pave", "boule"]
+            : niveau === "CM1" ? ["cube", "pave", "boule", "cylindre", "pyramide"]
+              : ["cube", "pave", "boule", "cylindre", "cone", "pyramide"];
+          const cible = choix(jeu);
+          const autres = jeu.filter(x => x !== cible).sort(() => Math.random() - .5).slice(0, 3);
+          const options = [cible, ...autres].sort(() => Math.random() - .5)
+            .map(x => ({ valeur: x, html: `<span class="choix-mot">${SOLIDES[x].nom}</span>` }));
+          return choixItem(`Comment s'appelle ce solide ?${solideSvg(cible)}`, options, cible, 2);
+        }
+      },
+      {
+        id: "faces-solide", domaine: "geometrie", niveaux: ["CM1", "CM2"], ecran: "formes",
+        titre: "Faces, sommets et arêtes",
+        aides: ["Une face est une surface plane, une arête est un trait, un sommet est une pointe.",
+                "Le cube et le pavé droit ont tous les deux 6 faces, 8 sommets et 12 arêtes."],
+        genere() {
+          const id = choix(["cube", "pave", "pyramide"]);
+          const quoi = choix(["faces", "sommets", "aretes"]);
+          const mot = quoi === "aretes" ? "arêtes" : quoi;
+          return saisie(`Combien d'<strong>${mot}</strong> a ce solide ?${solideSvg(id)}`, SOLIDES[id][quoi]);
+        }
+      },
+      {
+        id: "symetrie", domaine: "geometrie", niveaux: ["CE2", "CM1", "CM2"], ecran: "formes",
+        titre: "La symétrie",
+        aides: ["Imagine un miroir posé sur le trait rose : la figure doit s'y refléter.",
+                "Une case tout près de l'axe se reflète tout près de l'axe, de l'autre côté.",
+                "Compte les cases depuis l'axe : la même distance de chaque côté."],
+        genere(niveau) { return grilleSymetrie(niveau); }
+      },
+      {
+        id: "perimetre", domaine: "geometrie", niveaux: ["CM1", "CM2"], ecran: "formes",
+        titre: "Le périmètre",
+        aides: ["Le périmètre, c'est le tour complet de la figure.",
+                "Pour un rectangle : longueur + largeur, puis on double.",
+                "On additionne les quatre côtés."],
+        genere() {
+          const L = entre(4, 20), l = entre(2, L - 1);
+          return saisie(`Quel est le <strong>périmètre</strong> de ce rectangle, en cm ?${rectangleCote(L, l, "cm")}`, 2 * (L + l));
+        }
+      },
+      {
+        id: "aire", domaine: "geometrie", niveaux: ["CM2"], ecran: "formes",
+        titre: "L'aire",
+        aides: ["L'aire, c'est la surface couverte, pas le tour.",
+                "Pour un rectangle : longueur × largeur.",
+                "Attention à ne pas confondre avec le périmètre !"],
+        genere() {
+          const L = entre(3, 15), l = entre(2, Math.min(9, L));
+          return saisie(`Quelle est l'<strong>aire</strong> de ce rectangle, en cm² ?${rectangleCote(L, l, "cm")}`, L * l);
+        }
+      }
+    ];
+
+    /* ============================================================
+       GRANDEURS, MESURES ET PROBLÈMES
+       ============================================================ */
+
+    const PRENOMS = ["Manon", "Hugo", "Sofia", "Noah", "Jade", "Liam", "Camille", "Yanis", "Zoé", "Adam", "Louise", "Rayan"];
+    const OBJETS = [
+      { nom: "billes", un: "une bille" }, { nom: "images", un: "une image" },
+      { nom: "gommettes", un: "une gommette" }, { nom: "cartes", un: "une carte" },
+      { nom: "bonbons", un: "un bonbon" }, { nom: "crayons", un: "un crayon" },
+      { nom: "coquillages", un: "un coquillage" }, { nom: "perles", un: "une perle" }
+    ];
+    const ACHATS = [
+      { nom: "croissants", un: "un croissant" }, { nom: "stylos", un: "un stylo" },
+      { nom: "cahiers", un: "un cahier" }, { nom: "pommes", un: "une pomme" },
+      { nom: "gâteaux", un: "un gâteau" }, { nom: "livres", un: "un livre" }
+    ];
+
+    const competencesMesures = [
+      {
+        id: "monnaie", domaine: "grandeurs", niveaux: ["CP", "CE1", "CE2", "CM1", "CM2"], ecran: "mesures",
+        titre: "La monnaie",
+        aides: ["Compte d'abord les grosses pièces, puis ajoute les petites.",
+                "Regroupe ce qui fait 10 € pour aller plus vite."],
+        genere(niveau) {
+          const gros = { CP: 2, CE1: 5, CE2: 10, CM1: 10, CM2: 20 }[niveau];
+          const a = entre(1, 4), b = entre(1, 4);
+          return saisie(`${choix(PRENOMS)} a <strong>${a}</strong> billet${a > 1 ? "s" : ""} de <strong>${gros} €</strong> et <strong>${b}</strong> pièce${b > 1 ? "s" : ""} de <strong>2 €</strong>.<br>Combien a-t-${choix(["il", "elle"])} en tout, en euros ?`,
+            a * gros + b * 2);
+        }
+      },
+      {
+        id: "rendre-monnaie", domaine: "grandeurs", niveaux: ["CE1", "CE2", "CM1", "CM2"], ecran: "mesures",
+        titre: "Rendre la monnaie",
+        aides: ["Cherche ce qu'il faut ajouter au prix pour atteindre la somme donnée.",
+                "Complète d'abord jusqu'à la dizaine, puis compte les dizaines."],
+        genere(niveau) {
+          const paye = choix({ CE1: [10, 20], CE2: [20, 50], CM1: [50, 100], CM2: [50, 100, 200] }[niveau]);
+          const prix = entre(2, paye - 1);
+          return saisie(`${choix(PRENOMS)} paie avec <strong>${paye} €</strong> un objet qui coûte <strong>${prix} €</strong>.<br>Combien lui rend-on, en euros ?`, paye - prix);
+        }
+      },
+      {
+        id: "centimes", domaine: "grandeurs", niveaux: ["CE2", "CM1", "CM2"], ecran: "mesures",
+        titre: "Euros et centimes",
+        aides: ["1 euro vaut 100 centimes.", "Pour passer des euros aux centimes, on multiplie par 100."],
+        genere() {
+          const e = entre(1, 9), c = choix([0, 5, 10, 20, 25, 50, 75]);
+          return saisie(`Combien font <strong>${e} € ${pad2(c)}</strong> en <strong>centimes</strong> ?`, e * 100 + c);
+        }
+      },
+      {
+        id: "longueurs", domaine: "grandeurs", niveaux: ["CE1", "CE2", "CM1", "CM2"], ecran: "mesures",
+        titre: "Les longueurs",
+        aides: ["1 m = 100 cm, 1 cm = 10 mm, 1 km = 1 000 m.",
+                "Passer à l'unité plus petite, c'est multiplier ; à l'unité plus grande, c'est diviser."],
+        genere(niveau) {
+          const plafond = BORNE[niveau];
+          const toutes = [["m", "cm", 100], ["cm", "mm", 10], ["km", "m", 1000], ["m", "mm", 1000]];
+          // on n'utilise un rapport que si au moins « 2 grandes unités » tiennent dans la plage du niveau
+          const [grande, petite, f] = choix(toutes.filter(([, , r]) => 2 * r <= plafond));
+          const nMax = Math.min(40, Math.floor(plafond / f));
+          const n = entre(2, nMax);
+          return Math.random() < 0.6
+            ? saisie(`Combien font <strong>${n} ${grande}</strong> en <strong>${petite}</strong> ?`, n * f)
+            : saisie(`Combien font <strong>${espace(n * f)} ${petite}</strong> en <strong>${grande}</strong> ?`, n);
+        }
+      },
+      {
+        id: "masses", domaine: "grandeurs", niveaux: ["CE2", "CM1", "CM2"], ecran: "mesures",
+        titre: "Les masses",
+        aides: ["1 kg = 1 000 g.", "Une brique de lait pèse environ 1 kg."],
+        genere(niveau) {
+          const n = entre(2, Math.min(25, Math.floor(BORNE[niveau] / 1000)));
+          return Math.random() < 0.6
+            ? saisie(`Combien font <strong>${n} kg</strong> en <strong>grammes</strong> ?`, n * 1000)
+            : saisie(`Combien font <strong>${espace(n * 1000)} g</strong> en <strong>kilogrammes</strong> ?`, n);
+        }
+      },
+      {
+        id: "contenances", domaine: "grandeurs", niveaux: ["CE2", "CM1", "CM2"], ecran: "mesures",
+        titre: "Les contenances",
+        aides: ["1 L = 100 cL = 10 dL.", "Une bouteille d'eau contient souvent 1,5 L, soit 150 cL."],
+        genere(niveau) {
+          const [petite, f] = choix([["cL", 100], ["dL", 10]]);
+          const n = entre(2, Math.min(20, Math.floor(BORNE[niveau] / f)));
+          return Math.random() < 0.6
+            ? saisie(`Combien font <strong>${n} L</strong> en <strong>${petite}</strong> ?`, n * f)
+            : saisie(`Combien font <strong>${espace(n * f)} ${petite}</strong> en <strong>litres</strong> ?`, n);
+        }
+      },
+      {
+        id: "durees", domaine: "grandeurs", niveaux: ["CE1", "CE2", "CM1", "CM2"], ecran: "mesures",
+        titre: "Les durées",
+        aides: ["1 heure = 60 minutes, 1 minute = 60 secondes.",
+                "Une demi-heure, c'est 30 minutes ; un quart d'heure, 15 minutes."],
+        genere(niveau) {
+          const cas = Math.random();
+          if (cas < 0.4) { const h = entre(2, 8); return saisie(`Combien de <strong>minutes</strong> dans <strong>${h} heures</strong> ?`, h * 60); }
+          if (cas < 0.7) { const h = entre(1, 5), m = choix([15, 30, 45]); return saisie(`Combien font <strong>${h} h ${m}</strong> en <strong>minutes</strong> ?`, h * 60 + m); }
+          const h = entre(2, niveau === "CE1" ? 5 : 9); return saisie(`Combien font <strong>${h * 60} minutes</strong> en <strong>heures</strong> ?`, h);
+        }
+      },
+      {
+        id: "proportionnalite", domaine: "grandeurs", niveaux: ["CM1", "CM2"], ecran: "mesures",
+        titre: "La proportionnalité",
+        aides: ["Cherche d'abord le prix d'un seul, puis multiplie.",
+                "C'est le retour à l'unité : on divise, puis on multiplie."],
+        genere() {
+          const o = choix(ACHATS), p = entre(2, 9), n1 = entre(2, 6), n2 = entre(2, 9);
+          return saisie(`<strong>${n1} ${o.nom}</strong> coûtent <strong>${n1 * p} €</strong>.<br>Combien coûtent <strong>${n2} ${o.nom}</strong>, en euros ?`, n2 * p);
+        }
+      }
+    ];
+
+    const competencesProblemes = [
+      {
+        id: "probleme-addition", domaine: "problemes", niveaux: ["CP", "CE1", "CE2"], ecran: "problemes",
+        titre: "Problèmes : on ajoute",
+        aides: ["Relis l'énoncé : est-ce qu'on ajoute ou qu'on enlève ?",
+                "« En plus », « de plus », « en tout » : ce sont des additions."],
+        genere(niveau) {
+          const max = { CP: 20, CE1: 60, CE2: 400 }[niveau];
+          const o = choix(OBJETS), a = entre(2, max), b = entre(2, max);
+          return saisie(`${choix(PRENOMS)} a <strong>${espace(a)}</strong> ${o.nom}. ${choix(["Il", "Elle"])} en gagne <strong>${espace(b)}</strong>.<br>Combien en a-t-${choix(["il", "elle"])} maintenant ?`, a + b);
+        }
+      },
+      {
+        id: "probleme-soustraction", domaine: "problemes", niveaux: ["CP", "CE1", "CE2"], ecran: "problemes",
+        titre: "Problèmes : on enlève",
+        aides: ["« Perd », « donne », « il reste » : ce sont des soustractions.",
+                "Le résultat doit être plus petit que ce qu'on avait au départ."],
+        genere(niveau) {
+          const max = { CP: 20, CE1: 60, CE2: 400 }[niveau];
+          const o = choix(OBJETS), a = entre(5, max), b = entre(1, a - 1);
+          return saisie(`${choix(PRENOMS)} a <strong>${espace(a)}</strong> ${o.nom}. ${choix(["Il", "Elle"])} en donne <strong>${espace(b)}</strong>.<br>Combien lui en reste-t-il ?`, a - b);
+        }
+      },
+      {
+        id: "probleme-multiplication", domaine: "problemes", niveaux: ["CE2", "CM1", "CM2"], ecran: "problemes",
+        titre: "Problèmes : plusieurs paquets",
+        aides: ["Des paquets identiques, c'est une multiplication.",
+                "Compte combien il y a de paquets, et combien dans chaque paquet."],
+        genere(niveau) {
+          const o = choix(OBJETS), n = entre(3, 9), p = entre(3, { CE2: 12, CM1: 25, CM2: 40 }[niveau]);
+          return saisie(`${choix(PRENOMS)} range ses ${o.nom} dans <strong>${n}</strong> boîtes.<br>Il y a <strong>${p}</strong> ${o.nom} dans chaque boîte. Combien de ${o.nom} en tout ?`, n * p);
+        }
+      },
+      {
+        id: "probleme-division", domaine: "problemes", niveaux: ["CE2", "CM1", "CM2"], ecran: "problemes",
+        titre: "Problèmes : on partage",
+        aides: ["Partager en parts égales, c'est une division.",
+                "Vérifie : le résultat multiplié par le nombre de parts doit redonner le total."],
+        genere() {
+          const o = choix(OBJETS), parts = entre(2, 9), chaque = entre(3, 20);
+          return saisie(`${choix(PRENOMS)} partage <strong>${parts * chaque}</strong> ${o.nom} entre <strong>${parts}</strong> amis, à parts égales.<br>Combien chacun en reçoit-il ?`, chaque);
+        }
+      },
+      {
+        id: "probleme-deux-etapes", domaine: "problemes", niveaux: ["CM1", "CM2"], ecran: "problemes",
+        titre: "Problèmes en deux étapes",
+        aides: ["Il y a deux calculs à faire : trouve d'abord le total, puis la réponse.",
+                "Écris le résultat intermédiaire sur ton brouillon avant de conclure."],
+        genere() {
+          const o = choix(ACHATS), n = entre(2, 8), p = entre(2, 9), paye = choix([20, 50, 100]);
+          const cout = n * p;
+          if (cout >= paye) return this.genere();
+          return saisie(`${choix(PRENOMS)} achète <strong>${n} ${o.nom}</strong> à <strong>${p} €</strong> l'unité.<br>${choix(["Il", "Elle"])} paie avec <strong>${paye} €</strong>. Combien lui rend-on, en euros ?`, paye - cout);
+        }
+      }
+    ];
+
+    competences.push(...competencesGeo, ...competencesMesures, ...competencesProblemes);
+
+    const parId = Object.fromEntries(competences.map(c => [c.id, c]));
+
+    /* ============================================================
+       3. PROGRÈS — mémoire locale, lecture tolérante
+       ============================================================ */
+
+    const CLE = "feuille-exercice-v1";
+
+    function progresVide() {
+      return { version: 1, niveaux: {}, suivi: {}, etoiles: 0, serie: { jours: 0, dernier: null }, prefs: { son: true } };
+    }
+
+    function chargerProgres() {
+      const base = progresVide();
+      try {
+        const brut = localStorage.getItem(CLE);
+        if (!brut) return base;
+        const lu = JSON.parse(brut);
+        if (!lu || typeof lu !== "object") return base;
+        return {
+          version: 1,
+          niveaux: (lu.niveaux && typeof lu.niveaux === "object") ? lu.niveaux : {},
+          suivi: (lu.suivi && typeof lu.suivi === "object") ? lu.suivi : {},
+          etoiles: Number.isFinite(lu.etoiles) ? lu.etoiles : 0,
+          serie: (lu.serie && typeof lu.serie === "object") ? { jours: lu.serie.jours | 0, dernier: lu.serie.dernier || null } : base.serie,
+          prefs: Object.assign({ son: true }, lu.prefs || {})
+        };
+      } catch (e) {
+        return base;   // stockage plein, refusé ou corrompu : on repart proprement
+      }
+    }
+
+    let sauveDiffere = null;
+    function sauverProgres() {
+      if (sauveDiffere) return;
+      sauveDiffere = setTimeout(() => {
+        sauveDiffere = null;
+        try { localStorage.setItem(CLE, JSON.stringify(state.progres)); } catch (e) { /* stockage indisponible : on continue sans mémoire */ }
+      }, 500);
+    }
+
+    // Une remise à zéro doit annuler la sauvegarde différée en attente,
+    // sinon celle-ci réécrit l'ancien état juste après l'effacement.
+    function reinitialiserProgres() {
+      if (sauveDiffere) { clearTimeout(sauveDiffere); sauveDiffere = null; }
+      const code = state.progres && state.progres.prefs ? state.progres.prefs.codeParent : null;
+      state.progres = progresVide();
+      if (code) state.progres.prefs.codeParent = code;   // effacer la progression n'efface pas le code
+      state.files = {};
+      state.serie = 0;
+      try { localStorage.removeItem(CLE); } catch (e) { /* stockage indisponible */ }
+    }
+
+    function niveauDe(domaine) {
+      const n = state.progres.niveaux[domaine];
+      return NIVEAUX.includes(n) ? n : NIVEAU_DEFAUT;
+    }
+
+    // Tout changement de niveau repart d'une page blanche AU NIVEAU D'ARRIVÉE.
+    // Sans ça, les traces laissées lors d'un passage précédent relancent
+    // immédiatement un changement en sens inverse : l'enfant oscillerait.
+    function changerNiveau(domaine, nouveau) {
+      state.progres.niveaux[domaine] = nouveau;
+      competences.filter(c => c.domaine === domaine && c.niveaux.includes(nouveau)).forEach(c => {
+        const s = state.progres.suivi[cleSuivi(c.id, nouveau)];
+        if (s) s.recent = [];      // on garde le cumul pour l'espace parent, on efface la fenêtre de jugement
+      });
+      state.files = {};
+    }
+
+    function reglerNiveau(domaine, niveau) {
+      if (!NIVEAUX.includes(niveau)) return;
+      changerNiveau(domaine, niveau);
+      sauverProgres();
+      // la question en cours vient d'un autre niveau : on en refait une
+      if (state.scene === "jeu") questionSuivante(false);
+    }
+
+    const cleSuivi = (id, niveau) => `${id}@${niveau || NIVEAU_DEFAUT}`;
+
+    function suiviDe(id, niveau) {
+      const k = cleSuivi(id, niveau);
+      return state.progres.suivi[k] || (state.progres.suivi[k] = { vues: 0, justes: 0, faux: 0, recent: [], dernierVu: 0 });
+    }
+
+    function noterResultat(id, ok, niveau) {
+      if (!id || !parId[id]) return;
+      niveau = niveau || niveauDe(parId[id].domaine);
+      const s = suiviDe(id, niveau);
+      s.vues += 1;
+      ok ? s.justes += 1 : s.faux += 1;
+      s.recent.push(ok ? 1 : 0);
+      if (s.recent.length > 20) s.recent.shift();
+      s.dernierVu = Date.now();
+      evaluerNiveau(parId[id].domaine);
+      sauverProgres();
+    }
+
+    // Taux d'échec sur les 20 dernières tentatives ; 0.35 par défaut pour qu'une
+    // compétence jamais vue passe avant une compétence déjà solide.
+    function tauxEchec(id, niveau) {
+      const s = state.progres.suivi[cleSuivi(id, niveau)];
+      if (!s || !s.recent.length) return 0.35;
+      return 1 - s.recent.reduce((a, b) => a + b, 0) / s.recent.length;
+    }
+
+    const ACQUISE = 0.85, EN_ECHEC = 0.5, MINI_TENTATIVES = 8;
+
+    function etatCompetence(id, niveau) {
+      const s = state.progres.suivi[cleSuivi(id, niveau)];
+      if (!s || s.recent.length < MINI_TENTATIVES) return "en cours";
+      const taux = 1 - tauxEchec(id, niveau);
+      if (taux >= ACQUISE) return "acquise";
+      if (taux < EN_ECHEC) return "fragile";
+      return "en cours";
+    }
+
+    function evaluerNiveau(domaine) {
+      const niveau = niveauDe(domaine);
+      const duNiveau = competences.filter(c => c.domaine === domaine && c.niveaux.includes(niveau));
+      if (!duNiveau.length) return;
+      const notees = duNiveau.filter(c => (state.progres.suivi[cleSuivi(c.id, niveau)] || { recent: [] }).recent.length >= MINI_TENTATIVES);
+      if (notees.length < Math.ceil(duNiveau.length / 2)) return;   // pas encore assez d'éléments pour juger
+      const acquises = notees.filter(c => etatCompetence(c.id, niveau) === "acquise").length;
+      const fragiles = notees.filter(c => etatCompetence(c.id, niveau) === "fragile").length;
+      const i = rang(niveau);
+      if (acquises / notees.length >= 0.8 && i < NIVEAUX.length - 1) {
+        changerNiveau(domaine, NIVEAUX[i + 1]);
+        state.montee = { domaine, niveau: NIVEAUX[i + 1] };
+      } else if (fragiles / notees.length >= 0.6 && i > 0) {
+        changerNiveau(domaine, NIVEAUX[i - 1]);
+      }
+    }
+
+    /* ============================================================
+       4. SÉLECTION — file mélangée pondérée, sans répétition
+       ============================================================ */
+
+    function competencesPour(ecran) {
+      return competences.filter(c => c.ecran === ecran && c.niveaux.includes(niveauDe(c.domaine)));
+    }
+
+    // Efraimidis–Spirakis : les compétences fragiles remontent en tête,
+    // mais toutes passent avant qu'une seule ne revienne.
+    function fileMelangee(ecran) {
+      return competencesPour(ecran)
+        .map(c => ({ c, k: Math.random() ** (1 / (1 + 3 * tauxEchec(c.id, niveauDe(c.domaine)))) }))
+        .sort((x, y) => y.k - x.k)
+        .map(x => x.c);
+    }
+
+    function prochaineCompetence(ecran) {
+      if (!state.files[ecran] || !state.files[ecran].length) state.files[ecran] = fileMelangee(ecran);
+      const c = state.files[ecran].shift();
+      return c || competencesPour(ecran)[0] || null;
+    }
+
+    function genererItem(ecran) {
+      const c = prochaineCompetence(ecran);
+      if (!c) return null;
+      const niveau = niveauDe(c.domaine);
+      const item = c.genere(niveau);
+      item.comp = c.id;
+      item.niveau = niveau;
+      item.aide = c.aideDe ? c.aideDe(item, niveau) : choix(c.aides);
+      return item;
+    }
+
+    const TAILLE = { mental: 6, written: 4, order: 1, hours: 1 };
+
+    function genererSerie(ecran) {
+      const n = TAILLE[ecran] || 1;
+      const items = [];
+      const vus = new Set();
+      for (let i = 0; i < n; i++) {
+        let item = null;
+        // évite deux fois le même énoncé dans une même série
+        for (let essai = 0; essai < 8; essai++) {
+          item = genererItem(ecran);
+          if (!item) break;
+          const cle = JSON.stringify([item.comp, item.enonce, item.a, item.b, item.gauche, item.hour, item.minute]);
+          if (!vus.has(cle)) { vus.add(cle); break; }
+        }
+        if (item) items.push(item);
+      }
+      return items;
+    }
+
+    /* ============================================================
+       5. ÉTAT
+       ============================================================ */
+
+    const ECRANS = ["mental", "order", "written", "hours", "mesures", "formes", "problemes"];
+    const NOM_ECRAN = { mental: "Calcul", order: "Ranger", written: "Poser", hours: "Heure", mesures: "Mesures", formes: "Formes", problemes: "Problèmes" };
+    const DEFIS_SEANCE = 5;   // longueur d'une séance
+
+    const state = {
+      scene: "accueil",
+      domaine: "mixte",      // "mixte" ou l'un de ECRANS
+      ecranQuestion: null,
+      question: null,
+      orderAnswer: [],
+      selectedCompare: null,
+      activeInput: null,
+      advanceTimer: null,
+      files: {},
+      lastPick: {},
+      mode: "libre",         // "libre" (sans fin) ou "seance" (5 défis + bilan)
+      seance: null,
+      serie: 0,              // réussites d'affilée
+      progres: chargerProgres(),
+      montee: null
+    };
+
+    /* ============================================================
+       6. L'AVATAR — dessiné avec les jetons de la maquette
+       ============================================================ */
+
+    const AVATAR = `
+      <svg class="avatar" viewBox="0 0 120 124" data-humeur="neutre" role="img" aria-hidden="true">
+        <ellipse class="av-ombre" cx="60" cy="112" rx="30" ry="6"/>
+        <path class="av-tige" d="M62 30 C59 20, 66 15, 72 12"/>
+        <circle class="av-pastille" cx="74" cy="10" r="8"/>
+        <circle class="av-corps" cx="60" cy="66" r="36"/>
+        <circle class="av-reflet" cx="46" cy="54" r="13"/>
+        <circle class="av-joue" cx="36" cy="74" r="7"/>
+        <circle class="av-joue" cx="84" cy="74" r="7"/>
+        <g class="av-yeux-ronds"><circle cx="49" cy="62" r="5"/><circle cx="71" cy="62" r="5"/></g>
+        <g class="av-yeux-joie"><path d="M44 64 q5 -7 10 0"/><path d="M66 64 q5 -7 10 0"/></g>
+        <g class="av-yeux-songe"><path d="M44 62 h10"/><path d="M66 62 h10"/></g>
+        <path class="av-b av-b-neutre" d="M52 82 q8 3 16 0"/>
+        <path class="av-b av-b-content" d="M49 79 q11 12 22 0"/>
+        <path class="av-b av-b-encourage" d="M52 84 q8 -4 16 0"/>
+        <circle class="av-b av-b-songe" cx="60" cy="83" r="4.5"/>
+      </svg>`;
+
+    function humeur(h) {
+      document.querySelectorAll(".avatar").forEach(a => a.setAttribute("data-humeur", h));
+    }
+
+    function bulle(texte, ton) {
+      const el = document.querySelector("#bulleJeu");
+      if (!el) return;
+      el.textContent = texte || "";
+      el.className = "bulle" + (texte ? " visible" : "") + (ton ? " " + ton : "");
+    }
+
+    /* ============================================================
+       7. SONS ET ANIMATIONS — aucun fichier externe
+       ============================================================ */
+
+    let audio = null;
+    const douxMouvement = () => !window.matchMedia || !matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    function son(type) {
+      if (!state.progres.prefs.son) return;
+      try {
+        // le contexte ne peut naître que d'un geste : on le crée au premier appui
+        audio = audio || new (window.AudioContext || window.webkitAudioContext)();
+        if (audio.state === "suspended") audio.resume();
+        const notes = type === "ok" ? [[659, 0, .16], [880, .1, .18]]
+          : type === "etoile" ? [[659, 0, .14], [784, .09, .14], [1047, .18, .2]]
+            : [[233, 0, .18]];
+        notes.forEach(([f, t, d]) => {
+          const o = audio.createOscillator(), g = audio.createGain();
+          o.type = "sine"; o.frequency.value = f;
+          const t0 = audio.currentTime + t;
+          g.gain.setValueAtTime(0.0001, t0);
+          g.gain.exponentialRampToValueAtTime(.16, t0 + .015);
+          g.gain.exponentialRampToValueAtTime(.0001, t0 + d);
+          o.connect(g); g.connect(audio.destination);
+          o.start(t0); o.stop(t0 + d + .02);
+        });
+      } catch (e) { /* audio indisponible : on continue en silence */ }
+    }
+
+    function pastillesJoie(hote) {
+      if (!hote || !douxMouvement()) return;
+      const couleurs = ["var(--brand)", "var(--tens-dot)", "var(--ones-dot)", "var(--ok-line)"];
+      for (let i = 0; i < 12; i++) {
+        const p = document.createElement("span");
+        p.className = "pastille-joie";
+        p.style.setProperty("--dx", (Math.random() * 220 - 110).toFixed(0) + "px");
+        p.style.setProperty("--dy", (-60 - Math.random() * 120).toFixed(0) + "px");
+        p.style.setProperty("--taille", (6 + Math.random() * 8).toFixed(0) + "px");
+        p.style.setProperty("--delai", (Math.random() * .12).toFixed(2) + "s");
+        p.style.background = couleurs[i % couleurs.length];
+        hote.appendChild(p);
+        setTimeout(() => p.remove(), 1000);
+      }
+    }
+
+    /* ============================================================
+       8. RENDU D'UNE QUESTION
+       ============================================================ */
+
+    function chiffresDe(n, cols) {
+      const t = String(n).split("");
+      return Array.from({ length: cols }, (_, i) => t[i - (cols - t.length)] || "");
+    }
+
+    function htmlSaisie(item) {
+      const len = String(item.reponse).length;
+      // un énoncé en phrases se lit mieux en corps plus petit et sur plusieurs lignes
+      const brut = item.enonce.replace(/<[^>]*>/g, "");
+      const longue = brut.length > 55 || /<br\s*\/?>/i.test(item.enonce);
+      return `<div class="q-enonce${longue ? " q-texte" : ""}">${item.enonce}</div>
+        <div class="q-reponse"><input inputmode="numeric" pattern="[0-9]*" maxlength="${len}"
+          data-expected="${item.reponse}" data-kind="saisie" data-format="${item.format || "entier"}"
+          aria-label="Ta réponse" autocomplete="off"></div>`;
+    }
+
+    function htmlPose(item) {
+      const cols = item.colonnes;
+      const cell = (c, cls) => `<span class="${cls || ""}">${c}</span>`;
+      const L = [];
+      L.push(cell(""));
+      for (let c = cols - 1; c >= 0; c--) L.push(cell(LETTRE_RANG[c] || "", "rang " + (c === 0 ? "ones col-end" : c === 1 ? "tens" : "")));
+      if (item.retenues.some((r, c) => r > 0 && c < cols - 1)) {
+        L.push(cell("", "retenue-cell"));
+        for (let c = cols - 1; c >= 0; c--) {
+          const r = c >= 1 ? item.retenues[c - 1] : 0;
+          L.push(r > 0
+            ? `<input class="retenue-cell retenue-input" inputmode="numeric" pattern="[0-9]*" maxlength="1" data-kind="retenue" data-expected="${r}" aria-label="Retenue">`
+            : cell("", "retenue-cell" + (c === 0 ? " col-end" : "")));
+        }
+      }
+      const classeRang = (i, dernier) => (i === 0 ? "ones" : i === 1 ? "tens" : "") + (dernier ? " col-end" : "");
+      L.push(cell(""));
+      chiffresDe(item.a, cols).forEach((d, i) => L.push(cell(d, classeRang(cols - 1 - i, i === cols - 1))));
+      L.push(cell(item.op === "-" ? "−" : item.op, "operator"));
+      chiffresDe(item.b, cols).forEach((d, i) => L.push(cell(d, classeRang(cols - 1 - i, i === cols - 1))));
+      L.push(cell("", "rule"));
+      const rep = String(item.reponse);
+      L.push(cell("", "last-row"));
+      for (let i = 0; i < cols; i++) {
+        const pos = i - (cols - rep.length);
+        L.push(pos < 0 ? cell("", "last-row")
+          : `<input class="last-row written-digit" inputmode="numeric" pattern="[0-9]*" maxlength="1" data-kind="written-digit" data-expected="${rep[pos]}" aria-label="${NOMS_RANG[rep.length - 1 - pos] || "Chiffre"} du résultat">`);
+      }
+      return `<div class="q-enonce q-enonce-petit">Pose et calcule</div>
+        <div class="written-board" style="grid-template-columns:38px repeat(${cols},var(--col-pose))">${L.join("")}</div>`;
+    }
+
+    function htmlRanger(item) {
+      if (item.mode === "compare") {
+        return `<div class="q-enonce q-enonce-petit">Choisis le bon signe</div>
+          <div class="compare-ligne">${colorNumber(item.gauche)}<span class="compare-display" id="compareDisplay">?</span>${colorNumber(item.droite)}</div>
+          <div class="symbol-row">
+            <button class="symbol-button" data-compare="lt" type="button">&lt;</button>
+            <button class="symbol-button" data-compare="gt" type="button">&gt;</button>
+          </div>`;
+      }
+      const titre = item.mode === "desc" ? "Du plus grand au plus petit" : "Du plus petit au plus grand";
+      return `<div class="q-enonce q-enonce-petit">${titre}</div>
+        <div class="word-bank" id="orderBank">${item.valeurs.map(v => `<button class="pill" data-order-value="${v}" type="button">${colorNumber(v)}</button>`).join("")}</div>
+        <div class="order-zone" id="orderAnswer" aria-label="Ta réponse"></div>
+        <button class="soft petit" id="undoOrder" type="button">Effacer le dernier</button>`;
+    }
+
+    function htmlHorloge(item) {
+      const p = partOfDay(item.hour);
+      const label = { matin: "Matin", apresmidi: "Après-midi", soir: "Soir", nuit: "Nuit" }[p];
+      return `<div class="q-enonce q-enonce-petit">Quelle heure indique l'horloge ?</div>
+        <div class="clock-area">${clockSvg(item.hour, item.minute)}
+          <div class="clock-cote">
+            <div class="time-context"><span class="sky-icon ${p}"></span>${label}</div>
+            <div class="time-answer">
+              <input inputmode="numeric" pattern="[0-9]*" maxlength="2" data-kind="time-hour" aria-label="Heures" autocomplete="off">
+              <span class="time-separator">h</span>
+              <input inputmode="numeric" pattern="[0-9]*" maxlength="2" data-kind="time-minute" aria-label="Minutes" autocomplete="off">
+            </div>
+          </div></div>`;
+    }
+
+    function clockSvg(hour, minute) {
+      const ha = ((hour % 12) * 30) + (minute * 0.5), ma = minute * 6;
+      const numbers = Array.from({ length: 12 }, (_, i) => {
+        const v = i + 1, a = (v * 30 - 90) * Math.PI / 180;
+        return `<text class="clock-number" x="${(100 + Math.cos(a) * 76).toFixed(1)}" y="${(100 + Math.sin(a) * 76).toFixed(1)}">${v}</text>`;
+      }).join("");
+      const ticks = Array.from({ length: 60 }, (_, i) => {
+        const a = (i * 6 - 90) * Math.PI / 180, outer = 92, inner = i % 5 === 0 ? 84 : 88;
+        return `<line x1="${(100 + Math.cos(a) * outer).toFixed(1)}" y1="${(100 + Math.sin(a) * outer).toFixed(1)}" x2="${(100 + Math.cos(a) * inner).toFixed(1)}" y2="${(100 + Math.sin(a) * inner).toFixed(1)}" stroke="var(--du)" stroke-width="${i % 5 === 0 ? 2.5 : 1}"/>`;
+      }).join("");
+      return `<svg class="clock-face" viewBox="0 0 200 200" role="img" aria-label="Horloge à aiguilles"><circle cx="100" cy="100" r="95" fill="#fff" stroke="var(--rule)" stroke-width="6"/>${ticks}${numbers}<line class="hand-hour" x1="100" y1="100" x2="100" y2="48" transform="rotate(${ha} 100 100)"/><line class="hand-minute" x1="100" y1="100" x2="100" y2="28" transform="rotate(${ma} 100 100)"/><circle cx="100" cy="100" r="6" fill="var(--brand-deep)"/></svg>`;
+    }
+
+    function htmlChoix(item) {
+      return `<div class="q-enonce q-enonce-choix">${item.enonce}</div>
+        <div class="choix-grille" style="grid-template-columns:repeat(${item.colonnes},minmax(0,1fr))">
+          ${item.options.map(o => `<button class="choix-carte" data-choix="${o.valeur}" type="button">${o.html}</button>`).join("")}
+        </div>`;
+    }
+
+    function htmlGrille(item) {
+      const pleines = new Set(item.gauche);
+      const cases = [];
+      for (let y = 0; y < item.rows; y++) for (let x = 0; x < item.cols; x++) {
+        const cle = `${x},${y}`, pos = `style="grid-area:${y + 1}/${x + 1}"`;
+        if (pleines.has(cle)) cases.push(`<span class="case pleine" ${pos}></span>`);
+        else if (x >= item.axe) cases.push(`<button class="case cliquable" data-case="${cle}" type="button" aria-label="Case colonne ${x + 1}, ligne ${y + 1}" ${pos}></button>`);
+        else cases.push(`<span class="case" ${pos}></span>`);
+      }
+      return `<div class="q-enonce q-enonce-petit">Complète la figure par symétrie</div>
+        <div class="grille-sym" style="--cols:${item.cols};--rows:${item.rows};--axe:${item.axe}">${cases.join("")}<span class="axe-sym"></span></div>`;
+    }
+
+    function htmlDivision(item) {
+      const q = String(item.quotient);
+      const champsQ = q.split("").map((c, i) =>
+        `<input class="pot-champ" inputmode="numeric" pattern="[0-9]*" maxlength="1"
+           data-kind="quotient" data-expected="${c}" aria-label="Chiffre ${i + 1} du quotient">`).join("");
+      return `<div class="q-enonce q-enonce-petit">Pose la division</div>
+        <div class="potence">
+          <div class="pot-dividende">${espace(item.dividende)}</div>
+          <div class="pot-diviseur">${item.diviseur}</div>
+          <div class="pot-reste"><span class="pot-mot">reste</span>
+            <input class="pot-champ pot-champ-reste" inputmode="numeric" pattern="[0-9]*" maxlength="2"
+              data-kind="reste" data-expected="${item.reste}" aria-label="Reste"></div>
+          <div class="pot-quotient">${champsQ}</div>
+        </div>`;
+    }
+
+    function htmlItem(item) {
+      if (item.type === "division") return htmlDivision(item);
+      if (item.type === "choix") return htmlChoix(item);
+      if (item.type === "grille") return htmlGrille(item);
+      if (item.type === "saisie") return htmlSaisie(item);
+      if (item.type === "pose") return htmlPose(item);
+      if (item.type === "ranger") return htmlRanger(item);
+      if (item.type === "horloge") return htmlHorloge(item);
+      return "";
+    }
+
+    /* ============================================================
+       9. LE FIL DE JEU
+       ============================================================ */
+
+    function clearAutoAdvance() { if (state.advanceTimer) { clearTimeout(state.advanceTimer); state.advanceTimer = null; } }
+
+    function allerA(scene) {
+      state.scene = scene;
+      document.querySelectorAll(".scene").forEach(s => s.classList.toggle("active", s.id === scene));
+      if (scene === "accueil") {
+        clearAutoAdvance(); humeur("neutre");
+        state.mode = "libre"; state.seance = null; majJalons();
+        document.querySelector("#bulleAccueil").textContent = pickVaried(accueils, "accueil");
+      }
+    }
+
+    function demarrer(domaine) {
+      marquerJour(); sauverProgres();
+      state.mode = "libre";
+      state.seance = null;
+      state.domaine = domaine;
+      state.serie = 0;
+      majSerie(); majJalons();
+      allerA("jeu");
+      questionSuivante(false);
+    }
+
+    function demarrerSeance() {
+      marquerJour(); sauverProgres();
+      state.mode = "seance";
+      state.domaine = "mixte";
+      state.serie = 0;
+      state.seance = { total: DEFIS_SEANCE, index: 0, resultats: [], etoiles: 0, essais: 0 };
+      majSerie(); majJalons();
+      allerA("jeu");
+      questionSuivante(false);
+    }
+
+    // Un jalon par défi : vert du premier coup, ambre après essais, corail si passé
+    function majJalons() {
+      const hote = document.querySelector("#jalons");
+      const titre = document.querySelector("#jalonsTitre");
+      if (!hote || !titre) return;
+      const enSeance = state.mode === "seance" && state.seance;
+      hote.hidden = !enSeance;
+      if (!enSeance) return;
+      const { total, index, resultats } = state.seance;
+      titre.textContent = `Défi ${Math.min(index + 1, total)} sur ${total}`;
+      hote.querySelector("#jalonsBarre").innerHTML = Array.from({ length: total }, (_, i) => {
+        const r = resultats[i];
+        const cls = r ? r.etat : (i === index ? "actif" : "");
+        return `<span class="jalon ${cls}"></span>`;
+      }).join("");
+    }
+
+    function questionSuivante(avecFocus) {
+      clearAutoAdvance();
+      if (seanceTerminee()) { afficherBilan(); return; }
+      const ecran = state.domaine === "mixte" ? choix(ECRANS) : state.domaine;
+      const item = genererItem(ecran);
+      if (!item) return;
+      state.question = item;
+      state.ecranQuestion = ecran;
+      state.orderAnswer = [];
+      state.selectedCompare = null;
+      const hote = document.querySelector("#questionHost");
+      hote.className = "question-carte" + (douxMouvement() ? " entre" : "");
+      hote.innerHTML = htmlItem(item);
+      wireInputs(hote);
+      document.querySelector("#etiquetteDomaine").textContent = NOM_ECRAN[ecran];
+      document.querySelector("#hintText").textContent = item.aide || "";
+      humeur("neutre");
+      bulle("");
+      if (avecFocus !== false) focusPremier();
+    }
+
+    function focusPremier() {
+      const i = document.querySelector("#questionHost input");
+      if (!i) return;
+      state.activeInput = i;
+      i.focus({ preventScroll: true });
+    }
+
+    // Renvoie {ok, message} sans rien afficher : l'affichage est décidé au-dessus
+    function evaluerQuestion() {
+      const item = state.question, hote = document.querySelector("#questionHost");
+      if (!item || !hote) return null;
+      if (item.type === "saisie") {
+        const i = hote.querySelector("input[data-kind='saisie']");
+        if (!i || i.value.trim() === "") return null;
+        return { ok: i.value.trim() === String(item.reponse), champs: [[i, i.value.trim() === String(item.reponse)]] };
+      }
+      if (item.type === "pose") {
+        const d = [...hote.querySelectorAll(".written-digit")], r = [...hote.querySelectorAll(".retenue-input")];
+        if (d.some(x => x.value === "") || r.some(x => x.value === "")) return null;
+        const chiffresOk = d.every(x => x.value === x.dataset.expected);
+        const retenuesOk = r.every(x => x.value === x.dataset.expected);
+        return {
+          ok: chiffresOk && retenuesOk,
+          champs: [...d, ...r].map(x => [x, x.value === x.dataset.expected]),
+          message: chiffresOk && r.length && !retenuesOk ? "Vérifie la retenue" : null
+        };
+      }
+      if (item.type === "ranger") {
+        if (item.mode === "compare") {
+          if (!state.selectedCompare) return null;
+          const attendu = item.gauche < item.droite ? "lt" : "gt";
+          const ok = state.selectedCompare === attendu;
+          hote.querySelectorAll("[data-compare]").forEach(b => {
+            b.classList.toggle("correct", ok && b.dataset.compare === attendu);
+            b.classList.toggle("wrong", !ok && b.classList.contains("selected"));
+          });
+          return { ok, champs: [], message: ok ? null : "Le signe s'ouvre du côté du plus grand nombre" };
+        }
+        const attendu = [...item.valeurs].sort((a, b) => item.mode === "desc" ? b - a : a - b);
+        if (state.orderAnswer.length < attendu.length) return null;
+        const ok = state.orderAnswer.every((v, i) => v === attendu[i]);
+        return { ok, champs: [], message: ok ? null : (item.mode === "desc" ? "Regarde le plus grand qui reste" : "Regarde le plus petit qui reste") };
+      }
+      if (item.type === "division") {
+        const q = [...hote.querySelectorAll('[data-kind="quotient"]')];
+        const r = hote.querySelector('[data-kind="reste"]');
+        if (q.some(x => x.value === "") || !r || r.value === "") return null;
+        const quotientOk = q.every(x => x.value === x.dataset.expected);
+        const resteOk = r.value === String(item.reste);
+        return {
+          ok: quotientOk && resteOk,
+          champs: [...q, r].map(x => [x, x.value === x.dataset.expected]),
+          message: quotientOk && !resteOk ? "Le reste est toujours plus petit que le diviseur" : null
+        };
+      }
+      if (item.type === "choix") {
+        const sel = hote.querySelector("[data-choix].choisi");
+        if (!sel) return null;
+        const ok = sel.dataset.choix === item.reponse;
+        hote.querySelectorAll("[data-choix]").forEach(b => {
+          b.classList.toggle("correct", ok && b.dataset.choix === item.reponse);
+          b.classList.toggle("wrong", !ok && b.classList.contains("choisi"));
+        });
+        return { ok, champs: [] };
+      }
+      if (item.type === "grille") {
+        const choisies = [...hote.querySelectorAll(".case.cliquable.choisie")];
+        if (choisies.length !== item.reponse.length) return null;
+        const attendu = new Set(item.reponse);
+        const ok = choisies.every(c => attendu.has(c.dataset.case));
+        choisies.forEach(c => {
+          c.classList.toggle("juste", attendu.has(c.dataset.case));
+          c.classList.toggle("faux", !attendu.has(c.dataset.case));
+        });
+        return { ok, champs: [], message: ok ? null : "Compte les cases depuis l'axe : la même distance des deux côtés" };
+      }
+      if (item.type === "horloge") {
+        const h = hote.querySelector('[data-kind="time-hour"]'), m = hote.querySelector('[data-kind="time-minute"]');
+        if (!h || !m || h.value.trim() === "" || m.value.length < 2) return null;
+        const hOk = Number(h.value) === item.hour, mOk = Number(m.value) === item.minute;
+        return {
+          ok: hOk && mOk, champs: [[h, hOk], [m, mOk]],
+          message: hOk && mOk ? null : !hOk ? "Regarde la petite aiguille : elle donne les heures" : "Regarde la grande aiguille"
+        };
+      }
+      return null;
+    }
+
+    function valider() {
+      const r = evaluerQuestion();
+      if (!r) { bulle("Complète ta réponse", "doux"); humeur("songe"); return; }
+      const item = state.question;
+      r.champs.forEach(([el, ok]) => { el.classList.toggle("is-ok", ok); el.classList.toggle("is-bad", !ok); });
+
+      // seule la première tentative compte : les essais suivants ne faussent pas le suivi
+      const premiereTentative = !item.note;
+      if (premiereTentative) { item.note = true; noterResultat(item.comp, r.ok, item.niveau); }
+
+      if (r.ok) {
+        state.serie += 1;
+        const duPremierCoup = premiereTentative;
+        humeur("bravo"); son("ok");
+        pastillesJoie(document.querySelector("#questionHost"));
+        if (duPremierCoup) {
+          state.progres.etoiles += 1; marquerJour(); son("etoile");
+          bulle(`${praise()} ⭐`, "joie");
+        } else {
+          bulle(praise(), "joie");
+        }
+        if (state.serie > 0 && state.serie % 5 === 0) bulle(`${state.serie} d'affilée ! Tu es en feu 🔥`, "joie");
+        cloreDefi(duPremierCoup ? "ok" : "apres");
+        majSerie(); majEtoiles(); sauverProgres();
+        clearAutoAdvance();
+        state.advanceTimer = setTimeout(() => { questionSuivante(true); annoncerMontee(); }, 1200);
+      } else {
+        state.serie = 0; majSerie();
+        humeur("encourage"); son("non");
+        bulle(r.message || retry(), "doux");
+      }
+    }
+
+    function cloreDefi(etat) {
+      if (state.mode !== "seance" || !state.seance) return;
+      const q = state.question;
+      const s = state.seance;
+      if (s.resultats.length > s.index) return;          // déjà clos
+      s.resultats.push({ comp: q.comp, niveau: q.niveau, titre: (parId[q.comp] || {}).titre || q.comp, etat });
+      if (etat === "ok") s.etoiles += 1;
+      s.index += 1;
+      majJalons();
+    }
+
+    function seanceTerminee() {
+      return state.mode === "seance" && state.seance && state.seance.index >= state.seance.total;
+    }
+
+    function afficherBilan() {
+      const s = state.seance;
+      const parfait = s.resultats.filter(r => r.etat === "ok");
+      // Règle nette et sans chevauchement : une notion est « bien réussie » seulement
+      // si elle l'a été à chaque rencontre. Dès qu'elle a accroché une fois, elle est à revoir.
+      const titres = [...new Set(s.resultats.map(r => r.titre))];
+      const solides = titres.filter(t => s.resultats.every(r => r.titre !== t || r.etat === "ok"));
+      const aRevoir = titres.filter(t => !solides.includes(t));
+
+      document.querySelector("#bilanScore").textContent = `${parfait.length} sur ${s.total} du premier coup`;
+      document.querySelector("#bilanEtoiles").textContent = s.etoiles <= 1 ? `${s.etoiles} étoile gagnée` : `${s.etoiles} étoiles gagnées`;
+
+      const liste = (arr, vide) => arr.length ? `<ul>${arr.map(t => `<li>${t}</li>`).join("")}</ul>` : `<p class="bilan-vide">${vide}</p>`;
+      document.querySelector("#bilanSolides").innerHTML = liste(solides, "On y retravaillera la prochaine fois.");
+      document.querySelector("#bilanRevoir").innerHTML = liste(aRevoir, "Rien à revoir, c'était impeccable !");
+
+      const mot = parfait.length === s.total ? "Séance parfaite !"
+        : parfait.length >= s.total - 1 ? "Très belle séance !"
+          : parfait.length >= s.total / 2 ? "Bonne séance !" : "Séance terminée, bravo d'avoir tenu !";
+      document.querySelector("#bilanMot").textContent = mot;
+
+      allerA("bilan");
+      humeur("bravo");
+      son("etoile");
+      pastillesJoie(document.querySelector("#bilanCarte"));
+    }
+
+    function marquerJour() {
+      const today = new Date().toISOString().slice(0, 10);
+      const s = state.progres.serie;
+      if (s.dernier === today) return;
+      const hier = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
+      s.jours = s.dernier === hier ? s.jours + 1 : 1;
+      s.dernier = today;
+    }
+
+    function majSerie() {
+      const el = document.querySelector("#serieTexte"), pill = document.querySelector("#seriePill");
+      if (!el || !pill) return;
+      pill.hidden = state.mode === "seance";          // en séance, ce sont les jalons qui guident
+      el.textContent = state.serie === 0 ? "C'est parti !" : `${state.serie} d'affilée !`;
+      pill.classList.toggle("chaude", state.serie >= 3);
+    }
+
+    function majEtoiles() {
+      const el = document.querySelector("#scoreText");
+      if (!el) return;
+      el.textContent = state.progres.etoiles;
+      document.querySelector("#scorePill").classList.toggle("earned", state.progres.etoiles > 0);
+    }
+
+    function annoncerMontee() {
+      if (!state.montee) return;
+      const { niveau } = state.montee;
+      state.montee = null;
+      bulle(`Tu progresses ! On passe au niveau ${niveau}.`, "joie");
+      humeur("bravo");
+      const p = document.querySelector("#scorePill");
+      if (p) { p.classList.add("levelup"); setTimeout(() => p.classList.remove("levelup"), 2000); }
+    }
+    /* ============================================================
+       ESPACE PARENT
+       ============================================================ */
+
+    const DOMAINES = [
+      { id: "calcul", nom: "Calcul" },
+      { id: "nombres", nom: "Nombres" },
+      { id: "grandeurs", nom: "Grandeurs et mesures" },
+      { id: "geometrie", nom: "Géométrie" },
+      { id: "problemes", nom: "Problèmes" }
+    ];
+
+    const ETIQUETTE_ETAT = { acquise: "Acquise", "en cours": "En cours", fragile: "À travailler", nouvelle: "Pas encore vue" };
+
+    function etatAffiche(id, niveau) {
+      const s = state.progres.suivi[cleSuivi(id, niveau)];
+      if (!s || !s.recent.length) return "nouvelle";
+      return etatCompetence(id, niveau);
+    }
+
+    function dateLisible(iso) {
+      if (!iso) return "jamais";
+      const [a, m, j] = iso.split("-");
+      const aujourdhui = new Date().toISOString().slice(0, 10);
+      if (iso === aujourdhui) return "aujourd'hui";
+      const hier = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
+      if (iso === hier) return "hier";
+      return `le ${j}/${m}/${a}`;
+    }
+
+    function remplirParent() {
+      const p = state.progres;
+      document.querySelector("#pEtoiles").textContent = p.etoiles;
+      document.querySelector("#pJours").textContent = p.serie.jours;
+      document.querySelector("#pDerniere").textContent = dateLisible(p.serie.dernier);
+
+      document.querySelector("#pNiveaux").innerHTML = DOMAINES.map(d => {
+        const actuel = niveauDe(d.id);
+        return `<div class="p-ligne">
+          <span class="p-domaine">${d.nom}</span>
+          <span class="p-niveaux">${NIVEAUX.map(n =>
+            `<button class="p-niv${n === actuel ? " actif" : ""}" data-domaine-niveau="${d.id}" data-niveau="${n}" type="button"
+              aria-pressed="${n === actuel}">${n}</button>`).join("")}</span>
+        </div>`;
+      }).join("");
+
+      document.querySelector("#pSuivi").innerHTML = DOMAINES.map(d => {
+        const niveau = niveauDe(d.id);
+        const lot = competences.filter(c => c.domaine === d.id && c.niveaux.includes(niveau));
+        if (!lot.length) return "";
+        const lignes = lot.map(c => {
+          const cle = cleSuivi(c.id, niveau);
+          const su = state.progres.suivi[cle];
+          const etat = etatAffiche(c.id, niveau);
+          const detail = su && su.vues ? `${su.justes}/${su.vues}` : "—";
+          return `<li class="p-comp">
+            <span class="p-comp-nom">${c.titre}</span>
+            <span class="p-comp-chiffres">${detail}</span>
+            <span class="p-badge p-${etat.replace(/ /g, "-")}">${ETIQUETTE_ETAT[etat]}</span>
+          </li>`;
+        }).join("");
+        return `<section class="p-bloc"><h4>${d.nom} <span class="p-niveau-actuel">niveau ${niveau}</span></h4><ul>${lignes}</ul></section>`;
+      }).join("");
+    }
+
+    /* --- Verrou enfant. Ce n'est pas une sécurité : c'est un garde-fou pour
+       que l'enfant n'aille pas régler ses propres niveaux. La sortie de
+       secours par appui long l'assume. --- */
+
+    const hex = octets => [...octets].map(b => b.toString(16).padStart(2, "0")).join("");
+
+    async function empreinte(code, sel) {
+      const data = new TextEncoder().encode(sel + "|" + code);
+      try {
+        if (crypto && crypto.subtle && crypto.subtle.digest)
+          return hex(new Uint8Array(await crypto.subtle.digest("SHA-256", data)));
+      } catch (e) { /* contexte non sécurisé : on retombe plus bas */ }
+      let h = 2166136261;
+      for (const b of data) { h ^= b; h = Math.imul(h, 16777619); }
+      return "f" + (h >>> 0).toString(16);
+    }
+
+    const codeDefini = () => !!(state.progres.prefs.codeParent && state.progres.prefs.codeParent.emp);
+
+    async function definirCode(code) {
+      const sel = hex(crypto.getRandomValues(new Uint8Array(8)));
+      state.progres.prefs.codeParent = { sel, emp: await empreinte(code, sel) };
+      sauverProgres();
+    }
+
+    async function codeJuste(code) {
+      const c = state.progres.prefs.codeParent;
+      return !!c && await empreinte(code, c.sel) === c.emp;
+    }
+
+    function afficherVerrou(mode) {
+      state.verrouMode = mode;                     // "creer" ou "entrer"
+      const creer = mode === "creer";
+      document.querySelector("#pVerrou").hidden = false;
+      document.querySelector("#pContenu").hidden = true;
+      document.querySelector("#pVerrouMot").textContent = creer
+        ? "Choisis un code à 4 chiffres au moins. Il protège cet espace des curieux."
+        : "Entre le code parent.";
+      document.querySelector("#pCode2").hidden = !creer;
+      document.querySelector("#pValider").textContent = creer ? "Enregistrer" : "Entrer";
+      document.querySelector("#pErr").textContent = "";
+      const c1 = document.querySelector("#pCode"), c2 = document.querySelector("#pCode2");
+      c1.value = ""; c2.value = "";
+      setTimeout(() => c1.focus(), 50);
+    }
+
+    function afficherContenu() {
+      document.querySelector("#pVerrou").hidden = true;
+      document.querySelector("#pContenu").hidden = false;
+      remplirParent();
+    }
+
+    function ouvrirParent(deverrouille) {
+      const d = document.querySelector("#parent");
+      if (d.showModal) d.showModal(); else d.setAttribute("open", "");
+      if (deverrouille) afficherContenu();
+      else if (!codeDefini()) afficherVerrou("creer");
+      else afficherVerrou("entrer");
+    }
+
+    /* ============================================================
+       10. MESSAGES
+       ============================================================ */
+
+    const accueils = ["On s'entraîne un peu ?", "Prêt pour de nouveaux défis ?", "Salut ! On continue ?", "À toi de jouer !", "Content de te revoir !"];
+    const praises = ["Bravo !", "Super !", "Génial !", "Bien joué !", "Parfait !", "Trop fort !", "Excellent !", "Tu assures !", "Nickel !", "C'est exactement ça !", "Impeccable !", "Quel talent !", "Tu gères !", "Magnifique !", "Sans faute !"];
+    const retries = ["Essaie encore", "Presque !", "Pas tout à fait…", "Tu y es presque", "Regarde encore une fois", "Encore un petit effort", "Recompte doucement", "Reprends calmement"];
+
+    function pickVaried(list, key) {
+      if (!list || !list.length) return "";
+      if (list.length < 2) return list[0];
+      let i = rnd(list.length);
+      if (i === state.lastPick[key]) i = (i + 1) % list.length;
+      state.lastPick[key] = i;
       return list[i];
     }
+    function praise() { return pickVaried(praises, "praise"); }
+    function retry() { return pickVaried(retries, "retry"); }
 
-    function praise(){ return pickVaried(praises,"praise"); }
-    function retry(){ return pickVaried(retries,"retry"); }
+    /* ============================================================
+       11. CÂBLAGE
+       ============================================================ */
 
-    function updateHint(id){
-      const el=document.querySelector("#hintText");
-      if(!el) return;
-      const list=hintsFor(id);
-      if(!list.length) return;
-      el.textContent=pickVaried(list,"hint-"+id).text;
-    }
-
-    function updateScore(){
-      const el=document.querySelector("#scoreText");
-      if(!el) return;
-      const n=state.solved;
-      el.textContent=n<=1?`${n} série réussie`:`${n} séries réussies`;
-      document.querySelector("#scorePill").classList.toggle("earned",n>0);
-    }
-
-    function setClass(el,cls,on){ if(!el)return; on?el.classList.add(cls):el.classList.remove(cls); }
-
-    function clearAutoAdvance(){ if(state.advanceTimer){clearTimeout(state.advanceTimer);state.advanceTimer=null;} }
-
-    function scheduleNext(id){
-      clearAutoAdvance();
-      state.advanceTimer=setTimeout(()=>{
-        const active=document.querySelector(".screen.active");
-        if(active&&active.id===id){ state.solved+=1; updateScore(); nextSet(id); }
-      },1100);
-    }
-
-    function allInputsCorrect(selector){
-      const inputs=[...document.querySelectorAll(selector)];
-      return inputs.length>0&&inputs.every(i=>i.value.trim()!==""&&Number(i.value)===Number(i.dataset.expected));
-    }
-
-    function allWrittenBoardsCorrect(){
-      const boards=[...document.querySelectorAll("#written .written-board")];
-      return boards.length>0&&boards.every(board=>{
-        const exercise=board.closest(".exercise");
-        const expected=pad2(board.dataset.expected);
-        const actual=[...exercise.querySelectorAll(".written-digit")].map(i=>i.value).join("");
-        const retenueInput=exercise.querySelector(".retenue-input");
-        return actual===expected&&(!retenueInput||retenueInput.value==="1");
+    // root limite la portée ; [data-wired] empêche d'empiler deux fois les mêmes écouteurs
+    function wireInputs(root = document) {
+      const fresh = sel => [...root.querySelectorAll(sel)].filter(el => {
+        if (el.dataset.wired) return false;
+        el.dataset.wired = "1";
+        return true;
       });
-    }
 
-    function makeInput(expected,kind){
-      return `<div class="answer-row"><input inputmode="numeric" pattern="[0-9]*" data-expected="${expected}" data-kind="${kind}" aria-label="Réponse"><button type="button" class="soft check-one">OK</button></div><div class="feedback"></div>`;
-    }
-
-    function renderMental(){
-      document.querySelector("#mentalGrid").innerHTML=sets.mental[state.index.mental].map(item=>{
-        if(!Array.isArray(item)){
-          const left=item.left===null?`<span class="num"><span class="tens">?</span></span>`:colorNumber(item.left);
-          const right=item.right===null?`<span class="num"><span class="tens">?</span></span>`:colorNumber(item.right);
-          return `<article class="exercise"><div class="prompt">${left} ${item.op} ${right} = ${colorNumber(item.result)}</div>${makeInput(item.answer,"mental")}</article>`;
-        }
-        const [a,op,b]=item;
-        return `<article class="exercise"><div class="prompt">${colorNumber(a)} ${op} ${colorNumber(b)} =</div>${makeInput(answerFor(item),"mental")}</article>`;
-      }).join("");
-    }
-
-    function renderOrder(){
-      state.orderAnswer=[];
-      state.selectedCompare=null;
-      const task=sets.order[state.index.order];
-      const title=task.mode==="desc"?"Du plus grand au plus petit":task.mode==="compare"?"Choisis le bon signe":"Du plus petit au plus grand";
-      document.querySelector("#order .small-prompt").textContent=title;
-      if(task.mode==="compare"){
-        document.querySelector("#orderBank").innerHTML=`<div class="prompt">${colorNumber(task.left)} <span class="compare-display muted-text" id="compareDisplay">?</span> ${colorNumber(task.right)}</div>`;
-        document.querySelector("#orderAnswer").innerHTML=`<div class="symbol-row"><button class="symbol-button" data-compare="lt" type="button">&lt;</button><button class="symbol-button" data-compare="gt" type="button">&gt;</button></div>`;
-      } else {
-        document.querySelector("#orderBank").innerHTML=task.values.map(v=>`<button class="pill" data-order-value="${v}" type="button">${colorNumber(v)}</button>`).join("");
-        document.querySelector("#orderAnswer").innerHTML="";
-      }
-      document.querySelector("#orderFeedback").textContent="";
-      document.querySelector("#orderFeedback").className="feedback";
-    }    function renderWritten(){
-      document.querySelector("#writtenGrid").innerHTML=sets.written[state.index.written].map(item=>{
-        const [a,op,b]=item;
-        const at=Math.floor(a/10),au=a%10,bt=Math.floor(b/10),bu=b%10;
-        const answer=answerFor(item);
-        const answerText=pad2(answer);
-        const needsCarry=op==="+"&&(au+bu)>=10;
-        const retenueRow=needsCarry?`<span class="retenue-cell"></span><input class="retenue-cell retenue-input" inputmode="numeric" pattern="[0-9]*" maxlength="1" data-kind="retenue-digit" data-expected="1" aria-label="Retenue"><span class="retenue-cell col-end"></span>`:"";
-        return `<article class="exercise"><div class="written-board" data-expected="${answer}"><span></span><span class="tens">d</span><span class="ones col-end">u</span>${retenueRow}<span></span><span class="tens">${at}</span><span class="ones col-end">${au}</span><span class="operator">${op}</span><span class="tens">${bt}</span><span class="ones col-end">${bu}</span><span class="rule"></span><span class="last-row"></span><input class="last-row written-digit tens-answer" inputmode="numeric" pattern="[0-9]*" maxlength="1" data-kind="written-digit" data-expected="${answerText[0]}" aria-label="Dizaine"><input class="last-row written-digit ones-answer col-end" inputmode="numeric" pattern="[0-9]*" maxlength="1" data-kind="written-digit" data-expected="${answerText[1]}" aria-label="Unité"></div><div class="feedback"></div></article>`;
-      }).join("");
-    }
-
-    function renderHours(){
-      const target=sets.hours[state.index.hours];
-      const period=partOfDay(target.hour);
-      const periodLabel={matin:"Matin",apresmidi:"Après-midi",soir:"Soir",nuit:"Nuit"}[period];
-      document.querySelector("#hoursGrid").innerHTML=`<article class="exercise"><div class="clock-area">${clockSvg(target.hour,target.minute)}<div><div class="time-context"><span class="sky-icon ${period}"></span>${periodLabel}</div><div class="small-prompt">Quelle heure indique l'horloge ?</div><div class="time-answer"><input inputmode="numeric" pattern="[0-9]*" data-kind="time-hour" aria-label="Heures"><span class="time-separator">h</span><input inputmode="numeric" pattern="[0-9]*" data-kind="time-minute" aria-label="Minutes"></div><div class="feedback" id="hoursFeedback"></div></div></div></article>`;
-    }
-
-    function clockSvg(hour,minute){
-      const hourAngle=((hour%12)*30)+(minute*0.5);
-      const minuteAngle=minute*6;
-      const numbers=Array.from({length:12},(_,i)=>{
-        const v=i+1,angle=(v*30-90)*Math.PI/180;
-        const x=100+Math.cos(angle)*76,y=100+Math.sin(angle)*76;
-        return `<text class="clock-number" x="${x.toFixed(1)}" y="${y.toFixed(1)}">${v}</text>`;
-      }).join("");
-      const ticks=Array.from({length:60},(_,i)=>{
-        const angle=(i*6-90)*Math.PI/180,outer=92,inner=i%5===0?84:88;
-        const x1=100+Math.cos(angle)*outer,y1=100+Math.sin(angle)*outer;
-        const x2=100+Math.cos(angle)*inner,y2=100+Math.sin(angle)*inner;
-        return `<line x1="${x1.toFixed(1)}" y1="${y1.toFixed(1)}" x2="${x2.toFixed(1)}" y2="${y2.toFixed(1)}" stroke="var(--du)" stroke-width="${i%5===0?2.5:1}"/>`;
-      }).join("");
-      return `<svg class="clock-face" viewBox="0 0 200 200" role="img" aria-label="Horloge à aiguilles"><circle cx="100" cy="100" r="95" fill="#fff" stroke="var(--rule)" stroke-width="6"/>${ticks}${numbers}<line class="hand-hour" x1="100" y1="100" x2="100" y2="48" transform="rotate(${hourAngle} 100 100)"/><line class="hand-minute" x1="100" y1="100" x2="100" y2="28" transform="rotate(${minuteAngle} 100 100)"/><circle cx="100" cy="100" r="6" fill="var(--brand-deep)"/></svg>`;
-    }
-
-    function setInputState(input,state){
-      if(!input) return;
-      input.classList.toggle("is-ok",state===true);
-      input.classList.toggle("is-bad",state===false);
-    }
-
-    function updateProgressDots(){
-      const screen=document.querySelector(".screen.active");
-      const host=document.querySelector("#progressDots");
-      if(!screen||!host) return;
-      const cards=[...screen.querySelectorAll(".exercise")];
-      const total=Math.max(cards.length,1);
-      const done=cards.filter(c=>c.querySelector(".feedback.ok")).length;
-      host.innerHTML=Array.from({length:total},(_,i)=>`<span class="pdot${i<done?" on":""}"></span>`).join("");
-      host.setAttribute("aria-label",`${done} sur ${total} réussis`);
-    }
-
-    function setFeedback(input,ok){
-      const feedback=input.closest(".exercise").querySelector(".feedback");
-      feedback.textContent=ok?praise():retry();
-      feedback.className=`feedback ${ok?"ok":"bad"}`;
-      setInputState(input,ok);
-    }
-
-    function checkInput(input){
-      if(input.dataset.kind==="written-digit"||input.dataset.kind==="retenue-digit") return checkWrittenBoard(input.closest(".exercise"));
-      const ok=input.value.trim()!==""&&Number(input.value)===Number(input.dataset.expected);
-      setFeedback(input,ok);
-      if(ok&&input.dataset.kind==="mental"&&allInputsCorrect("#mental input")) scheduleNext("mental");
-      return ok;
-    }
-
-    function maybeAutoCheckInput(input){
-      if(!input) return;
-      if(input.dataset.kind==="written-digit"||input.dataset.kind==="retenue-digit"){
-        const exercise=input.closest(".exercise");
-        const digits=[...exercise.querySelectorAll(".written-digit")];
-        const retenueInput=exercise.querySelector(".retenue-input");
-        const digitsComplete=digits.every(d=>d.value.length===1);
-        const retenueComplete=!retenueInput||retenueInput.value.length===1;
-        if(digitsComplete&&retenueComplete) checkWrittenBoard(exercise);
-        return;
-      }
-      if(input.dataset.kind==="time-hour"||input.dataset.kind==="time-minute"){
-        const hourInput=document.querySelector('[data-kind="time-hour"]');
-        const minuteInput=document.querySelector('[data-kind="time-minute"]');
-        if(input.dataset.kind==="time-hour"&&input.value.length>=2){
-          if(minuteInput){state.activeInput=minuteInput;minuteInput.focus();minuteInput.select();}
-        }
-        if(hourInput&&minuteInput&&hourInput.value.length>0&&minuteInput.value.length===2) checkHours();
-        return;
-      }
-      if(input.dataset.kind!=="mental") return;
-      if(input.value.length===String(input.dataset.expected).length) checkInput(input);
-    }
-
-    function checkWrittenBoard(exercise){
-      const inputs=[...exercise.querySelectorAll(".written-digit")];
-      const expected=pad2(exercise.querySelector(".written-board").dataset.expected);
-      const actual=inputs.map(i=>i.value).join("");
-      const retenueInput=exercise.querySelector(".retenue-input");
-      const retenueFilled=!retenueInput||retenueInput.value!=="";
-      const retenueOk=!retenueInput||retenueInput.value==="1";
-      const digitsOk=actual.length===2&&actual===expected;
-      const ok=digitsOk&&retenueOk;
-      const feedback=exercise.querySelector(".feedback");
-      feedback.textContent=ok?praise():digitsOk&&retenueInput&&!retenueOk?"N'oublie pas la retenue !":retry();
-      feedback.className=`feedback ${ok?"ok":"bad"}`;
-      inputs.forEach((inp,i)=>{setInputState(inp,inp.value===expected[i]);});
-      if(retenueInput) setInputState(retenueInput,retenueInput.value==="1"?true:retenueFilled?false:null);
-      if(ok&&allWrittenBoardsCorrect()) scheduleNext("written");
-      return ok;
-    }
-
-    function checkScreen(id){
-      if(id==="order") return checkOrder();
-      if(id==="hours") return checkHours();
-      if(id==="written"){document.querySelectorAll("#written .exercise").forEach(checkWrittenBoard);return;}
-      document.querySelectorAll(`#${id} input`).forEach(checkInput);
-    }
-
-    function checkOrder(){
-      const task=sets.order[state.index.order];
-      const feedback=document.querySelector("#orderFeedback");
-      if(task.mode==="compare"){
-        const expected=task.left<task.right?"lt":"gt";
-        document.querySelectorAll("[data-compare]").forEach(b=>{
-          setClass(b,"correct",b.dataset.compare===expected);
-          setClass(b,"wrong",b.classList.contains("selected")&&b.dataset.compare!==expected);
+      fresh("input").forEach(input => {
+        const memoriser = () => { state.activeInput = input; };
+        input.addEventListener("focus", memoriser);
+        input.addEventListener("click", memoriser);
+        input.addEventListener("touchstart", memoriser, { passive: true });
+        input.addEventListener("input", () => {
+          const max = Number(input.getAttribute("maxlength")) || 3;
+          const brut = input.dataset.format === "decimal" ? input.value.replace(/[^\d,]/g, "") : input.value.replace(/\D/g, "");
+          input.value = brut.slice(0, max);
+          input.classList.remove("is-ok", "is-bad");
+          if (state.scene === "jeu") { humeur("songe"); bulle(""); }
+          autoValider(input);
         });
-        const ok=state.selectedCompare===expected;
-        feedback.textContent=ok?praise():"Regarde bien quel nombre est le plus grand";
-        feedback.className=`feedback ${ok?"ok":"bad"}`;
-        if(ok) scheduleNext("order");
-        return;
-      }
-      const expectedValues=[...task.values].sort((a,b)=>task.mode==="desc"?b-a:a-b);
-      const ok=expectedValues.join(",")===state.orderAnswer.join(",");
-      feedback.textContent=ok?praise():task.mode==="desc"?"Regarde le nombre le plus grand qui reste":"Regarde le nombre le plus petit qui reste";
-      feedback.className=`feedback ${ok?"ok":"bad"}`;
-      if(ok) scheduleNext("order");
-    }
-
-    function checkHours(){
-      const target=sets.hours[state.index.hours];
-      const feedback=document.querySelector("#hoursFeedback");
-      const hourInput=document.querySelector('[data-kind="time-hour"]');
-      const minuteInput=document.querySelector('[data-kind="time-minute"]');
-      const hour=Number(hourInput.value);
-      const minute=Number(pad2(minuteInput.value));
-      const ok=hour===target.hour&&minute===target.minute&&minuteInput.value.trim()!=="";
-      setInputState(hourInput,hour===target.hour);
-      setInputState(minuteInput,minute===target.minute&&minuteInput.value.trim()!=="");
-      feedback.textContent=ok?praise():hour!==target.hour?"Regarde la petite aiguille : elle donne les heures":"Regarde la grande aiguille, et écris les minutes avec deux chiffres";
-      feedback.className=`feedback ${ok?"ok":"bad"}`;
-      if(ok) scheduleNext("hours");
-    }
-
-    function nextSet(id){
-      clearAutoAdvance();
-      if(id==="hours"){
-        let next=state.index.hours;
-        while(next===state.index.hours&&sets.hours.length>1) next=Math.floor(Math.random()*sets.hours.length);
-        state.index.hours=next;
-        renderHours();wireInputs();return;
-      }
-      if(id==="order"||id==="mental"||id==="written"){
-        let next=state.index[id];
-        while(next===state.index[id]&&sets[id].length>1) next=Math.floor(Math.random()*sets[id].length);
-        state.index[id]=next;
-        renderAll();return;
-      }
-    }
-
-    function renderAll(){
-      renderMental();renderOrder();renderWritten();renderHours();
-      wireInputs();updateToolbelt();
-    }
-
-    function updateToolbelt(){
-      const activeScreen=document.querySelector(".screen.active");
-      const bar=document.querySelector(".actionbar");
-      if(!activeScreen) return;
-      // l'écran « Ranger » se joue au doigt : ni saisie, ni touches d'édition
-      if(bar) bar.style.display=activeScreen.id==="order"?"none":"grid";
-      updateHint(activeScreen.id);
-    }
-
-    function wireInputs(){
-      document.querySelectorAll("input").forEach(input=>{
-        input.addEventListener("focus",()=>{state.activeInput=input;});
-        input.addEventListener("click",()=>{state.activeInput=input;});
-        input.addEventListener("touchstart",()=>{state.activeInput=input;});
-        input.addEventListener("input",()=>{
-          const maxLength=(input.dataset.kind==="written-digit"||input.dataset.kind==="retenue-digit")?1:2;
-          input.value=input.value.replace(/\D/g,"").slice(0,maxLength);
-          setInputState(input,null);
-          const feedback=input.closest(".exercise").querySelector(".feedback");
-          feedback.textContent="";feedback.className="feedback";
-          maybeAutoCheckInput(input);
-        });
+        input.addEventListener("keydown", e => { if (e.key === "Enter") { e.preventDefault(); valider(); } });
       });
-      document.querySelectorAll(".check-one").forEach(b=>b.addEventListener("click",()=>checkInput(b.parentElement.querySelector("input"))));
-      document.querySelectorAll("[data-order-value]").forEach(b=>{
-        b.addEventListener("click",()=>{
-          if(b.classList.contains("selected")) return;
-          const value=Number(b.dataset.orderValue);
+
+      fresh("[data-order-value]").forEach(b => {
+        b.addEventListener("click", () => {
+          if (b.classList.contains("selected")) return;
           b.classList.add("selected");
-          state.orderAnswer.push(value);
-          document.querySelector("#orderAnswer").insertAdjacentHTML("beforeend",`<span class="pill">${colorNumber(value)}</span>`);
-          const task=sets.order[state.index.order];
-          if(task.mode!=="compare"&&state.orderAnswer.length===task.values.length) checkOrder();
+          const v = Number(b.dataset.orderValue);
+          state.orderAnswer.push(v);
+          const zone = document.querySelector("#orderAnswer");
+          if (zone) zone.insertAdjacentHTML("beforeend", `<span class="pill posee">${colorNumber(v)}</span>`);
+          const item = state.question;
+          if (item && state.orderAnswer.length === item.valeurs.length) valider();
         });
       });
-      document.querySelectorAll("[data-compare]").forEach(b=>{
-        b.addEventListener("click",()=>{
-          state.selectedCompare=b.dataset.compare;
-          document.querySelectorAll("[data-compare]").forEach(i=>i.classList.remove("selected","correct","wrong"));
+
+      fresh("[data-compare]").forEach(b => {
+        b.addEventListener("click", () => {
+          state.selectedCompare = b.dataset.compare;
+          root.querySelectorAll("[data-compare]").forEach(i => i.classList.remove("selected", "correct", "wrong"));
           b.classList.add("selected");
-          const display=document.querySelector("#compareDisplay");
-          if(display){display.textContent=b.dataset.compare==="lt"?"<":">";display.classList.remove("muted-text");}
-          checkOrder();
+          const d = document.querySelector("#compareDisplay");
+          if (d) { d.textContent = b.dataset.compare === "lt" ? "<" : ">"; d.classList.add("choisi"); }
+          valider();
+        });
+      });
+
+      fresh("[data-choix]").forEach(b => {
+        b.addEventListener("click", () => {
+          root.querySelectorAll("[data-choix]").forEach(x => x.classList.remove("choisi", "correct", "wrong"));
+          b.classList.add("choisi");
+          valider();
+        });
+      });
+
+      fresh(".case.cliquable").forEach(c => {
+        c.addEventListener("click", () => {
+          c.classList.toggle("choisie");
+          c.classList.remove("juste", "faux");
+          humeur("songe"); bulle("");
+          // on ne valide qu'une fois le bon nombre de cases posé, pour ne pas harceler
+          const n = document.querySelectorAll(".case.cliquable.choisie").length;
+          if (state.question && n === state.question.reponse.length) valider();
+        });
+      });
+
+      fresh("#undoOrder").forEach(b => {
+        b.addEventListener("click", () => {
+          const v = state.orderAnswer.pop();
+          if (v === undefined) return;
+          const src = document.querySelector(`#orderBank [data-order-value="${v}"]`);
+          if (src) src.classList.remove("selected");
+          const zone = document.querySelector("#orderAnswer");
+          if (zone && zone.lastElementChild) zone.lastElementChild.remove();
         });
       });
     }
 
-    document.querySelectorAll("nav button").forEach(b=>{
-      b.addEventListener("click",()=>{
-        document.querySelectorAll("nav button").forEach(i=>i.classList.remove("active"));
-        document.querySelectorAll(".screen").forEach(i=>i.classList.remove("active"));
-        b.classList.add("active");
-        document.querySelector(`#${b.dataset.screen}`).classList.add("active");
-        state.activeInput=document.querySelector(".screen.active input");
-        if(state.activeInput) state.activeInput.focus();
-        updateToolbelt();
-      });
+    // Validation dès que la réponse est complète : l'enfant n'a pas de bouton à chercher
+    function autoValider(input) {
+      const k = input.dataset.kind, hote = document.querySelector("#questionHost");
+      if (!hote) return;
+      if (k === "written-digit" || k === "retenue") {
+        const complet = [...hote.querySelectorAll(".written-digit")].every(d => d.value.length === 1)
+          && [...hote.querySelectorAll(".retenue-input")].every(r => r.value.length === 1);
+        if (complet) valider();
+        return;
+      }
+      if (k === "quotient" || k === "reste") {
+        const complet = [...hote.querySelectorAll('[data-kind="quotient"]')].every(x => x.value.length === 1)
+          && hote.querySelector('[data-kind="reste"]').value !== "";
+        if (complet) valider();
+        return;
+      }
+      if (k === "time-hour" || k === "time-minute") {
+        const m = hote.querySelector('[data-kind="time-minute"]');
+        if (k === "time-hour" && input.value.length >= 2 && m) { state.activeInput = m; m.focus(); m.select(); return; }
+        const h = hote.querySelector('[data-kind="time-hour"]');
+        if (h && m && h.value.length > 0 && m.value.length === 2) valider();
+        return;
+      }
+      if (k === "saisie" && input.value.length === String(input.dataset.expected).length) valider();
+    }
+
+    // --- accueil ---
+    document.querySelector("#commencer").addEventListener("click", demarrerSeance);
+    document.querySelector("#bilanEncore").addEventListener("click", demarrerSeance);
+    document.querySelector("#bilanAccueil").addEventListener("click", () => allerA("accueil"));
+    document.querySelectorAll("[data-domaine]").forEach(b => b.addEventListener("click", () => demarrer(b.dataset.domaine)));
+
+    // --- barre de jeu ---
+    document.querySelector("#retour").addEventListener("click", () => allerA("accueil"));
+    document.querySelector("#passer").addEventListener("click", () => {
+      if (state.question && !state.question.note) { state.question.note = true; noterResultat(state.question.comp, false, state.question.niveau); }
+      cloreDefi("passe");
+      state.serie = 0; majSerie();
+      questionSuivante(true);
     });
 
-    document.querySelectorAll("[data-check-screen]").forEach(b=>b.addEventListener("click",()=>checkScreen(b.dataset.checkScreen)));
-    document.querySelectorAll("[data-new]").forEach(b=>b.addEventListener("click",()=>nextSet(b.dataset.new)));
-
-    document.querySelector("#undoOrder").addEventListener("click",()=>{
-      const removed=state.orderAnswer.pop();
-      if(removed===undefined) return;
-      const btn=document.querySelector(`#orderBank [data-order-value="${removed}"]`);
-      if(btn) btn.classList.remove("selected");
-      const last=document.querySelector("#orderAnswer").lastElementChild;
-      if(last) last.remove();
+    // --- barre d'actions ---
+    document.querySelector("#btnEffacer").addEventListener("click", () => {
+      const i = champCourant(); if (!i) return;
+      i.value = i.value.slice(0, -1); i.focus(); i.dispatchEvent(new Event("input"));
+    });
+    document.querySelector("#btnVider").addEventListener("click", () => {
+      const hote = document.querySelector("#questionHost");
+      hote.querySelectorAll("input").forEach(i => { i.value = ""; i.classList.remove("is-ok", "is-bad"); });
+      const zone = document.querySelector("#orderAnswer");
+      if (zone) { zone.innerHTML = ""; state.orderAnswer = []; document.querySelectorAll("#orderBank .pill").forEach(p => p.classList.remove("selected")); }
+      state.selectedCompare = null;
+      document.querySelectorAll("[data-compare]").forEach(b => b.classList.remove("selected", "correct", "wrong"));
+      hote.querySelectorAll("[data-choix]").forEach(b => b.classList.remove("choisi", "correct", "wrong"));
+      hote.querySelectorAll(".case.cliquable").forEach(c => c.classList.remove("choisie", "juste", "faux"));
+      bulle(""); humeur("neutre"); focusPremier();
+    });
+    document.querySelector("#btnSuivant").addEventListener("click", () => {
+      const champs = [...document.querySelectorAll("#questionHost input")];
+      if (!champs.length) return;
+      const i = champs.indexOf(champCourant());
+      const suivant = champs[(i + 1) % champs.length];
+      if (suivant) { state.activeInput = suivant; suivant.focus(); suivant.select(); }
     });
 
-    document.querySelector("#resetProgress").addEventListener("click",()=>{
-      if(!confirm("Recommencer depuis le début ?")) return;
-      Object.keys(state.index).forEach(k=>{state.index[k]=0;});
-      renderAll();
+    function champCourant() {
+      const hote = document.querySelector("#questionHost");
+      if (!hote) return null;
+      if (document.activeElement && document.activeElement.tagName === "INPUT" && hote.contains(document.activeElement)) return document.activeElement;
+      if (state.activeInput && state.activeInput.isConnected && hote.contains(state.activeInput)) return state.activeInput;
+      return hote.querySelector("input");
+    }
+
+    // --- espace parent ---
+    // --- ouverture normale, et sortie de secours par appui long de 10 s ---
+    const LIEN = document.querySelector("#lienParent");
+    const SECOURS_MS = 10000;
+    let minuteurSecours = null, secoursAtteint = false;
+
+    function debutAppui() {
+      if (minuteurSecours) return;
+      secoursAtteint = false;
+      LIEN.classList.add("en-appui");
+      minuteurSecours = setTimeout(() => {
+        secoursAtteint = true;
+        finAppui();
+        ouvrirParent(true);                 // on entre sans le code
+        afficherContenu();
+        alert("Accès de secours accordé.\nPense à définir un nouveau code avec « Changer le code ».");
+      }, SECOURS_MS);
+    }
+    function finAppui() {
+      if (minuteurSecours) { clearTimeout(minuteurSecours); minuteurSecours = null; }
+      LIEN.classList.remove("en-appui");
+    }
+    LIEN.addEventListener("pointerdown", debutAppui);
+    ["pointerup", "pointerleave", "pointercancel"].forEach(e => LIEN.addEventListener(e, finAppui));
+    LIEN.addEventListener("contextmenu", e => e.preventDefault());
+    LIEN.addEventListener("click", () => {
+      if (secoursAtteint) { secoursAtteint = false; return; }   // l'appui long a déjà ouvert
+      ouvrirParent(false);
     });
 
-    document.querySelectorAll("[data-key]").forEach(b=>{
-      b.addEventListener("click",()=>{
-        const activeScreen=document.querySelector(".screen.active");
-        const focusedInput=document.activeElement&&document.activeElement.tagName==="INPUT"&&activeScreen&&activeScreen.contains(document.activeElement)?document.activeElement:null;
-        const activeInputIsUsable=state.activeInput&&state.activeInput.isConnected&&activeScreen&&activeScreen.contains(state.activeInput);
-        const input=focusedInput?focusedInput:activeInputIsUsable?state.activeInput:activeScreen?activeScreen.querySelector("input"):null;
-        if(!input) return;
-        state.activeInput=input;input.focus();
-        const key=b.dataset.key;
-        if(key==="back") input.value=input.value.slice(0,-1);
-        if(key==="clear") input.value="";
-        if(key==="next"){
-          const inputs=[...document.querySelectorAll(".screen.active input")];
-          const next=inputs[(inputs.indexOf(input)+1)%inputs.length];
-          if(next){state.activeInput=next;next.focus();}
-          return;
-        }
-        input.dispatchEvent(new Event("input"));
-      });
+    document.querySelector("#pForm").addEventListener("submit", async e => {
+      e.preventDefault();
+      const c1 = document.querySelector("#pCode"), c2 = document.querySelector("#pCode2");
+      const err = document.querySelector("#pErr");
+      const code = c1.value.trim();
+      if (state.verrouMode === "creer") {
+        if (code.length < 4) { err.textContent = "Le code doit faire au moins 4 chiffres."; return; }
+        if (code !== c2.value.trim()) { err.textContent = "Les deux codes ne sont pas identiques."; c2.value = ""; c2.focus(); return; }
+        await definirCode(code);
+        afficherContenu();
+        return;
+      }
+      if (await codeJuste(code)) { afficherContenu(); return; }
+      err.textContent = "Code incorrect.";
+      c1.value = ""; c1.focus();
     });
 
-    document.querySelector("#greeting").textContent=pickVaried(greetings,"greeting");
-    updateScore();
-    renderAll();
-    updateProgressDots();
-    new MutationObserver(updateProgressDots).observe(document.querySelector("main"),{subtree:true,childList:true,attributes:true,attributeFilter:["class"]});
+    // seuls des chiffres, dans les deux champs de code
+    ["#pCode", "#pCode2"].forEach(sel => {
+      const el = document.querySelector(sel);
+      el.addEventListener("input", () => { el.value = el.value.replace(/\D/g, "").slice(0, 8); document.querySelector("#pErr").textContent = ""; });
+    });
+
+    document.querySelector("#pChangerCode").addEventListener("click", () => afficherVerrou("creer"));
+    document.querySelector("#pFermer").addEventListener("click", () => document.querySelector("#parent").close());
+
+    document.querySelector("#pNiveaux").addEventListener("click", e => {
+      const b = e.target.closest("[data-domaine-niveau]");
+      if (!b) return;
+      reglerNiveau(b.dataset.domaineNiveau, b.dataset.niveau);
+      remplirParent();
+    });
+
+    document.querySelector("#pReset").addEventListener("click", () => {
+      if (!confirm("Effacer toute la progression : niveaux, étoiles et suivi des notions ?\nCette action est définitive.")) return;
+      reinitialiserProgres();
+      majEtoiles(); majSerie(); majJalons(); remplirParent();
+      allerA("accueil");
+    });
+
+    // --- son ---
+    document.querySelector("#sonToggle").addEventListener("click", () => {
+      state.progres.prefs.son = !state.progres.prefs.son;
+      majSon(); sauverProgres();
+      if (state.progres.prefs.son) son("ok");
+    });
+    function majSon() {
+      const b = document.querySelector("#sonToggle");
+      const actif = state.progres.prefs.son;
+      b.setAttribute("aria-pressed", String(actif));
+      b.setAttribute("aria-label", actif ? "Couper le son" : "Activer le son");
+      b.classList.toggle("coupe", !actif);
+      document.querySelector("#sonIcone").textContent = actif ? "♪" : "✕";
+    }
+
+    /* ============================================================
+       12. DÉMARRAGE
+       ============================================================ */
+
+    document.querySelectorAll("[data-avatar]").forEach(el => { el.innerHTML = AVATAR; });
+    document.querySelector("#bulleAccueil").textContent = pickVaried(accueils, "accueil");
+    majSon();
+    majEtoiles();
+    majSerie();
+    majJalons();
+    humeur("neutre");
   </script>
 </body>
 </html>
