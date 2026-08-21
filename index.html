@@ -4,10 +4,14 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#fdf1f8">
+  <!-- Icône embarquée : le fichier reste unique, aucun fichier annexe à téléverser -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIyIiBmaWxsPSIjZmRmMWY4Ii8+PHBhdGggZD0iTTYzIDI2IDc2IDIwLjUiIHN0cm9rZT0iI2M1ODhiMCIgc3Ryb2tlLXdpZHRoPSI0LjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxjaXJjbGUgY3g9IjgwIiBjeT0iMTgiIHI9IjExIiBmaWxsPSIjYjBhNWYyIi8+PGNpcmNsZSBjeD0iNDciIGN5PSI1NSIgcj0iMzgiIGZpbGw9IiNmM2I0ZGQiLz48Y2lyY2xlIGN4PSIyMCIgY3k9IjYyIiByPSI4LjUiIGZpbGw9IiNjNTg4YjAiIG9wYWNpdHk9Ii40MiIvPjxjaXJjbGUgY3g9Ijc0IiBjeT0iNjIiIHI9IjguNSIgZmlsbD0iI2M1ODhiMCIgb3BhY2l0eT0iLjQyIi8+PGNpcmNsZSBjeD0iMzYiIGN5PSI0OCIgcj0iNS44IiBmaWxsPSIjNmIzNDU5Ii8+PGNpcmNsZSBjeD0iNTgiIGN5PSI0OCIgcj0iNS44IiBmaWxsPSIjNmIzNDU5Ii8+PHBhdGggZD0iTTMxIDU0LjVBMTcuMjUgMTcuMjUgMCAwIDAgNjMgNTQuNSIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjNmIzNDU5IiBzdHJva2Utd2lkdGg9IjQuNSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PC9zdmc+">
+  <link rel="icon" type="image/png" sizes="32x32" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAACvUlEQVR42s1Xz08TQRTeP6F/jEePHv0HvNXEk3oyHDn0wMl404vReBAhyg/FiKYRiESMElELDRJpAGul/FhrF7bbbamY53wjQ6bbmZ1pWaJNvrTb9+Z933vzdn44jvT5vd9MMWQYcgyUMHJHsVOO6sMMaQbvFIijAEdaRZ44WW2nQfm3dZrLBvTxdUDe94ZsT8tl906D/PmITxND7SivhnIlUs7RvCSe/fxM0EEOvHxck/0yTjcNd/gzpFZpn5p5tw2tjT1uk31V2QvIjenYEIM0fFem2uR6LOAD35Yb0NS4ZyOAHFPGNsRRlIdzNHN7WUmOZrQS8GurRsF0sWtygSD7lRan9trI8TY0K02zgMPdOg/QK7kswl/zyd0Io69gvID6q9KJyY9FsCpGGzRWALo6KXKBRm7XTgCUJlF6FTCtRgEHhao2QOHuG3rSd4eWbk132EoPPmhtAgcrFbMA3SsHgr6zF+nKmQsceNbZIFQVA31lFKArPzITBMD8jUmtLds/qK2CUYBuoDv2mQbOX+ME/ecu82eVDZWQbVFgbTEK8J6u0tbDRdoc+kTbj5bIf7ZGswNjPLO4OYYNPvDFGIxFDMRCTPhgmY4VgIHfBheoeP/9MbCsouTIEMF1AmATUwByOQZiIrZRQHXiS9tAARDcu3SdEwxfvdnWhCg53gDY4IP/VDEq4yvmHvBni1oBgCASvQCIZwgTftEqAtUXBYt1gL2rKLk8cGck39GQKDfEACi5XBEA2cox0Au61dCJbkIigDu6zL97XfkwnYjxgwnG/FuthEBjYTv5vYDFtN6Mkt4PEEuXvXY75oeRhETgvBh36tIeSjHwpCKwuZluS7HHclSil8MJDiGqZVeBjNXFBJnYnA/hgwNN3AkockVLdXU1Q1YgwLYdzm3+BfvN7waKZdaA9P9zOf2X1/M/kIAR5DypSnEAAAAASUVORK5CYII=">
+  <link rel="apple-touch-icon" href="data:image/png;base64,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">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito:wght@500;600;700;800&display=swap" rel="stylesheet">
-  <title>Feuille d'exercices interactive</title>
+  <title>Mes exercices de maths</title>
   <style>
     :root {
       /* Palette « Bonbon » — rose & lavande (mockup 1a) : inchangée */
@@ -71,6 +75,8 @@
 
     body {
       margin: 0;
+      min-height: 100vh;
+      min-height: 100svh;
       color: var(--ink);
       background: var(--bg);
       min-height: 100vh;
@@ -93,6 +99,7 @@
       flex-direction: column;
       gap: 14px;
       min-height: 100vh;
+      min-height: 100svh;   /* iOS : 100vh inclut la barre du navigateur et rogne le bas */
     }
 
     header { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
@@ -107,6 +114,20 @@
     }
 
     .header-side { display: flex; align-items: center; gap: 8px; }
+    .titre-bloc { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+
+    /* Petite date : même emplacement sur tous les écrans, sauf la bienvenue
+       où elle est mise en évidence dans la carte. */
+    .date-petite {
+      margin: 0; font-weight: 700; font-size: .8rem; color: var(--label);
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    body[data-scene="bienvenue"] .date-petite { display: none; }
+
+    .date-grande {
+      margin: -4px 0 0; font-family: var(--font-display); font-weight: 700;
+      font-size: clamp(1rem, 3.4vw, 1.25rem); color: var(--op);
+    }
 
     /* ---------- Boutons ---------- */
     button {
@@ -163,6 +184,35 @@
     main { flex: 1; display: flex; }
     .scene { display: none; flex: 1; flex-direction: column; gap: 16px; }
     .scene.active { display: flex; }
+
+    /* ---------- Bienvenue ---------- */
+    .bienvenue-carte {
+      margin: auto 0;
+      display: flex; flex-direction: column; align-items: center; gap: 14px;
+      background: #fff; border-radius: var(--radius-card); box-shadow: var(--shadow-lift);
+      padding: 34px 26px; text-align: center;
+    }
+    .bienvenue-titre {
+      margin: 0; font-family: var(--font-display); font-weight: 800;
+      font-size: clamp(1.7rem, 6vw, 2.4rem); color: var(--title);
+    }
+    .bienvenue-mot { margin: 0; font-weight: 700; font-size: 1.05rem; color: var(--tab-ink); }
+    .bienvenue-stats { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+    .b-stat {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: var(--field); border-radius: 999px; padding: 8px 16px;
+      font-weight: 700; font-size: .9rem; color: var(--tab-ink);
+    }
+    .b-stat .score-star { color: #e8a33c; }
+
+    /* le pied ne s'affiche que hors des exercices */
+    body[data-scene="jeu"] .pied-accueil,
+    body[data-scene="bilan"] .pied-accueil { display: none; }
+
+    .p-secours {
+      background: var(--field); border-radius: var(--radius-tile);
+      padding: 12px 14px; margin-top: 18px;
+    }
 
     /* ---------- Accueil ---------- */
     .accueil-carte {
@@ -271,7 +321,13 @@
     .bilan-actions { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; margin-top: 8px; }
 
     /* ---------- Corps du jeu ---------- */
-    .jeu-corps { flex: 1; display: grid; grid-template-columns: minmax(0, 1fr) 210px; gap: 16px; align-items: stretch; }
+    /* grid-template-rows: 1fr — sans quoi la rangée se dimensionne sur son contenu
+       et tout l'espace libre s'accumule en bas au lieu d'être réparti. */
+    .jeu-corps {
+      flex: 1; display: grid;
+      grid-template-columns: minmax(0, 1fr) 210px; grid-template-rows: 1fr;
+      gap: 16px; align-items: center;
+    }
 
     .question-carte {
       position: relative;
@@ -313,7 +369,7 @@
     input.is-bad { background: var(--bad-bg); border-color: var(--bad-line); color: var(--bad-ink); }
 
     /* ---------- Avatar ---------- */
-    .avatar-zone { display: flex; flex-direction: column; align-items: center; gap: 10px; align-self: start; }
+    .avatar-zone { display: flex; flex-direction: column; align-items: center; gap: 10px; align-self: center; }
     .avatar-boite { width: 100%; max-width: 180px; }
     .avatar-grand { max-width: 116px; }
     .avatar { width: 100%; height: auto; display: block; overflow: visible; }
@@ -692,6 +748,35 @@
       *, *::before, *::after { animation: none !important; transition: none !important; }
     }
 
+    /* ---------- Tablette : on remplit l'espace avec du contenu plus grand,
+       plutôt qu'avec du vide. Plus lisible pour un enfant, et l'écran est occupé. ---------- */
+    @media (min-width: 720px) and (min-height: 800px) {
+      .question-carte { padding: 40px 28px; gap: 26px; min-height: 380px; }
+      .q-enonce { font-size: clamp(2rem, 5.4vw, 3rem); }
+      .q-enonce.q-texte { font-size: 1.5rem; max-width: 26ch; }
+      .q-enonce-petit { font-size: 1.15rem; }
+      .q-reponse { width: min(380px, 100%); }
+      input { min-height: 86px; font-size: 2.5rem; }
+      .avatar-boite { max-width: 210px; }
+      .bulle { font-size: 1.05rem; padding: 14px 18px; }
+      .hint-body p { font-size: 1.08rem; }
+      .actionbar button { min-height: 64px; font-size: 1.08rem; }
+      .pill { min-height: 66px; font-size: 1.65rem; padding: 12px 22px; }
+      .symbol-button { min-height: 88px; min-width: 110px; font-size: 2.6rem; }
+      .choix-carte { min-height: 128px; }
+      .choix-carte .figure { width: min(120px, 22vw); }
+      .choix-mot { font-size: 1.2rem; }
+      .figure { width: min(190px, 40vw); }
+      .clock-face { width: min(300px, 62vw); }
+      .grille-sym { width: min(500px, 92%); }
+      :root { --col-pose: 66px; }
+      .written-board span, .written-board input { font-size: 2.2rem; min-height: 58px; }
+      .written-board input.written-digit { min-height: 58px; font-size: 2.2rem; }
+      .pot-champ { width: 56px; min-height: 58px; font-size: 2rem; }
+      .pot-dividende, .pot-diviseur { font-size: 2.2rem; }
+      .time-answer input { width: 120px; min-height: 86px; }
+    }
+
     /* ---------- Tablette portrait et téléphone ---------- */
     @media (max-width: 900px) {
       .jeu-corps { grid-template-columns: 1fr; }
@@ -727,7 +812,10 @@
 <body>
   <div class="app">
     <header>
-      <h1>Mes exercices</h1>
+      <div class="titre-bloc">
+        <h1>Mes exercices</h1>
+        <p class="date-petite" id="datePetite"></p>
+      </div>
       <div class="header-side">
         <div class="score-pill" id="scorePill" role="status" aria-label="Étoiles gagnées">
           <span class="score-star" aria-hidden="true">★</span><span id="scoreText">0</span>
@@ -739,8 +827,20 @@
     </header>
 
     <main>
-      <!-- ---------- ACCUEIL ---------- -->
-      <section class="scene active" id="accueil">
+      <!-- ---------- BIENVENUE ---------- -->
+      <section class="scene active" id="bienvenue">
+        <div class="bienvenue-carte">
+          <div class="avatar-boite avatar-grand" data-avatar></div>
+          <h2 class="bienvenue-titre">Bonjour !</h2>
+          <p class="date-grande" id="dateGrande"></p>
+          <p class="bienvenue-mot" id="bienvenueMot"></p>
+          <div class="bienvenue-stats" id="bienvenueStats"></div>
+          <button class="primary gros" id="entrer" type="button">C'est parti !</button>
+        </div>
+      </section>
+
+      <!-- ---------- CHOIX DE L'EXERCICE ---------- -->
+      <section class="scene" id="accueil">
         <div class="accueil-carte">
           <div class="avatar-boite avatar-grand" data-avatar></div>
           <div class="accueil-texte">
@@ -760,13 +860,6 @@
           <button class="tuile" data-domaine="problemes" type="button"><span class="tuile-ico" aria-hidden="true">?</span>Problèmes</button>
         </div>
 
-        <div class="pied-accueil">
-          <div class="legend" aria-label="Légende des couleurs">
-            <span class="chip"><span class="dot tens"></span>dizaines</span>
-            <span class="chip"><span class="dot ones"></span>unités</span>
-          </div>
-          <button class="lien-parent" id="lienParent" type="button">Espace parent<span class="jauge" aria-hidden="true"></span></button>
-        </div>
       </section>
 
       <!-- ---------- JEU ---------- -->
@@ -829,6 +922,14 @@
         </div>
       </section>
     </main>
+
+    <div class="pied-accueil">
+      <div class="legend" aria-label="Légende des couleurs">
+        <span class="chip"><span class="dot tens"></span>dizaines</span>
+        <span class="chip"><span class="dot ones"></span>unités</span>
+      </div>
+      <button class="lien-parent" id="lienParent" type="button">Espace parent<span class="jauge" aria-hidden="true"></span></button>
+    </div>
   </div>
 
   <dialog class="parent" id="parent" aria-labelledby="pTitre">
@@ -847,7 +948,6 @@
         <button class="primary" type="submit" id="pValider">Entrer</button>
       </form>
       <p class="p-verrou-err" id="pErr" role="alert"></p>
-      <p class="p-note">Code oublié ? Reste appuyé <strong>10 secondes</strong> sur « Espace parent » à l'accueil.</p>
     </div>
 
     <div id="pContenu">
@@ -864,6 +964,9 @@
     <h3>Suivi des notions</h3>
     <p class="p-note">Notions du niveau en cours, avec le nombre de réussites sur le nombre de tentatives. Une notion est « acquise » à partir de 85 % de réussite sur ses 20 dernières tentatives.</p>
     <div id="pSuivi"></div>
+
+    <p class="p-note p-secours">En cas d'oubli du code : rester appuyé <strong>10 secondes</strong> sur « Espace parent ».
+      Cette indication n'apparaît qu'ici, une fois le code saisi, pour qu'un enfant ne puisse pas la lire.</p>
 
     <div class="p-pied">
       <button class="soft" id="pChangerCode" type="button">Changer le code</button>
@@ -1300,7 +1403,7 @@
       rectangle:  { nom: "un rectangle",          article: "le rectangle",   pts: [[10, 32], [110, 32], [110, 88], [10, 88]], cotes: 4, sommets: 4, droits: 4 },
       triangle:   { nom: "un triangle",           article: "le triangle",    pts: [[60, 14], [108, 100], [12, 100]], cotes: 3, sommets: 3, droits: 0 },
       trianglerect: { nom: "un triangle rectangle", article: "le triangle rectangle", pts: [[18, 20], [18, 100], [104, 100]], cotes: 3, sommets: 3, droits: 1 },
-      losange:    { nom: "un losange",            article: "le losange",     pts: [[60, 10], [110, 60], [60, 110], [10, 60]], cotes: 4, sommets: 4, droits: 0 },
+      losange:    { nom: "un losange",            article: "le losange",     pts: [[60, 26], [114, 60], [60, 94], [6, 60]], cotes: 4, sommets: 4, droits: 0 },
       trapeze:    { nom: "un trapèze",            article: "le trapèze",     pts: [[32, 26], [88, 26], [112, 96], [8, 96]], cotes: 4, sommets: 4, droits: 0 },
       pentagone:  { nom: "un pentagone",          article: "le pentagone",   pts: [[60, 10], [110, 46], [91, 105], [29, 105], [10, 46]], cotes: 5, sommets: 5, droits: 0 },
       hexagone:   { nom: "un hexagone",           article: "l'hexagone",     pts: [[38, 14], [82, 14], [110, 60], [82, 106], [38, 106], [10, 60]], cotes: 6, sommets: 6, droits: 0 },
@@ -1524,10 +1627,16 @@
         aides: ["Compte d'abord les grosses pièces, puis ajoute les petites.",
                 "Regroupe ce qui fait 10 € pour aller plus vite."],
         genere(niveau) {
-          const gros = { CP: 2, CE1: 5, CE2: 10, CM1: 10, CM2: 20 }[niveau];
+          // Coupures réelles : 1 et 2 € sont des pièces, les billets commencent à 5 €.
+          const GROSSE = { CP: [["pièce", 2]], CE1: [["billet", 5]], CE2: [["billet", 5], ["billet", 10]],
+                           CM1: [["billet", 10], ["billet", 20]], CM2: [["billet", 20], ["billet", 50]] }[niveau];
+          const [typeG, valG] = choix(GROSSE);
+          const valP = choix([1, 2]);
           const a = entre(1, 4), b = entre(1, 4);
-          return saisie(`${choix(PRENOMS)} a <strong>${a}</strong> billet${a > 1 ? "s" : ""} de <strong>${gros} €</strong> et <strong>${b}</strong> pièce${b > 1 ? "s" : ""} de <strong>2 €</strong>.<br>Combien a-t-${choix(["il", "elle"])} en tout, en euros ?`,
-            a * gros + b * 2);
+          const pluriel = (mot, n) => n > 1 ? mot + "s" : mot;
+          return saisie(
+            `${choix(PRENOMS)} a <strong>${a}</strong> ${pluriel(typeG, a)} de <strong>${valG} €</strong> et <strong>${b}</strong> ${pluriel("pièce", b)} de <strong>${valP} €</strong>.<br>Combien a-t-${choix(["il", "elle"])} en tout, en euros ?`,
+            a * valG + b * valP);
         }
       },
       {
@@ -1867,10 +1976,10 @@
 
     const ECRANS = ["mental", "order", "written", "hours", "mesures", "formes", "problemes"];
     const NOM_ECRAN = { mental: "Calcul", order: "Ranger", written: "Poser", hours: "Heure", mesures: "Mesures", formes: "Formes", problemes: "Problèmes" };
-    const DEFIS_SEANCE = 5;   // longueur d'une séance
+    const DEFIS_SEANCE = 10;   // longueur d'une séance
 
     const state = {
-      scene: "accueil",
+      scene: "bienvenue",
       domaine: "mixte",      // "mixte" ou l'un de ECRANS
       ecranQuestion: null,
       question: null,
@@ -2116,11 +2225,14 @@
 
     function allerA(scene) {
       state.scene = scene;
+      document.body.dataset.scene = scene;           // pilote l'affichage du pied de page
+      majDate();
       document.querySelectorAll(".scene").forEach(s => s.classList.toggle("active", s.id === scene));
       if (scene === "accueil") {
         clearAutoAdvance(); humeur("neutre");
         state.mode = "libre"; state.seance = null; majJalons();
         document.querySelector("#bulleAccueil").textContent = pickVaried(accueils, "accueil");
+        remplirBienvenue();
       }
     }
 
@@ -2770,7 +2882,30 @@
        ============================================================ */
 
     document.querySelectorAll("[data-avatar]").forEach(el => { el.innerHTML = AVATAR; });
+    const majuscule = t => t.charAt(0).toUpperCase() + t.slice(1);
+
+    function majDate() {
+      const d = new Date();
+      const grande = majuscule(d.toLocaleDateString("fr-FR", { weekday: "long", day: "numeric", month: "long", year: "numeric" }));
+      const petite = majuscule(d.toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" }));
+      const g = document.querySelector("#dateGrande"), p = document.querySelector("#datePetite");
+      if (g) g.textContent = grande;
+      if (p) p.textContent = petite;
+    }
+
+    function remplirBienvenue() {
+      majDate();
+      document.querySelector("#bienvenueMot").textContent = pickVaried(accueils, "accueil");
+      const p = state.progres, st = [];
+      if (p.etoiles > 0) st.push(`<span class="b-stat"><span class="score-star">★</span>${p.etoiles} ${p.etoiles > 1 ? "étoiles" : "étoile"}</span>`);
+      if (p.serie.jours > 0) st.push(`<span class="b-stat">${p.serie.jours} ${p.serie.jours > 1 ? "jours" : "jour"} d'affilée</span>`);
+      document.querySelector("#bienvenueStats").innerHTML = st.join("");
+    }
+
+    document.querySelector("#entrer").addEventListener("click", () => allerA("accueil"));
     document.querySelector("#bulleAccueil").textContent = pickVaried(accueils, "accueil");
+    remplirBienvenue();
+    allerA("bienvenue");
     majSon();
     majEtoiles();
     majSerie();
